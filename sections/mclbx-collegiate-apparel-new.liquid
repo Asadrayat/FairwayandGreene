@@ -1,0 +1,840 @@
+{% assign collegiate_list = shop.metaobjects.collegiate_list.values %}
+<style>
+             /* #shopify-section-{{ section.id }} {
+               position: relative;
+               z-index: 2;
+             } */
+               .section-container--{{ section.id }} {
+                 margin-top: {{ section.settings.margin_top | append: 'px' }};
+                 margin-bottom: {{ section.settings.margin_bottom | append: 'px' }};
+                 padding-top: {{ section.settings.padding_top | append: 'px' }};
+                 padding-bottom: {{ section.settings.padding_bottom | append: 'px' }};
+                 background-color: {{ section.settings.bg_color }};
+                 overflow: hidden;
+                 {% if section.settings.collegiate-collection.handle != collection.handle %}
+                   display: none!important;
+                 {% endif %}
+               }
+
+               @media screen and (max-width: 768px) {
+                 .section-container--{{ section.id }} {
+                   margin-top: {{ section.settings.margin_top_mobile | append: 'px' }};
+                   margin-bottom: {{ section.settings.margin_bottom_mobile | append: 'px' }};
+                   padding-top: {{ section.settings.padding_top_mobile | append: 'px' }};
+                   padding-bottom: {{ section.settings.padding_bottom_mobile | append: 'px' }};
+                 }
+               }
+       body.no-scroll {
+         overflow: hidden;
+         height: 100vh;
+       }
+       .--collection-banner{
+         /* display: none; */
+       }
+
+  .section-container--{{ section.id }} {
+       .section-wrapper--{{ section.id }} {
+           display: flex;
+           flex-direction: column;
+           gap: var(--Spacing-Container-md, 24px);
+           margin-top: var(--Spacing-Container-md, 24px);
+       }
+       img.--bg-image-desktop {
+          width: 100%;
+          max-height: 300px;
+          object-fit: cover;
+      }
+
+           .--top-row {
+               display: flex;
+               justify-content: space-between;
+               @media(max-width: 768px){
+                 flex-direction: column;
+                 gap: var(--Spacing-Container-sm, 16px);
+               }
+           }
+           .--top-row h3 {
+               color: #000;
+               font-family: var(--font-family-Title, "Krylon");
+               font-size: var(--Font-Size-Heading-H2, 32px);
+               font-style: normal;
+               font-weight: 500;
+               line-height: var(--Line-Height-Heading-H2, 40px);
+               letter-spacing: 0;
+               margin-block: 0;
+               text-transform: capitalize;
+           }
+           button.--view-all {
+               /* height: 40px; */
+               padding: var(--Spacing-Container-xxs, 8px) var(--Spacing-Container-sm, 16px);
+               align-items: center;
+               border: 0;
+               color: #000;
+               font-family: var(--font-family-Control, "Archivo Expanded");
+               font-size: var(--Font-Size-UI-Controls-Control-Button-Main, 12px);
+               font-style: normal;
+               font-weight: 400;
+               line-height: var(--Line-Height-UI-Controls-Control-Button-Main, 12px);
+               text-decoration-line: underline;
+               text-decoration-style: solid;
+               text-decoration-skip-ink: none;
+               text-decoration-thickness: auto;
+               text-underline-offset: 40%;
+               text-underline-position: from-font;
+               text-transform: uppercase;
+             @media(max-width: 768px){
+               padding: 0;
+               min-width: max-content;
+             }
+           }
+           .--top-row {
+               display: flex;
+               @media(max-width: 768px){
+                 justify-content: space-between;
+                 gap: var(--Spacing-Container-sm, 16px);
+               }
+           }
+           {% comment %} .--top-row div {
+               display: flex;
+               @media(max-width: 768px){
+                 justify-content: space-between;
+                 gap: var(--Spacing-Container-sm, 16px);
+               }
+           } {% endcomment %}
+       .--featured-collegiate-cards {
+           display: grid;
+           grid-template-columns: repeat(8, 1fr);
+           gap: var(--Spacing-Container-md, 16px);
+           @media(max-width: 768px){
+               overflow-x: scroll;
+               /* Scrollbar styles for WebKit browsers (Chrome, Safari, Edge) */
+               scrollbar-width: thin;          /* Firefox */
+               scrollbar-color: #1F2937 transparent; /* Firefox */
+               padding-bottom: 16px;
+           }
+       }
+      /* WebKit scrollbar */
+       .--featured-collegiate-cards::-webkit-scrollbar {
+         width: 2px;
+       }
+
+       .--featured-collegiate-cards::-webkit-scrollbar-track {
+         background: #1F2937;
+       }
+
+       .--featured-collegiate-cards::-webkit-scrollbar-thumb {
+         background-color: #1F2937;
+         border-radius: 4px;
+         border: 2px solid transparent;
+         background-clip: content-box;
+         /* No hover effect */
+       }
+
+
+       svg.--card-image-svg {
+           /* width: 80px; */
+          width: 100px;
+           scale: .8;
+           height: auto;
+           aspect-ratio: 1;
+           /* border: 1px solid #000; */
+           margin-bottom: var(--Spacing-Container-xxs, 8px);
+       }
+
+
+           .--collegiate-search {
+
+           }
+     .--found-collegiate-cards {
+         display: none;
+     }
+           .--search-container {
+             position: relative;
+             width: 480px;
+             height: 36px;
+             /* border: 1px solid #ccc; */
+             border-radius: 0px;
+             /* background-color: #f8f9fa; */
+             display: flex;
+             align-items: center;
+             border: 1px solid var(--Border-Base-subtle, #E5E7EB);
+             background: #FFF;
+             @media(max-width: 768px){
+                  width: 100%;
+               }
+           }
+          .--drawer-top-bar {
+               display: flex;
+               gap: 10px;
+               box-sizing: border-box;
+               padding: var(--Spacing-Container-xs, 12px) var(--Spacing-Container-md, 24px) 0;
+               justify-content: space-between;
+             @media(max-width: 768px){
+                 padding: var(--Spacing-Container-sm, 12px) var(--Spacing-Container-md, 24px) 0;
+               }
+           }
+          .--drawer-top-bar h3 {
+              margin-block: 0;
+          }
+           .--drawer-search-container {
+               position: relative;
+               width: 100%;
+               height: 60px;
+               border-radius: 0px;
+               display: flex;
+               align-items: center;
+               border-bottom: 1px solid var(--Border-Base-subtle, #E5E7EB);
+               background: #FFF;
+               padding: var(--Spacing-Container-xs, 12px) var(--Spacing-Container-md, 24px);
+               @media(max-width: 768px){
+                 padding: var(--Spacing-Container-sm, 12px) var(--Spacing-Container-md, 24px);
+               }
+           }
+           .--drawer-search-container .search-input {
+             border: 1px solid var(--Border-Base-subtle, #E5E7EB);
+             background: #FFF;
+           }
+           .--drawer-search-container .clear-btn {
+               right: var(--Spacing-Container-lg, 24px);
+               text-transform: capitalize;
+               line-height: 1;
+               color: #0000009c;
+               @media(max-width: 768px){
+                 font-size: var(--Font-Size-Paragraph-Small, 12px);
+               }
+
+           }
+           .--drawer-search-container .clear-btn:hover {
+               color: #0000009c;
+           }
+           .--drawer-search-container .clear-btn:after {
+               content: "";
+               position: absolute;
+               width: 100%;
+               height: 1px;
+               background: #0000009c;
+               display: block;
+               left: 0;
+               bottom: -2px;
+           }
+           .--drawer-search-container .search-btn {
+             /* right: 16px; */
+             right: var(--Spacing-Container-lg, 24px);
+             display: none;
+           }
+
+           .search-input {
+             flex: 1;
+             height: 100%;
+             border: none;
+             background: transparent;
+             padding: 0 32px 0 10px;
+             font-size: 16px;
+             color: #1f2937;
+             /* font-family: var(--font-family-Control, "Archivo Expanded"); */
+           }
+
+           .search-input:focus {
+             outline: none;
+           }
+
+           .clear-btn {
+             position: absolute;
+             right: 8px;
+             top: 50%;
+             transform: translateY(-50%);
+             background: none;
+             border: none;
+             font-size: 14px;
+             color: #1f2937;
+             cursor: pointer;
+             padding: 0;
+             display: none;
+             @media(max-width: 768px){
+               font-size: 16px;
+             }
+           }
+           .search-btn {
+             position: absolute;
+             right: 8px;
+             top: 50%;
+             transform: translateY(-50%);
+             background: none;
+             border: none;
+             font-size: 14px;
+             color: #1f2937;
+             cursor: pointer;
+             padding: 0;
+             left: unset;
+             @media(max-width: 768px){
+               font-size: 16px;
+             }
+           }
+
+           .clear-btn:hover {
+             color: #000;
+           }
+
+
+       .--collegiate-drawer {
+           position: fixed;
+           top: 0;
+           right: -100%;
+           background: #fff;
+           z-index: 7;
+           width: 720px;
+           height: 100vh;
+           transition: right 0.5s ease;
+           @media(max-width: 768px){
+             width: 100%;
+           }
+       }
+       .--collegiate-drawer.active-drawer {
+           right: 0;
+       }
+       .--drawer-bg-overlay.active-drawer {
+             display: block!important;
+             background: #00000063;
+             position: fixed;
+             width: 100%;
+             height: 100%;
+             z-index: 7;
+             top: 0;
+             left: 0;
+             opacity: 1;
+         }
+
+     .--cards-container {
+       display: grid;
+       grid-template-columns: repeat(4,1fr);
+       padding: var(--Spacing-Container-md, 24px);
+       gap: 16px var(--Spacing-Container-sm, 16px);
+       box-sizing: border-box;
+       overflow-y: scroll;
+       max-height: calc(100vh - 60px);
+
+        /* Scrollbar styles for WebKit browsers (Chrome, Safari, Edge) */
+         scrollbar-width: thin;          /* Firefox */
+         scrollbar-color: #1F2937 transparent; /* Firefox */
+
+
+       @media(max-width: 768px){
+         grid-template-columns: repeat(3,1fr);
+       }
+
+       }
+       /* WebKit scrollbar */
+       .--cards-container::-webkit-scrollbar {
+         width: 8px;
+       }
+
+       .--cards-container::-webkit-scrollbar-track {
+         background: #1F2937;
+       }
+
+       .--cards-container::-webkit-scrollbar-thumb {
+         background-color: #1F2937;
+         border-radius: 4px;
+         border: 2px solid transparent;
+         background-clip: content-box;
+         /* No hover effect */
+       }
+       .--card {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         text-align: center;
+         cursor: pointer;
+         position: relative;
+         overflow: hidden;
+         padding: var(--Spacing-Container-sm, 16px) var(--Spacing-Container-md, 24px);
+         border: 1px solid var(--Border-Base-main, #D1D5DB);
+       }
+       .--card.--view-all {
+         display: flex!important;
+       }
+       .--card img {
+           /* width: 100%; */
+           width: 100px;
+           scale: .8;
+           height: auto;
+           transition: 0.5s ease;
+           position: relative;
+         @media(max-width: 768px){
+             /* width: 80px; */
+           }
+       }
+       .--card:hover img {
+           scale: 1;
+           /* scale: 1.2; */
+           /* width: 96px; */
+           @media(max-width: 768px){
+             scale: 1;
+           }
+       }
+        .--front-cards-wrapper .--card {
+                 @media(max-width: 768px){
+                   min-width: max-content;
+                 }
+
+       }
+       span.--card-title {
+           color: #4B5563;
+           text-align: center;
+           font-family: var(--font-family-Body, Archivo);
+           font-size: var(--Font-Size-Paragraph-Small, 12px);
+           font-style: normal;
+           font-weight: 400;
+           line-height: var(--Line-Height-Paragraph-Small, 16px);
+           text-transform: capitalize;
+           position: relative;
+           z-index:2;
+       }
+
+
+              }
+
+
+   {% if section.settings.collegiate-collection.handle == collection.handle %}
+     .--collection-banner{
+        display: none!important;
+     }
+   {% endif %}
+</style>
+
+<section class="section-container--{{ section.id }}">
+  <div class="--bg-image">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: section.settings.image.width | image_tag: class: "--bg-image-desktop" }}
+      {% endif %}
+
+
+  </div>
+  <div class="section-wrapper--{{ section.id }} page-width">
+    <div class="--top-row">
+      <div class="--text-block">
+        <h3>{{ section.settings.title }}</h3>
+        <div class="--content">{{ section.settings.content }}</div>
+      </div>
+
+      {% comment %} <button class="--view-all hidden">View All</button> {% endcomment %}
+
+      <div class="--search-container">
+        <input type="text" placeholder="Discover Your School" class="search-input" id="frontrsearchInput">
+
+        <button class="clear-btn" id="clearBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M14 6L6 14M6 6L14 14" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="search-btn" id="searchBtn">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.4167 5.58333C16.9667 4.5 16.3084 3.50833 15.4501 2.65C13.7417 0.941667 11.4667 0 9.05006 0C6.63339 0 4.35839 0.941667 2.65006 2.65C0.941728 4.35833 6.10352e-05 6.63333 6.10352e-05 9.05C6.10352e-05 11.4667 0.941728 13.7417 2.65006 15.45C4.35839 17.1583 6.63339 18.1 9.05006 18.1C11.0001 18.1 12.8501 17.4917 14.3917 16.35L13.5667 15.525C10.4917 17.675 6.21673 17.375 3.46673 14.6333C1.97506 13.1417 1.15006 11.1583 1.15006 9.05C1.15006 6.94167 1.97506 4.95833 3.46673 3.46667C4.95839 1.975 6.94173 1.15833 9.05006 1.15833C10.1084 1.15833 11.1251 1.36667 12.0751 1.75833C13.0251 2.15 13.8917 2.725 14.6334 3.475C16.1251 4.96667 16.9417 6.95 16.9417 9.05833C16.9417 10.6917 16.4501 12.2583 15.5251 13.575L16.3501 14.4C17.4834 12.8583 18.0917 11.0083 18.0917 9.05833C18.0917 7.85 17.8584 6.675 17.4084 5.59167L17.4167 5.58333Z" fill="black"/>
+            <path d="M20 19.0167L19.0167 20L14.9334 15.9167L14.45 15.4334L14.1333 15.1167L14.1167 15.1C14.2917 14.95 14.4583 14.8 14.625 14.6333C14.7917 14.4667 14.95 14.3 15.1 14.1167L15.1167 14.1417L15.3417 14.3667L15.4334 14.4584L19.9917 19.0167H20Z" fill="black"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="--front-cards-wrapper">
+      <div class="--loaded-collegiate-cards">
+        <div class="--featured-collegiate-cards">
+          {% for block in section.blocks %}
+            <div class="--card">
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 200 | image_tag: class: '--card-image' }}
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: '--card-image-svg' }}
+              {% endif %}
+
+              <span class="--card-title">
+                {% if block.settings.title != blank %}
+                  {{ block.settings.title }}
+                {% else %}
+                  {{- block.settings.collection.title }}
+                {% endif %}
+              </span>
+              <a class="absolute-link" href="{{ block.settings.collection.url }}"> </a>
+            </div>
+          {% endfor %}
+          <div
+            class="--card --front-collegiate-card --view-all"
+            data-title=""
+          >
+            {% render 'all-icons', name: 'view-all' %}
+            <span class="--card-title">View All</span>
+            <a class="absolute-link --view-all" href=""> </a>
+          </div>
+          {% comment %}
+            <button class="--view-all">View All</button>
+          {% endcomment %}
+        </div>
+      </div>
+
+      <div class="--found-collegiate-cards">
+        <div class="--featured-collegiate-cards">
+          {% for x in collegiate_list %}
+            {% if x.list_label != blank and x.collegiate_brands != blank %}
+              {% for card in x.collegiate_brands.value %}
+                <div
+                  class="--card --front-collegiate-card"
+                  data-title="{{ card.title | append: " " | append:  card.collection.value.title  }}"
+                >
+                  {{ card.image | image_url: width: 200 | image_tag: class: '--card-image' }}
+                  <span class="--card-title">{{ card.title }}</span>
+                  <a class="absolute-link" href="{{ card.collection.value.url }}"> </a>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          <div
+            class="--card --front-collegiate-card --view-all "
+            data-title=""
+          >
+            {% render 'all-icons', name: 'view-all' %}
+            <span class="--card-title">View All</span>
+            <a class="absolute-link --view-all" href=""> </a>
+          </div>
+          <!-- <button class="--view-all">View All</button> -->
+        </div>
+      </div>
+    </div>
+    <div class="--drawer-bg-overlay"></div>
+    <div class="--collegiate-drawer">
+      <div class="--drawer-top-bar">
+        <h3>Discover Your School</h3>
+        <button class="--close-drawer-btn" id="">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M14 6L6 14M6 6L14 14" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="--drawer-search-container">
+        <input type="text" placeholder="Search" class="search-input" id="drawersearchInput">
+        <button class="clear-btn" id="clearBtn">clear</button>
+        <button class="search-btn" id="searchBtn">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.4167 5.58333C16.9667 4.5 16.3084 3.50833 15.4501 2.65C13.7417 0.941667 11.4667 0 9.05006 0C6.63339 0 4.35839 0.941667 2.65006 2.65C0.941728 4.35833 6.10352e-05 6.63333 6.10352e-05 9.05C6.10352e-05 11.4667 0.941728 13.7417 2.65006 15.45C4.35839 17.1583 6.63339 18.1 9.05006 18.1C11.0001 18.1 12.8501 17.4917 14.3917 16.35L13.5667 15.525C10.4917 17.675 6.21673 17.375 3.46673 14.6333C1.97506 13.1417 1.15006 11.1583 1.15006 9.05C1.15006 6.94167 1.97506 4.95833 3.46673 3.46667C4.95839 1.975 6.94173 1.15833 9.05006 1.15833C10.1084 1.15833 11.1251 1.36667 12.0751 1.75833C13.0251 2.15 13.8917 2.725 14.6334 3.475C16.1251 4.96667 16.9417 6.95 16.9417 9.05833C16.9417 10.6917 16.4501 12.2583 15.5251 13.575L16.3501 14.4C17.4834 12.8583 18.0917 11.0083 18.0917 9.05833C18.0917 7.85 17.8584 6.675 17.4084 5.59167L17.4167 5.58333Z" fill="black"/>
+            <path d="M20 19.0167L19.0167 20L14.9334 15.9167L14.45 15.4334L14.1333 15.1167L14.1167 15.1C14.2917 14.95 14.4583 14.8 14.625 14.6333C14.7917 14.4667 14.95 14.3 15.1 14.1167L15.1167 14.1417L15.3417 14.3667L15.4334 14.4584L19.9917 19.0167H20Z" fill="black"/>
+          </svg>
+        </button>
+      </div>
+      <div class="--no-match-message" style="display:none; padding: 16px; text-align:center; box-sizing: border-box;">
+        No match found
+      </div>
+      <div class="--cards-container">
+        {% for x in collegiate_list %}
+          {% if x.list_label != blank and x.collegiate_brands != blank %}
+            {% for card in x.collegiate_brands.value %}
+              <div
+                class="--card --collegiate-card"
+                data-title="{{ card.title | append: " " | append:  card.collection.value.title  }}"
+              >
+                {{ card.image | image_url: width: 200 | image_tag: class: '--card-image' }}
+                <span class="--card-title">{{ card.title }}</span>
+                <a class="absolute-link" href="{{ card.collection.value.url }}"> </a>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const frontSearchInput = document.getElementById('frontrsearchInput'); // Assuming only one for front
+    const drawerSearchInput = document.getElementById('drawersearchInput');
+    const viewAllBtns = document.querySelectorAll('.--view-all');
+    const drawer = document.querySelector('.--collegiate-drawer');
+    const drawerbg = document.querySelector('.--drawer-bg-overlay');
+    const clearButtons = document.querySelectorAll('.clear-btn');
+    const closeDrawerButtons = document.querySelectorAll('.--close-drawer-btn');
+
+    function handlefrontSearch(input) {
+      const searchValue = input.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.--card.--front-collegiate-card');
+      let matches = 0;
+
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        const isMatch = title.includes(searchValue);
+        card.style.display = isMatch ? 'flex' : 'none';
+        if (isMatch) matches++;
+      });
+      const loadedCards = document.querySelector('.--loaded-collegiate-cards');
+      const foundCards = document.querySelector('.--found-collegiate-cards');
+
+      if (matches === 0 || searchValue == '') {
+        loadedCards.style.display = 'block';
+        foundCards.style.display = 'none';
+      } else {
+        loadedCards.style.display = 'none';
+        foundCards.style.display = 'block';
+      }
+
+      const search_button = input.closest('.--search-container').querySelector('.search-btn');
+      const clear_button = input.closest('.--search-container').querySelector('.clear-btn');
+      if (searchValue == '') {
+        search_button.style.display = 'block';
+        clear_button.style.display = 'none';
+      } else {
+        search_button.style.display = 'none';
+        clear_button.style.display = 'block';
+      }
+
+      // const noMatchMessages = document.querySelectorAll(".--no-match-message");
+      // noMatchMessages.forEach(element => {
+      //   element.style.display = matches === 0 ? "block" : "none";
+      // });
+    }
+
+    // Function to handle search
+    function handleSearch(input) {
+      const searchValue = input.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.--card.--collegiate-card');
+      let matches = 0;
+
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        const isMatch = title.includes(searchValue);
+        card.style.display = isMatch ? 'flex' : 'none';
+        if (isMatch) matches++;
+      });
+
+      const noMatchMessages = document.querySelectorAll('.--no-match-message');
+      noMatchMessages.forEach((element) => {
+        element.style.display = matches === 0 ? 'block' : 'none';
+      });
+
+      const search_button = input.closest('.--drawer-search-container').querySelector('.search-btn');
+      const clear_button = input.closest('.--drawer-search-container').querySelector('.clear-btn');
+      if (searchValue == '') {
+        // search_button.style.display = 'block';
+        clear_button.style.display = 'none';
+      } else {
+        search_button.style.display = 'none';
+        clear_button.style.display = 'block';
+      }
+    }
+
+    // Toggle drawer on "View All" button click
+    if (viewAllBtns.length > 0 && drawer) {
+      viewAllBtns.forEach((btn) => {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          drawer.classList.add('active-drawer');
+          drawerbg.classList.add('active-drawer');
+          body.classList.add('no-scroll');
+        });
+      });
+    }
+
+    // Front search input listener
+    if (frontSearchInput) {
+      frontSearchInput.addEventListener('input', function () {
+        handlefrontSearch(this);
+      });
+    }
+
+    // Drawer search input listener
+    if (drawerSearchInput) {
+      drawerSearchInput.addEventListener('input', function () {
+        handleSearch(this);
+      });
+    }
+
+    // Clear buttons
+    clearButtons.forEach((btn) => {
+      btn.addEventListener('click', function () {
+        const input = this.previousElementSibling;
+        if (input) {
+          input.value = '';
+          input.dispatchEvent(new Event('input'));
+        }
+
+        // if (drawer) {
+        //   drawer.classList.remove("active-drawer");
+        //   drawerbg.classList.remove("active-drawer");
+        //   body.classList.remove("no-scroll");
+        // }
+      });
+    });
+    // closeDrawerButtons buttons
+    closeDrawerButtons.forEach((btn) => {
+      btn.addEventListener('click', function () {
+        if (drawer) {
+          drawer.classList.remove('active-drawer');
+          drawerbg.classList.remove('active-drawer');
+          body.classList.remove('no-scroll');
+        }
+      });
+    });
+    drawerbg.addEventListener('click', function () {
+      // const input = this.previousElementSibling;
+      // if (input) {
+      //   input.value = "";
+      //   input.dispatchEvent(new Event("input"));
+      // }
+
+      if (drawer) {
+        drawer.classList.remove('active-drawer');
+        drawerbg.classList.remove('active-drawer');
+        body.classList.remove('no-scroll');
+      }
+    });
+    // Unused variable (can be removed if not needed)
+    // const featured_collegiate_cards = document.querySelector(".--featured-collegiate-cards");
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collegiate Apparel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "COLLEGIATE APPAREL"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Content",
+      "default": "Course to clubhouse to campus classics. Represent your favorite college teams with fresh new styles and colors."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Select Image"
+    },
+    {
+      "type": "collection",
+      "id": "collegiate-collection",
+      "label": "Select Collegiate Collection"
+    },
+
+    {
+      "type": "header",
+      "content": "Desktop Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Mobile Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collegiate Card",
+      "limit": 9,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Collegiate Title"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collegiate Card"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Select Collegiate Logo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collegiate Apparel"
+    }
+  ]
+}
+{% endschema %}

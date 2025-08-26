@@ -1,0 +1,38 @@
+{% comment %} Snippet to display number of people viewing the product {% endcomment %}
+{% if block.settings.view_count_text != blank %}
+  <style>
+    .viewer-count {
+      display: flex;
+      {% comment %} justify-content: center; {% endcomment %}
+      align-items: center;
+      gap: var(--Spacing-Container-xs, 12px);
+      margin-block: var(--Spacing-Container-xxs, 8px);
+      p{
+        color: var(--Content-Base-base, #4B5563);
+        font-family: "Aktiv Grotesk";
+        font-size: var(--Font-Size-Paragraph-Tiny, 12px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Tiny, 16px);
+        margin: 0;
+        #viewer-number {
+          color: var(--Primary, #004027);
+          font-family: "Aktiv Grotesk";
+          font-size: var(--Font-Size-Paragraph-Tiny, 12px);
+          font-style: normal;
+          font-weight: 700;
+          line-height: var(--Line-Height-Paragraph-Tiny, 16px);
+        }
+      }
+    }
+    .viewer-count svg {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+  <div data-product-id="{{ product.id }}" data-max="{{ block.settings.max }}" data-min="{{ block.settings.min }}" id="viewer-count" class="viewer-count">
+    {% render 'all-icons', name: 'view_icon' %}
+    <p><span id="viewer-number">0</span> {{ block.settings.view_count_text }}</p>
+  </div>
+
+{% endif %}

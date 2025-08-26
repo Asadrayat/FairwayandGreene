@@ -1,0 +1,495 @@
+{% assign size_chart_object = shop.metaobjects.size_chart.values %}
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+        #shopify-section-{{id}} {
+          box-sizing: border-box;
+          margin-top: {{section.settings.margin_top | append: 'px'}};
+          margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+          padding-top: {{section.settings.padding_top | append: 'px'}};
+          padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+        }
+
+        @media(max-width: 600px) {
+          #shopify-section-{{id}} {
+            margin-top: {{section.settings.margin_top_m | append: 'px'}};
+            margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+            padding-top: {{section.settings.padding_top_m | append: 'px'}};
+            padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+          }
+        }
+
+      .sec-{{ id }}  {
+
+    .--single-chart {
+        padding-block: var(--Spacing-Section-Section-Vertical-Padding, 48px);
+    }
+  .--top-block {
+      /* display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: var(--Spacing-Container-md, 16px); */
+      display: grid;
+      grid-template: repeat(2,minmax(0,1fr))/ repeat(2,minmax(0,1fr));
+      margin-bottom: var(--Spacing-Container-md, 16px);
+      /* justify-items: stretch; */
+  }
+    .--chart-title {
+        color: #000;
+        /* font-family: var(--font-family-Title, "Neue Plak"); */
+        font-family: var(--font-family-Body, "Neue Plak");
+        font-size: var(--Font-Size-Heading-H4);
+        line-height: var(--Line-Height-Heading-H4);
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        @media(max-width: 600px){
+          line-height: var(--Line-Height-Heading-H3);
+        }
+    }
+    p.--chart-content {
+        grid-column: 1/2;
+        color: #000;
+        font-family: var(--font-family-Body, "Neue Plak");
+        font-size: var(--Font-Size-Paragraph-Regular, 16px);
+        line-height: var(--Line-Height-Paragraph-Regular, 24px);
+        /* margin-block: var(--Spacing-Container-sm, 16px) 0; */
+        margin-block: 4px 0;
+      @media(max-width:600px){
+        grid-column: 1/-1;
+      }
+    }
+
+    .--chart-measurements .--measurement-row:nth-child(odd){
+        /* background: var(--Background-base-subtle, #F3F4F6); */
+        background: #0040271f;
+    }
+        .--measurement-row {
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            text-align: center;
+            font-family: var(--font-family-Body, "Neue Plak");
+            font-size: var(--Font-Size-Paragraph-Large, 20px);
+            text-transform: uppercase;
+            line-height: var(--Line-Height-Paragraph-Large, 30px);
+            padding-block: var(--Spacing-Container-sm, 16px);
+            @media(max-width:600px){
+              font-size: var(--Font-Size-Paragraph-Regular, 16px);
+              line-height: var(--Line-Height-Paragraph-Regular, 24px);
+            }
+        }
+       .--chart-measurements   .--measurement-heading.--measurement-row {
+          background: #004027;;
+          /* background: var(--Background-inverted-main, #1F2937); */
+          color: var(--Content-Inverted-main, #F3F4F6);
+      }
+
+
+    /* Toggle Styling Start */
+
+   .toggle-container {
+              display: flex;
+             justify-content: flex-end;
+              align-items: center;
+              font-family: Arial, sans-serif;
+              font-size: 18px;
+              @media(max-width: 600px){
+                /* align-items: flex-start;
+                grid-column: 2/-1;
+                grid-row: 1/2; */
+                justify-content: unset;
+              }
+          }
+
+          .toggle-label {
+              margin: 0 10px;
+              color: #000;
+              font-family: var(--font-family-Body, "Neue Plak");
+              font-size: var(--Font-Size-Paragraph-Regular, 16px);
+              line-height: var(--Line-Height-Paragraph-Regular, 24px);
+          }
+
+          .toggle-switch {
+              position: relative;
+              display: inline-block;
+              width: 50px;
+              height: 24px;
+             @media(max-width: 600px){
+               width: 30px;
+               height: 15px;
+               margin-block: 2px;
+             }
+          }
+
+          .toggle-switch input {
+              opacity: 0;
+              width: 0;
+              height: 0;
+          }
+
+          .slider {
+              position: absolute;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              /* background-color: #9CA3AF; */
+              background-color: #E1E6E0;
+              transition: 0.4s;
+              border-radius: 12px;
+          }
+
+          .slider:before {
+              position: absolute;
+              content: "";
+              height: 18px;
+              width: 18px;
+              left: 3px;
+              bottom: 3px;
+              background-color: white;
+              transition: 0.4s;
+              border-radius: 50%;
+             @media(max-width: 600px){
+               height: 10px;
+                width: 10px;
+             }
+          }
+
+          input:checked + .slider {
+              background-color: #E1E6E0;
+              /* background-color: #004027ab; */
+          }
+
+          input:checked + .slider:before {
+              transform: translateX(26px);
+              background-color: #004027;
+             @media(max-width: 600px){
+               transform: translateX(14px);
+             }
+          }
+
+
+
+   /* Toggle Styling Start */
+
+      }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {% comment %}
+        {% for chart in size_chart_object %}
+          <div class="--single-chart">
+            <div class="--top-block">
+              <!-- <div class="--left-content"></div> -->
+                <div class="--chart-title">{{ chart.size_chart_type }}</div>
+                <p class="--chart-content">{{ chart.content }}</p>
+
+
+              <div class="toggle-container">
+                <span class="toggle-label">IN</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="unitToggle" class="--toggle" data-title="{{ chart.size_chart_type }}">
+                  <span class="slider"></span>
+                </label>
+                <span class="toggle-label">CM</span>
+              </div>
+            </div>
+
+            <div class="--chart-measurements">
+              <div class="--measurement-heading --measurement-row">
+                <div>Size</div>
+                <div>Waist</div>
+                <div>Chest</div>
+                <div>Neck</div>
+                <div>Sleeve</div>
+              </div>
+              {% for x in chart.measurements.value %}
+                <div class="--measurement-row --only-values">
+                  <div>{{ x.size_label }}</div>
+                  <div>{{ x.waist }}</div>
+                  <div>{{ x.chest }}</div>
+                  <div>{{ x.neck }}</div>
+                  <div>{{ x.sleeve }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endcomment %}
+
+      <!-- Chart start -->
+      {% assign chart = shop.metaobjects.size_chart['men-body-measurement'] %}
+      <div class="--single-chart" id="men-body-measurement">
+        <div class="--top-block">
+          <!-- <div class="--left-content"></div> -->
+          <div class="--chart-title">{{ chart.size_chart_type }}</div>
+          <p class="--chart-content">{{ chart.content }}</p>
+
+          <div class="toggle-container">
+            <span class="toggle-label">IN</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="unitToggle" class="--toggle" data-title="{{ chart.size_chart_type }}">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label">CM</span>
+          </div>
+        </div>
+
+        <div class="--chart-measurements">
+          <div class="--measurement-heading --measurement-row">
+            <div>Size</div>
+            <div>Waist</div>
+            <div>Chest</div>
+            <div>Neck</div>
+            <div>Sleeve</div>
+          </div>
+          {% for x in chart.measurements.value %}
+            <div class="--measurement-row --only-values">
+              <div>{{ x.size_label }}</div>
+              <div>{{ x.waist }}</div>
+              <div>{{ x.chest }}</div>
+              <div>{{ x.neck }}</div>
+              <div>{{ x.sleeve }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- Chart End -->
+
+      <!-- Chart start women-body-measurement -->
+      {% assign chart = shop.metaobjects.size_chart['women-body-measurement'] %}
+      <div class="--single-chart" id="women-body-measurement">
+        <div class="--top-block">
+          <!-- <div class="--left-content"></div> -->
+          <div class="--chart-title">{{ chart.size_chart_type }}</div>
+          <p class="--chart-content">{{ chart.content }}</p>
+
+          <div class="toggle-container">
+            <span class="toggle-label">IN</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="unitToggle" class="--toggle" data-title="{{ chart.size_chart_type }}">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label">CM</span>
+          </div>
+        </div>
+
+        <div class="--chart-measurements">
+          <div class="--measurement-heading --measurement-row">
+            <div>Size</div>
+            <div>Waist</div>
+            <div>Chest</div>
+            <div>Neck</div>
+            <div>Sleeve</div>
+          </div>
+          {% for x in chart.measurements.value %}
+            <div class="--measurement-row --only-values">
+              <div>{{ x.size_label }}</div>
+              <div>{{ x.waist }}</div>
+              <div>{{ x.chest }}</div>
+              <div>{{ x.neck }}</div>
+              <div>{{ x.sleeve }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- Chart End -->
+
+      <!-- Chart start kids-body-measurement -->
+      <!-- hiding kids -->
+      {% comment %}
+        {% assign chart = shop.metaobjects.size_chart.kids-body-measurement %}
+          <div class="--single-chart" id="kids-body-measurement">
+            <div class="--top-block">
+              <!-- <div class="--left-content"></div> -->
+                <div class="--chart-title">{{ chart.size_chart_type }}</div>
+                <p class="--chart-content">{{ chart.content }}</p>
+
+
+              <div class="toggle-container">
+                <span class="toggle-label">IN</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="unitToggle" class="--toggle" data-title="{{ chart.size_chart_type }}">
+                  <span class="slider"></span>
+                </label>
+                <span class="toggle-label">CM</span>
+              </div>
+            </div>
+
+            <div class="--chart-measurements">
+              <div class="--measurement-heading --measurement-row">
+                <div>Size</div>
+                <div>Waist</div>
+                <div>Chest</div>
+                <div>Neck</div>
+                <div>Sleeve</div>
+              </div>
+              {% for x in chart.measurements.value %}
+                <div class="--measurement-row --only-values">
+                  <div>{{ x.size_label }}</div>
+                  <div>{{ x.waist }}</div>
+                  <div>{{ x.chest }}</div>
+                  <div>{{ x.neck }}</div>
+                  <div>{{ x.sleeve }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+      {% endcomment %}
+
+      <!-- Chart End -->
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      let charts = document.querySelectorAll('.--single-chart');
+
+      charts.forEach((chart) => {
+          let toggleButton = chart.querySelector('.--toggle');
+
+          if (toggleButton) {
+              toggleButton.addEventListener('change', () => {
+                  let toUnit = toggleButton.checked ? "cm" : "in";
+                  convertMeasurements(chart, toUnit);
+              });
+          }
+      });
+  });
+
+  function convertMeasurements(chart, toUnit) {
+      let rows = chart.querySelectorAll('.--measurement-row.--only-values');
+
+      rows.forEach((row) => {
+          let waistCell = row.children[1];
+          let chestCell = row.children[2];
+          let neckCell = row.children[3];
+          let sleeveCell = row.children[4];
+
+          waistCell.textContent = convertUnits(parseFloat(waistCell.textContent), toUnit);
+          chestCell.textContent = convertUnits(parseFloat(chestCell.textContent), toUnit);
+          neckCell.textContent = convertUnits(parseFloat(neckCell.textContent), toUnit);
+          sleeveCell.textContent = convertUnits(parseFloat(sleeveCell.textContent), toUnit);
+      });
+  }
+
+  function convertUnits(value, toUnit) {
+      if (isNaN(value)) return "N/A";
+      return toUnit === "cm"
+          ? (value * 2.54).toFixed(2)
+          : (value / 2.54).toFixed(0) ;
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Size Chart",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Size Chart"
+    }
+  ]
+}
+{% endschema %}

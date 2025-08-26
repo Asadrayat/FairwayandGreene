@@ -1,0 +1,38 @@
+{% if predictive_search.performed %}
+  <div class="predictive-search-results">
+    {% if predictive_search.resources.products.size > 0 or predictive_search.resources.collections.size > 0 %}
+      <div class="predictive-search-results-wrapper {% if predictive_search.resources.products.size > 0 and predictive_search.resources.collections.size > 0 %}predictive-search-results-wrapper-grid{% endif %}">
+        {% if predictive_search.resources.collections.size > 0 %}
+          <div class="search-collections">
+            <h4>Category</h4>
+            <ul>
+              {% for collection in predictive_search.resources.collections %}
+                <li>
+                  <a href="{{ collection.url }}">{{ collection.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+            <div class="search__all-link">
+              <a href="/collections/all">Show all products</a>
+            </div>
+          </div>
+        {% endif %}
+        {% if predictive_search.resources.products.size > 0 %}
+          <div class="search-products">
+            {% for product in predictive_search.resources.products %}
+              {% render 'new-product-card-v1', product: product %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if predictive_search.resources.products.size == 0
+      and predictive_search.resources.collections.size == 0
+      and predictive_search.resources.pages.size == 0
+      and predictive_search.resources.articles.size == 0
+    %}
+      <p class="no-search-results">No results found</p>
+    {% endif %}
+  </div>
+{% endif %}

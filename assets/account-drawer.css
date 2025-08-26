@@ -1,0 +1,163 @@
+.account__drawer {
+  position: fixed;
+  z-index: 99;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  transform: translateX(100%);
+  transition: all var(--transition-medium-ease);
+  display: flex;
+  justify-content: flex-end;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 680px;
+  padding: 16px;
+}
+.account__drawer.active {
+  transform: translateX(0);
+}
+.account__drawer-outer {
+}
+.account__drawer-wrapper {
+  padding: 16px 20px;
+  width: 100%;
+}
+.account__drawer-close {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 0 var(--Spacing-Container-md);
+}
+.account__step-item {
+  display: none;
+}
+.account__step-item.active,
+.account__details.account__step-item {
+  display: block;
+}
+.account__step-item h5 {
+  color: var(--Content-Base-main);
+  font-family: var(--font-family-Title);
+  font-size: var(--Font-Size-Heading-H3);
+  line-height: var(--Line-Height-Heading-H3); /* 116.667% */
+  margin: 0 0 var(--Spacing-Container-xxs);
+}
+.account__signup-link,
+.account__sign-link {
+  margin: var(--Spacing-Container-xl) 0 0;
+}
+.account__step-item h6 {
+  color: var(--Content-Base-main);
+  font-family: var(--font-family-Title);
+  font-size: var(--Font-Size-Heading-H4);
+  line-height: var(--Line-Height-Heading-H3); /* 116.667% */
+  margin: 0 0 var(--Spacing-Container-sm);
+}
+.account__step-item p {
+  color: var(--Content-Base-main);
+  font-family: var(--font-family-Body);
+  font-size: var(--Font-Size-Paragraph-Small);
+  line-height: var(--Line-Height-Paragraph-Small); /* 142.857% */
+  margin: 0 0 var(--Spacing-Container-sm);
+}
+.account__step-item input {
+  width: 100%;
+  color: var(--Content-Base-main);
+  font-family: var(--font-family-Body);
+  font-size: var(--Font-Size-Paragraph-Medium);
+  line-height: var(--Line-Height-Paragraph-Medium); /* 144.444% */
+  border: none;
+  border-bottom: 1px solid var(--Border-Base-main);
+  padding-block: var(--Spacing-Container-xs);
+}
+.account__step-item input:placeholder {
+  color: var(--Content-Base-main);
+  font-family: var(--font-family-Body);
+  font-size: var(--Font-Size-Paragraph-Medium);
+  line-height: var(--Line-Height-Paragraph-Medium); /* 144.444% */
+}
+.account__step-item form > div:not(:last-child) {
+  margin: 0 0 var(--Spacing-Container-sm);
+}
+.btn-reset {
+  padding: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+.btn-reset:hover {
+  background: initial;
+  color: initial;
+}
+.primary-btn {
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-family-Body);
+  font-size: var(--Font-Size-UI-Controls-Control-Button-Small);
+  line-height: var(--Font-Size-UI-Controls-Control-Button-Small); /* 100% */
+  /* border-radius: var(--rounded-3xl);
+  background: var(--Content-Base-main); */
+  border-radius: var(--rounded, 4px);
+  background: var(--Background-success-main, #166534);
+  border: none;
+  text-align: center;
+  padding: var(--Spacing-Container-xs);
+  color: #fff;
+}
+.secondary-btn {
+  width: 100%;
+  color: var(--Content-Base-main);
+  text-align: center;
+  font-family: var(--font-family-Body);
+  font-size: var(--Font-Size-UI-Controls-Control-Button-Small);
+  line-height: var(--Line-Height-UI-Controls-Control-Button-Small); /* 100% */
+  padding: var(--Spacing-Container-xs);
+  border-radius: var(--rounded, 4px);
+  border: 2px solid var(--Content-Base-main, #1f2937);
+  background: #eeedf7;
+}
+.account__recover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.linked-btn {
+  color: var(--Content-Base-main, #1f2937);
+  font-family: var(--font-family-Body);
+  font-size: var(--Font-Size-Paragraph-Regular);
+  line-height: var(--Line-Height-Paragraph-Regular); /* 150% */
+  text-decoration: underline;
+}
+
+.account__details-customer {
+  margin: 24px 0 0;
+}
+.account__details-customer a {
+  display: block;
+  width: max-content;
+  color: var(--Content-Base-main);
+  font-family: var(--font-family-Body);
+  font-size: var(--Font-Size-Paragraph-Small);
+  line-height: var(--Line-Height-Paragraph-Small); /* 142.857% */
+  text-decoration: underline;
+}
+.account__details-customer a:not(:last-child) {
+  margin: 0 0 10px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 2;
+}
+.overlay.active {
+  display: block;
+}

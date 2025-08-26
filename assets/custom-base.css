@@ -1,0 +1,387 @@
+@font-face {
+  font-family: "Krylon";
+  src: url("https://cdn.shopify.com/s/files/1/0012/9954/6178/files/Krylon-Regular.woff?v=1739874502")
+    format("woff");
+}
+@font-face {
+  font-family: "Aktiv Grotesk";
+  src: url("https://cdn.shopify.com/s/files/1/0012/9954/6178/files/Aktiv_Grotesk_Regular.woff?v=1739874502")
+    format("woff");
+}
+:root {
+  /* Content */
+  /* Base */
+  --font-family-Body: Aktiv Grotesk;
+  --font-family-Title: Krylon;
+  --main-800: #1f2937;
+  --main-200: #e5e7eb;
+
+  --base-600: #4b5563;
+  --base-300: #d1d5db;
+
+  --subtle-400: #9ca3af;
+  --subtle-500: #6b7280;
+
+  --highlight-900: #312e81;
+  --highlight-500: #eef2ff;
+
+  --disabled-100: #f3f4f6;
+  --disabled-800: #1f2937;
+  /* Base */
+
+  /* Inverted */
+  --main-100: #f3f4f6;
+  --base-300: #d1d5db;
+  --subtle-500: #6b7280;
+  --highlight-500: #eef2ff;
+  --disabled-800: #1f2937;
+  /* Inverted */
+
+  /* Border */
+  --main-300: #d1d5db;
+  --main-600: #4b5563;
+
+  --subtle-200: #e5e7eb;
+  --subtle-700: #374151;
+
+  --disabled-100: #f3f4f6;
+  --disabled-800: #1f2937;
+
+  --dense-600: #4b5563;
+  --dense-300: #d1d5db;
+}
+
+:root {
+  /* Heading Sizes */
+  --Font-Size-Heading-H1: 48px;
+  --Font-Size-Heading-H2: 36px;
+  --Font-Size-Heading-H3: 24px;
+  --Font-Size-Heading-H4: 20px;
+
+  @media (max-width: 1280px) {
+    --Font-Size-Heading-H1: 40px;
+    --Font-Size-Heading-H2: 32px;
+    --Font-Size-Heading-H3: 24px;
+    --Font-Size-Heading-H4: 20px; /* changed Later */
+  }
+
+  @media (max-width: 744px) {
+    --Font-Size-Heading-H1: 32px;
+    --Font-Size-Heading-H2: 24px;
+    --Font-Size-Heading-H3: 20px;
+    --Font-Size-Heading-H4: 18px; /* changed Later */
+  }
+
+  /* heading Line height */
+
+  --Line-Height-Heading-H1: 48px;
+  --Line-Height-Heading-H2: 36px;
+  --Line-Height-Heading-H3: 28px;
+  --Line-Height-Heading-H4: 24px;
+
+  @media (max-width: 1280px) {
+    --Line-Height-Heading-H1: 48px;
+    --Line-Height-Heading-H2: 40px;
+    --Line-Height-Heading-H3: 28px;
+    --Line-Height-Heading-H4: 24px; /* changed Later */
+  }
+
+  @media (max-width: 744px) {
+    --Line-Height-Heading-H1: 32px;
+    --Line-Height-Heading-H2: 24px;
+    --Line-Height-Heading-H3: 20px;
+    --Line-Height-Heading-H4: 16px;
+  }
+
+  /* Paragraph Sizes */
+
+  --Font-Size-Paragraph-Large: 20px;
+  --Font-Size-Paragraph-Medium: 18px;
+  --Font-Size-Paragraph-Regular: 16px;
+  --Font-Size-Paragraph-Small: 14px;
+  --Font-Size-Paragraph-Tiny: 12px;
+
+  @media (max-width: 1280px) {
+    --Font-Size-Paragraph-Large: 20px;
+    --Font-Size-Paragraph-Medium: 18px;
+    --Font-Size-Paragraph-Regular: 16px;
+    --Font-Size-Paragraph-Small: 14px;
+    --Font-Size-Paragraph-Tiny: 12px;
+  }
+
+  @media (max-width: 744px) {
+    --Font-Size-Paragraph-Large: 18px;
+    --Font-Size-Paragraph-Medium: 16px;
+    --Font-Size-Paragraph-Regular: 14px;
+    --Font-Size-Paragraph-Small: 12px;
+    --Font-Size-Paragraph-Tiny: 11px;
+  }
+
+  /* Paragraph Line height */
+  --Line-Height-Paragraph-Regular: 30px;
+  --Line-Height-Paragraph-Medium: 26px;
+  --Line-Height-Paragraph-Regular: 24px;
+  --Line-Height-Paragraph-Small: 20px;
+  --Line-Height-Paragraph-Tiny: 16px;
+
+  @media (max-width: 1280px) {
+    --Line-Height-Paragraph-Regular: 30px;
+    --Line-Height-Paragraph-Medium: 22px;
+    --Line-Height-Paragraph-Regular: 24px;
+    --Line-Height-Paragraph-Small: 20px;
+    --Line-Height-Paragraph-Tiny: 16px;
+  }
+
+  @media (max-width: 744px) {
+    --Line-Height-Paragraph-Regular: 26px;
+    --Line-Height-Paragraph-Medium: 24px;
+    --Line-Height-Paragraph-Regular: 20px;
+    --Line-Height-Paragraph-Small: 16px;
+    --Line-Height-Paragraph-Tiny: 13px;
+  }
+
+  /* Button Styling */
+  --Font-Size-UI-Controls-Control-Button-Large: 24px;
+  --Font-Size-UI-Controls-Control-Button-Regular: 20px;
+  --Font-Size-UI-Controls-Control-Button-Small: 16px;
+
+  @media (max-width: 1280px) {
+    --Font-Size-UI-Controls-Control-Button-Large: 24px;
+    --Font-Size-UI-Controls-Control-Button-Regular: 20px;
+    --Font-Size-UI-Controls-Control-Button-Small: 16px;
+  }
+
+  @media (max-width: 744px) {
+    --Font-Size-UI-Controls-Control-Button-Large: 20px;
+    --Font-Size-UI-Controls-Control-Button-Regular: 16px;
+    --Font-Size-UI-Controls-Control-Button-Small: 13px;
+  }
+
+  /* Button Line height */
+
+  --Line-Height-UI-Controls-Control-Button-Large: 24px;
+  --Line-Height-UI-Controls-Control-Button-Regular: 20px;
+  --Line-Height-UI-Controls-Control-Button-Small: 16px;
+
+  @media (max-width: 1280px) {
+    --Line-Height-UI-Controls-Control-Button-Large: 24px;
+    --Line-Height-UI-Controls-Control-Button-Regular: 20px;
+    --Line-Height-UI-Controls-Control-Button-Small: 16px;
+  }
+
+  @media (max-width: 744px) {
+    --Line-Height-UI-Controls-Control-Button-Large: 20px;
+    --Line-Height-UI-Controls-Control-Button-Regular: 16px;
+    --Line-Height-UI-Controls-Control-Button-Small: 16px;
+  }
+
+  /* Spacing Variables */
+  --Spacing-Container-xxs: 8px;
+  --Spacing-Container-xs: 12px;
+  --Spacing-Container-sm: 16px;
+  --Spacing-Container-md: 24px;
+  --Spacing-Container-lg: 32px;
+  --Spacing-Container-xl: 64px;
+  --Spacing-Container-xxl: 80px;
+
+  --Spacing-Section-Section-Vertical-Padding: 32px;
+  --Spacing-Section-Section-Horizontal-Padding: 12px;
+
+  @media (max-width: 1200px) {
+    --Spacing-Container-xxs: 8px;
+    --Spacing-Container-xs: 12px;
+    --Spacing-Container-sm: 12px;
+    --Spacing-Container-md: 16px;
+    --Spacing-Container-lg: 24px;
+    --Spacing-Container-xl: 48px;
+    --Spacing-Container-xxl: 64px;
+
+    --Spacing-Section-Section-Vertical-Padding: 32px;
+    --Spacing-Section-Section-Horizontal-Padding: 12px;
+  }
+
+  @media (max-width: 600px) {
+    --Spacing-Container-xxs: 6px;
+    --Spacing-Container-xs: 8px;
+    --Spacing-Container-sm: 12px;
+    --Spacing-Container-md: 16px;
+    --Spacing-Container-lg: 24px;
+    --Spacing-Container-xl: 32px;
+    --Spacing-Container-xxl: 48px;
+
+    --Spacing-Section-Section-Vertical-Padding: 32px;
+    --Spacing-Section-Section-Horizontal-Padding: 12px;
+  }
+
+  /* Color Variables */
+  --Content-Base-main: #1f2937;
+  --Content-Base-base: #4b5563;
+  --Content-Base-subtle: #9ca3af;
+  --Content-Base-highlight: #312e81;
+  --Content-Base-disabled: #f3f4f6;
+
+  /* Color Inverted Variables */
+  --Content-Inverted-main: #f3f4f6;
+  --Content-Inverted-base: #d1d5db;
+  --Content-Inverted-subtle: #6b7280;
+  --Content-Inverted-highlight: #eef2ff;
+  --Content-Inverted-disabled: #1f2937;
+
+  /* Border Color Variables */
+  --Border-Base-main: #d1d5db;
+  --Border-Base-subtle: #e5e7eb;
+  --Border-Base-highlight: #f3f4f6;
+  --Border-Base-disabled: #4b5563;
+
+  /* Transitions */
+  --transition-fast: 0.3s;
+  --transition-medium: 0.4s;
+  --transition-slow: 0.5s;
+
+  /* Easing Modes */
+  --ease: ease;
+  --ease-in: ease-in;
+  --ease-out: ease-out;
+  --ease-in-out: ease-in-out;
+  --linear: linear;
+  --cubic-bezier-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --cubic-bezier-bounce: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  /* Complete Transition Variants */
+  --transition-fast-ease: var(--transition-fast) var(--ease);
+  --transition-fast-ease-in: var(--transition-fast) var(--ease-in);
+  --transition-fast-ease-out: var(--transition-fast) var(--ease-out);
+  --transition-fast-ease-in-out: var(--transition-fast) var(--ease-in-out);
+  --transition-fast-linear: var(--transition-fast) var(--linear);
+  --transition-fast-smooth: var(--transition-fast) var(--cubic-bezier-smooth);
+  --transition-fast-bounce: var(--transition-fast) var(--cubic-bezier-bounce);
+
+  --transition-medium-ease: var(--transition-medium) var(--ease);
+  --transition-medium-ease-in: var(--transition-medium) var(--ease-in);
+  --transition-medium-ease-out: var(--transition-medium) var(--ease-out);
+  --transition-medium-ease-in-out: var(--transition-medium) var(--ease-in-out);
+  --transition-medium-linear: var(--transition-medium) var(--linear);
+  --transition-medium-smooth: var(--transition-medium)
+    var(--cubic-bezier-smooth);
+  --transition-medium-bounce: var(--transition-medium)
+    var(--cubic-bezier-bounce);
+
+  --transition-slow-ease: var(--transition-slow) var(--ease);
+  --transition-slow-ease-in: var(--transition-slow) var(--ease-in);
+  --transition-slow-ease-out: var(--transition-slow) var(--ease-out);
+  --transition-slow-ease-in-out: var(--transition-slow) var(--ease-in-out);
+  --transition-slow-linear: var(--transition-slow) var(--linear);
+  --transition-slow-smooth: var(--transition-slow) var(--cubic-bezier-smooth);
+  --transition-slow-bounce: var(--transition-slow) var(--cubic-bezier-bounce);
+
+  /* Border border-radius............................... */
+  --rounded-3xl: 24px;
+}
+
+h1 {
+  font-size: var(--Font-Size-Heading-H1);
+  line-height: var(--Line-Height-Heading-H1);
+  font-family: var(--font-family-Title);
+}
+
+h2 {
+  font-size: var(--Font-Size-Heading-H2);
+  line-height: var(--Line-Height-Heading-H2);
+  font-family: var(--font-family-Title);
+}
+
+h3 {
+  font-size: var(--Font-Size-Heading-H3);
+  line-height: var(--Line-Height-Heading-H3);
+  font-family: var(--font-family-Title);
+}
+
+h4 {
+  font-size: var(--Font-Size-Heading-H4);
+  line-height: var(--Line-Height-Heading-H4);
+  font-family: var(--font-family-Title);
+}
+
+h5 {
+  font-size: var(--Font-Size-Heading-H4);
+  line-height: var(--Line-Height-Heading-H4);
+  font-family: var(--font-family-Title);
+}
+
+h6 {
+  font-size: var(--Font-Size-Heading-H4);
+  line-height: var(--Line-Height-Heading-H4);
+  font-family: var(--font-family-Title);
+}
+p,
+a,
+h4,
+span {
+  letter-spacing: 0; /* changed Later */
+}
+p,
+label {
+  text-decoration: unset;
+  font-size: var(--Font-Size-Paragraph-Regular);
+  line-height: var(--Line-Height-Paragraph-Regular);
+}
+
+button,
+input,
+select {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input:focus,
+textarea:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+.absolute-link {
+  position: absolute;
+  display: block !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+li {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+}
+span {
+  letter-spacing: 0;
+}
+/* Swiper Reset */
+.--slider-wrapper {
+  .swiper-wrapper {
+    /* transform: translate3d(0px, 0px, 0px) !important; */
+  }
+}
+.swiper:not(.swiper-initialized) {
+  /* visibility: hidden !important;
+  opacity: 0 !important; */
+}
+.swiper__container:not(.swiper-loaded) {
+  /* visibility: hidden !important;
+  opacity: 0 !important; */
+}
+/* Swiper Reset */

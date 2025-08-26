@@ -1,0 +1,156 @@
+<style>
+  .pqv-container{
+    width: 60%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: -60%;
+    z-index: 1500;
+    background: #fff ;
+    visibility: hidden;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.6s ease-in-out 0.2s;
+
+    @media(max-width: 768px) {
+      width: 96%;
+      right: -96%;
+    }
+  }
+  product-quick-view.open .pqv-container{
+    right: 0;
+    visibility: visible;
+    /* z-index: 999; */
+  }
+  .pqv-wrapper{
+    width: 100%;
+    /* max-width: 1200px; */
+    margin: auto;
+    height: 100%;
+    background: white;
+    /* overflow: hidden; */
+    position: relative;
+    /* padding: 50px 0 0; */
+    padding: 0;
+
+    .pinfo-breadcrumbs{
+      display: none;
+    }
+  }
+  .pqv-close-btn{
+    position: fixed;
+    /* left: 50%;
+    top: 0;
+    transform: translateX(-50%) translateY(-1px); */
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    width: 30px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+    border: 1px solid #000;
+    visibility: hidden;
+    transition: all 0.6s ease-in-out 0.2s;
+  }
+  .pqv-close-btn svg{
+    width: 16px;
+    path{
+     stroke: #000;
+    }
+  }
+  product-quick-view.open .pqv-close-btn{
+    visibility: visible;
+  }
+  @media screen and (min-width: 745px){
+    .pqv-container .info-media-stack-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 0;
+    }
+  }
+  @media screen and (max-width: 744px){
+    .pqv-wrapper{
+      width: 100%;
+      /* max-width: 1200px; */
+      margin: auto;
+      height: auto;
+      background: white;
+      overflow: hidden;
+      position: relative;
+      /* padding: 42px 0 32px; */
+      padding: 0;
+    }
+    .pqv-close-btn{
+      position: fixed;
+      left: auto;
+      right: 10px;
+      top: 10px;
+      transform: translateX(0) translateY(0);
+    }
+    product-quick-view.open .pqv-container .p-info-container{
+      padding: 30px 0;
+    }
+  }
+</style>
+
+<product-quick-view class="">
+  <div class="pqv-container">
+    <div class="pqv-wrapper">
+      <button class="pqv-close-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="pqv-content"></div>
+    </div>
+  </div>
+</product-quick-view>
+
+<script>
+class ProductQuickView extends HTMLElement {
+  constructor() {
+    super();
+    if (this.querySelector(".pqv-close-btn")) {
+      this.querySelector(".pqv-close-btn").addEventListener("click", this.close.bind(this));
+    }
+  }
+
+  renderContent(content) {
+    if (this.querySelector(".pqv-content")) {
+      this.querySelector(".pqv-content").innerHTML = content;
+      window.sizeGuide();
+      window.initFaqAccordions();
+    }
+  }
+
+  open() {
+    this.classList.add("open");
+    document.body.classList.add("overflow-hidden");
+    const overlay = document.createElement("div");
+    overlay.className = "pqv-overlay";
+    overlay.addEventListener("click", () => this.close());
+    document.body.appendChild(overlay);
+  }
+
+  close() {
+    this.classList.remove("open");
+    document.body.classList.remove("overflow-hidden");
+    const overlay = document.querySelector(".pqv-overlay");
+    if (overlay) overlay.remove();
+  }
+}
+
+customElements.define("product-quick-view", ProductQuickView);
+
+window.productQuickView = window.productQuickView || {};
+productQuickView.container = document.querySelector("product-quick-view");
+</script>

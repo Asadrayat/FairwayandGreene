@@ -1,0 +1,113 @@
+{% comment %} Lightbox for product media with serial data-index starting from 1 {% endcomment %}
+
+<div class="media__lightbox">
+  <div class="media__lightbox-wrapper">
+    <button close-lightbox class="close-lightbox">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none">
+        <path d="M17 7L7 17M7 7L17 17" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="media__lightbox-images">
+      <div class="swiper media__lightbox-thumb">
+        <div class="swiper-wrapper">
+          {% assign media_count = 0 %}
+          {% for media in product.media %}
+            {% liquid
+              assign alt_text = media.alt | split: '#' | first | strip | downcase
+              if forloop.first and product.selected_or_first_available_variant.featured_media != blank and media.media_type == 'image'
+                assign media = product.selected_or_first_available_variant.featured_media
+              endif
+            %}
+            {% if is_alt_text and alt_text == selected_color and is_selected_variant != blank %}
+              {% assign media_count = media_count | plus: 1 %}
+              <div class="swiper-slide">
+                {% unless media == blank %}
+                  <picture>
+                    <source
+                      media="(max-width: 600px)"
+                      srcset="{{ media | image_url: width: 400, height: 200, crop: 'top'}}"
+                    >
+                    {% if forloop.index >= 2 %}
+                      {{ media | image_url: width: 500, height: 200, crop: 'top' | image_tag: loading: 'lazy' }}
+                    {% else %}
+                      {{ media | image_url: width: 500, height: 200, crop: 'top' | image_tag }}
+                    {% endif %}
+                  </picture>
+                {% endunless %}
+              </div>
+            {% endif %}
+            {% if is_alt_text == false or is_selected_variant == blank %}
+              {% assign media_count = media_count | plus: 1 %}
+              <div class="swiper-slide">
+                {% unless media == blank %}
+                  <picture>
+                    <source
+                      media="(max-width: 600px)"
+                      srcset="{{ media | image_url: width: 400, height: 200, crop: 'top'}}"
+                    >
+                    {% if forloop.index >= 2 %}
+                      {{ media | image_url: width: 500, height: 200, crop: 'top' | image_tag: loading: 'lazy' }}
+                    {% else %}
+                      {{ media | image_url: width: 500, height: 200, crop: 'top' | image_tag }}
+                    {% endif %}
+                  </picture>
+                {% endunless %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="swiper media__lightbox-swiper">
+        <div class="swiper-wrapper">
+          {% assign media_count = 0 %}
+          {% for media in product.media %}
+            {% liquid
+              assign alt_text = media.alt | split: '#' | first | strip | downcase
+              if forloop.first and product.selected_or_first_available_variant.featured_media != blank and media.media_type == 'image'
+                assign media = product.selected_or_first_available_variant.featured_media
+              endif
+            %}
+            {% if is_alt_text and alt_text == selected_color and is_selected_variant != blank %}
+              {% assign media_count = media_count | plus: 1 %}
+              <div data-media="{{ media.id }}" data-index="{{ media_count }}" class="swiper-slide">
+                {% unless media == blank %}
+                  <picture>
+                    <source media="(max-width: 600px)" srcset="{{ media | image_url: width: 500 }}">
+                    <source media="(max-width: 1024px)" srcset="{{ media | image_url: width: 1024 }}">
+                    {% if forloop.first %}
+                      {{ media | image_url: width: media.width | image_tag }}
+                    {% else %}
+                      {{ media | image_url: width: media.width | image_tag: loading: 'lazy' }}
+                    {% endif %}
+                  </picture>
+                {% endunless %}
+              </div>
+            {% endif %}
+            {% if is_alt_text == false or is_selected_variant == blank %}
+              {% assign media_count = media_count | plus: 1 %}
+              <div data-media="{{ media.id }}" data-index="{{ media_count }}" class="swiper-slide">
+                {% unless media == blank %}
+                  <picture>
+                    <source media="(max-width: 600px)" srcset="{{ media | image_url: width: 500 }}">
+                    <source media="(max-width: 1024px)" srcset="{{ media | image_url: width: 1024 }}">
+                    {% if forloop.first %}
+                      {{ media | image_url: width: media.width | image_tag }}
+                    {% else %}
+                      {{ media | image_url: width: media.width | image_tag: loading: 'lazy' }}
+                    {% endif %}
+                  </picture>
+                {% endunless %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="custom-zoom-cursor">
+  <svg class="unzoom-state" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <path d="M12 5V19M5 12H19" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>

@@ -1,0 +1,66 @@
+<color-variant
+  class="pinfo-color-filter-wrapper"
+  data-update-url="true"
+  data-section="{{ section.id }}"
+>
+  {% liquid
+    for option in product.options_with_values
+      if option.name == 'Color' or option.name == 'color'
+        for value in option.values
+          if value.selected
+            assign selected_color = value
+          endif
+        endfor
+      endif
+    endfor
+  %}
+  <p class="pinfo-filter-label">Color: {{ selected_color.name | downcase }}</p>
+  <div class="pinfo-cf-items">
+    {% assign metafield = product.metafields.color.variants.value %}
+    {% if metafield.products == blank %}
+      <div class="pinfo-color-product">
+        <input
+          checked
+          data-product-url="{{ product.selected_or_first_available_variant.url }}"
+          class="hidden"
+          id="color-{{ product.id }}"
+          type="radio"
+          name="color-product"
+          value="{{ product.url }}"
+        >
+        <label for="color-{{ product.id }}">
+          {% unless product.featured_image == blank %}
+            {{ product.featured_image | image_url: width: 100 | image_tag }}
+          {% endunless %}
+        </label>
+      </div>
+      <script type="application/ld+json-{{ product.id }}">
+        {{ product | json }}
+      </script>
+    {% else %}
+      {% for product_ in metafield.products.value %}
+        <div class="pinfo-color-product">
+          <input
+            {% if product.id == product_.id %}
+              checked
+            {% endif %}
+            data-product-url="{{ product_.selected_or_first_available_variant.url }}"
+            class="hidden"
+            id="color-{{ product_.id }}"
+            type="radio"
+            name="color-product"
+            value="{{ product_.url }}"
+          >
+          <label for="color-{{ product_.id }}">
+            {% unless product_.featured_image == blank %}
+              {{ product_.featured_image | image_url: width: 100 | image_tag }}
+            {% endunless %}
+          </label>
+        </div>
+        <script type="application/ld+json-{{ product_.id }}">
+          {{ product_ | json }}
+        </script>
+      {% endfor %}
+    {% endif %}
+  </div>
+</color-variant>

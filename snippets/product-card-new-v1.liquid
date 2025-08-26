@@ -1,0 +1,16 @@
+<product-card-new class="{{ class }}">
+  <card-media>
+    <div class="swiper card-media-swiper">
+      <div class="swiper-wrapper">
+        {% for media in product.media %}
+          <a href="{{ product.url }}" class="swiper-slide product-card-image-wrapper">
+            {% unless media == blank %}
+              {{ media | image_url: width: 500 | image_tag }}
+            {% endunless %}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </card-media>
+  <card-info></card-info>
+</product-card-new>

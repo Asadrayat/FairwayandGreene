@@ -1,0 +1,236 @@
+<style>
+    button.notify-stock-button-x {
+        margin: 0 0 8px;
+          @media screen and (max-width: 1249px){
+              margin: 0;
+          }
+    }
+    .pdp__shipping__wrap {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+        margin: 12px 0 0 0;
+        flex-wrap: wrap;
+        border: 1px solid grey;
+        padding: 12px 6px;
+        @media(width < 1200px){
+          justify-content: center;
+          padding: 8px 6px;
+          gap: 8px;
+        }
+        svg{
+          @media(width < 1200px){
+            width: 16px;
+            height: 16px;
+          }       
+        }
+    }
+    p.freeshipping__note_pdp {
+        color: #1f2937;
+        font-family: "Aktiv Grotesk";
+        font-size: var(--Font-Size-Paragraph-Tiny, 12px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Tiny, 16px);
+        margin: 0 0 0 0;
+        text-align: center;
+    }
+    .pinfo-form-wrapper {
+      width: 100%;
+    }
+    .pinfo-form-wrapper form{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .notify-stock-button-x,
+    .pinfo-add-to-cart{
+      color: #FFF;
+      text-align: center;
+      font-family: "Aktiv Grotesk";
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 100%; /* 100% */
+      text-transform: uppercase;
+      box-sizing: border-box;
+      border: 0;
+      width: 100%;
+      cursor: pointer;
+
+      border-radius: var(--rounded-none, 0px);
+      {% comment %} background: #004027; {% endcomment %}
+        background: linear-gradient(90deg, #010D05 0%, #132D1B 100%);
+
+      display: flex;
+      padding: var(--Spacing-Container-sm, 12px) var(--Spacing-Container-lg, 32px);
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      align-self: stretch;
+      border: 1px solid #004027;
+      transition: all 0.4s;
+      @media(max-width: 768px) {
+        padding-block: 15px;
+      }
+    }
+    .notify-stock-button-x:hover,
+    .pinfo-add-to-cart:hover {
+      border-radius: var(--rounded-none, 0px);
+      background: #fff;
+      color: #004027;
+    }
+    .pinfo-add-to-cart:disabled{
+      opacity: .7;
+    }
+
+    .p-info-btn-buy-now{
+      p{
+        margin: 0;
+        color: #000;
+        font-family: var(--font-family-Body, Archivo);
+        font-size: var(--Font-Size-Paragraph-Tiny, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Tiny, 20px); /* 142.857% */
+        text-align: center;
+        @media(max-width: 768px) {
+          font-size: 12px;
+        }
+      }
+      p strong{
+        color: #004027;
+        font-weight: 900;
+      }
+      margin-top:  var(--Spacing-Container-xxs, 8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      svg {
+        max-width: 60px;
+      }
+    }
+
+  a.pqv--view-details.button {
+      color: #101116;
+      width: max-content;
+      margin: auto;
+      font-size: 12px;
+      display: none;
+      text-transform: uppercase;
+  }
+  .pqv-container   a.pqv--view-details.button {
+      display: block !important;
+  }
+</style>
+
+{% liquid
+  for option in product.options_with_values
+    if option.name == 'Size' or option.name == 'size'
+      for value in option.values
+        if value.selected
+          assign selected_size = value
+        endif
+      endfor
+    endif
+  endfor
+%}
+
+<div class="pinfo-form-wrapper">
+    {% render 'custom-inventory-message', product: product %}
+    {% render 'model-info', product: product %}
+    {% render 'viewer-count', block: block %}
+
+  {% comment %} {% render 'custom-inventory-message', product: product %} {% endcomment %}
+  <div class="pdp-form-btns">
+    {% unless product.selected_or_first_available_variant.available %}
+      <button
+        class="notify-stock-button-x "
+        type=""
+      >
+        Notify Me
+      </button>
+    {% endunless %}
+    {% if product.selected_or_first_available_variant.available %}
+      {% form 'product', product %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        {% if product.tags contains 'embroider' %}
+          <input type="hidden" name="properties[Embroider Status]" value="Embroidered Product" />
+          <input type="hidden" name="attributes[embroidery_status]" value="embroidered" />
+          
+        {% endif %}
+         
+        <button
+          {% unless product.selected_or_first_available_variant.available %}
+            disabled
+          {% endunless %}
+          class="pinfo-add-to-cart {% unless product.selected_or_first_available_variant.available %} hidden  {% endunless %}"
+          type="submit"
+        >
+          {% if product.selected_or_first_available_variant.available %}
+            Add to cart - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+          {% else %}
+            <b>{{ selected_size.name }}</b> Sold Out
+          {% endif %}
+        </button>
+      {% endform %}
+    {% endif %}
+      <div class="header__drawer-container">
+        <a class="glass__bg- header-icon lg-hide mobile-drawer-open pos-rel" mobile-drawer-opener href="#">
+          <div class="burger__icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </a>
+      </div>
+  </div>
+  <div class="pdp-form-outer">
+    <div class="pdp__shipping__wrap">
+      <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium mui-style-xqc9pg" focusable="false" aria-hidden="true" viewBox="0 0 20 20" data-testid="BoxIcon" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".75" d="m13.75 7.8333-7.5-4.325M17.5 13.3334V6.66675a1.66735 1.66735 0 0 0-.2237-.83237 1.66702 1.66702 0 0 0-.6096-.6093l-5.8334-3.33333a1.66665 1.66665 0 0 0-1.66663 0L3.33333 5.22508A1.66667 1.66667 0 0 0 2.5 6.66675v6.66665c.0003.2923.07745.5793.22372.8324.14626.253.3565.4631.60961.6093l5.83334 3.3333c.25336.1463.54077.2233.83333.2233.2926 0 .58-.077.8333-.2233l5.8334-3.3333c.2531-.1462.4633-.3563.6096-.6093.1462-.2531.2234-.5401.2237-.8324Z"></path><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".75" d="m2.7251 5.80005 7.275 4.20835 7.275-4.20835M10 18.4V10"></path></svg>
+    {% if product.selected_or_first_available_variant.price >= 15000 %}
+      <p class="freeshipping__note_pdp">This product is eligible for free shipping.</p>
+    {% endif %}
+     {% unless product.tags contains 'embroider' %}
+      <p class="--delivery-message">Get Delivery By <span class="--delivery-date">Jun 26 - Jun 29</span></p>
+      {% endunless %}
+
+    
+    </div>
+
+    {% comment %} {% render 'viewer-count', block: block %} {% endcomment %}
+    
+    {% if block.settings.dynamic_checkout_button %}
+      {% comment %}
+        {{ form | payment_button }}
+      {% endcomment %}
+      <a
+        href="{{ shop.url }}/cart/{{ product.selected_or_first_available_variant.id }}:1?payment=shop_pay"
+        class="p-info-btn-buy-now"
+      >
+        <p>{{ block.settings.dynamic_checkout_button_text }}</p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="76" height="18" viewBox="0 0 76 18" fill="none">
+          <g clip-path="url(#clip0_14695_7509)">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M50.451 0C48.94 0 47.7151 1.2249 47.7151 2.73589V15.1787C47.7151 16.6897 48.94 17.9146 50.451 17.9146H72.7457C74.2567 17.9146 75.4816 16.6897 75.4816 15.1787V2.73589C75.4816 1.2249 74.2567 0 72.7457 0H50.451ZM54.3013 12.5014V9.3475H56.2854C58.0981 9.3475 59.0621 8.33111 59.0621 6.79083C59.0621 5.25055 58.0981 4.32846 56.2854 4.32846H53.023V12.5014H54.3013ZM54.3013 5.54393H55.992C57.1655 5.54393 57.7419 6.02593 57.7419 6.83275C57.7419 7.63956 57.1865 8.12156 56.0444 8.12156H54.3013V5.54393ZM61.3158 12.669C62.2903 12.669 62.9295 12.2395 63.2229 11.506C63.3066 12.3233 63.7991 12.7425 64.8679 12.4595L64.8783 11.5898C64.4487 11.6317 64.365 11.4746 64.365 11.024V8.88646C64.365 7.62908 63.5372 6.88513 62.0073 6.88513C60.4985 6.88513 59.6288 7.63956 59.6288 8.91789H60.8024C60.8024 8.31016 61.232 7.94342 61.9863 7.94342C62.7827 7.94342 63.1494 8.28921 63.139 8.88646V9.15889L61.7874 9.30558C60.268 9.47324 59.4297 10.0495 59.4297 11.0554C59.4297 11.8832 60.0165 12.669 61.3158 12.669ZM61.5777 11.726C60.9176 11.726 60.6557 11.3697 60.6557 11.0135C60.6557 10.5315 61.2005 10.3115 62.2693 10.1858L63.1075 10.0914C63.0551 11.0135 62.437 11.726 61.5777 11.726ZM68.7596 12.9101C68.2252 14.2094 67.366 14.597 66.0248 14.597H65.4485V13.5283H66.0667C66.8002 13.5283 67.1565 13.2977 67.5442 12.6376L65.1656 7.05278H66.4859L68.1834 11.1288L69.6922 7.05278H70.981L68.7596 12.9101Z" fill="#5A31F4"/>
+            <path d="M6.81747 7.87484C5.06715 7.49516 4.2874 7.34658 4.2874 6.6721C4.2874 6.03772 4.8151 5.7217 5.87047 5.7217C6.79863 5.7217 7.47709 6.12733 7.9765 6.92208C8.01419 6.9834 8.09193 7.00462 8.15553 6.97161L10.1249 5.9764C10.1956 5.94102 10.2215 5.85141 10.1815 5.78302C9.36404 4.36567 7.854 3.58978 5.86576 3.58978C3.25323 3.58978 1.63013 4.87742 1.63013 6.92444C1.63013 9.0988 3.60659 9.6483 5.35927 10.028C7.11194 10.4077 7.89405 10.5562 7.89405 11.2307C7.89405 11.9052 7.32396 12.2235 6.18614 12.2235C5.13547 12.2235 4.35572 11.7425 3.88457 10.8086C3.84923 10.7402 3.76678 10.7119 3.69847 10.7473L1.73378 11.7213C1.66546 11.7566 1.6372 11.8392 1.67253 11.91C2.45228 13.4782 4.05183 14.3602 6.18848 14.3602C8.90937 14.3602 10.5537 13.0938 10.5537 10.9831C10.5537 8.87241 8.56779 8.25925 6.81747 7.87956V7.87484Z" fill="#5A31F4"/>
+            <path d="M17.3715 3.58936C16.2548 3.58936 15.2678 3.98555 14.5588 4.69069C14.514 4.73314 14.4409 4.70249 14.4409 4.64117V0.139141C14.4409 0.0613162 14.3796 0 14.3019 0H11.8378C11.7601 0 11.6989 0.0613162 11.6989 0.139141V14.1122C11.6989 14.19 11.7601 14.2513 11.8378 14.2513H14.3019C14.3796 14.2513 14.4409 14.19 14.4409 14.1122V7.9829C14.4409 6.79903 15.3479 5.89107 16.5705 5.89107C17.7932 5.89107 18.6789 6.78016 18.6789 7.9829V14.1122C18.6789 14.19 18.7401 14.2513 18.8179 14.2513H21.282C21.3598 14.2513 21.421 14.19 21.421 14.1122V7.9829C21.421 5.40761 19.7343 3.59171 17.3715 3.59171V3.58936Z" fill="#5A31F4"/>
+            <path d="M26.4198 3.18878C25.0818 3.18878 23.8285 3.59914 22.9286 4.19107C22.8673 4.23116 22.8461 4.31371 22.8838 4.37737L23.9698 6.23337C24.0099 6.2994 24.0946 6.32299 24.1606 6.28289C24.8438 5.87019 25.6259 5.65558 26.4245 5.6603C28.5753 5.6603 30.156 7.17905 30.156 9.18599C30.156 10.8958 28.891 12.1622 27.2866 12.1622C25.9792 12.1622 25.0723 11.4005 25.0723 10.325C25.0723 9.70954 25.3338 9.20485 26.0146 8.84874C26.0853 8.81102 26.1112 8.72375 26.0688 8.65536L25.044 6.91964C25.0111 6.86304 24.9404 6.8371 24.8767 6.86068C23.5034 7.37008 22.5399 8.5964 22.5399 10.2425C22.5399 12.7329 24.521 14.5913 27.2843 14.5913C30.5117 14.5913 32.8321 12.3533 32.8321 9.14353C32.8321 5.70276 30.1324 3.18878 26.4198 3.18878Z" fill="#5A31F4"/>
+            <path d="M40.038 3.57072C38.7918 3.57072 37.6799 4.0306 36.8672 4.84186C36.8224 4.88666 36.7494 4.85365 36.7494 4.79233V3.81599C36.7494 3.73816 36.6882 3.67684 36.6103 3.67684H34.2099C34.1322 3.67684 34.0709 3.73816 34.0709 3.81599V17.7678C34.0709 17.8456 34.1322 17.9069 34.2099 17.9069H36.674C36.7517 17.9069 36.813 17.8456 36.813 17.7678V13.1927C36.813 13.1313 36.8861 13.1007 36.9307 13.1408C37.7412 13.8955 38.813 14.3365 40.0403 14.3365C42.9309 14.3365 45.1853 11.9946 45.1853 8.9524C45.1853 5.91017 42.9285 3.56836 40.0403 3.56836L40.038 3.57072ZM39.5739 11.9734C37.9296 11.9734 36.6834 10.6645 36.6834 8.93353C36.6834 7.20253 37.9272 5.89366 39.5739 5.89366C41.2205 5.89366 42.4621 7.1813 42.4621 8.93353C42.4621 10.6858 41.2371 11.9734 39.5716 11.9734H39.5739Z" fill="#5A31F4"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_14695_7509">
+              <rect width="74.9634" height="18" fill="white" transform="translate(0.518311)"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </a>
+    {% endif %}
+  </div>
+  {% render 'mclbx-embroider-message', product: product %}
+</div>
+
+<a href="{{ product.url }}" class="pqv--view-details button">View Details</a>

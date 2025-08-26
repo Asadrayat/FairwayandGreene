@@ -1,0 +1,671 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+    #shopify-section-{{id}} {
+      box-sizing: border-box;
+      margin-top: {{section.settings.margin_top | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+      padding-top: {{section.settings.padding_top | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    }
+    .wrapper-{{ id }} {
+      width: 65%;
+      min-width: 850px;
+    }
+    @media(max-width: 1200px) {
+      .wrapper-{{ id }} {
+         min-width: 100%;
+         width: auto;
+      }
+    }
+    .wrapper-{{ id }} .accordion__faq {
+      border-bottom: 1px solid var(--Border-Base-subtle, #E5E7EB);
+    }
+    .wrapper-{{ id }} .accordion__faq:not(:last-child) {
+      margin-bottom: var(--Spacing-Container-sm);
+    }  
+    .wrapper-{{ id }} .accordion__intro_ {
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      gap: var(--Spacing-Container-xs);
+      box-sizing: border-box;
+      transition: all 1s ease-in-out;
+      justify-content: space-between;
+      margin-bottom: var(--Spacing-Container-xs);
+    }
+    .wrapper-{{ id }} .accordion__intro_ h4 {
+      color: var(--Content-Base-main, #1F2937);
+      font-family: var(--font-family-Title);
+      font-size: var(--Font-Size-Heading-H4);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H4);
+      letter-spacing: -0.4px;
+      margin: 0;
+    }
+    @media(max-width: 768px) {
+      .wrapper-{{ id }} .accordion__intro_ h4 {
+        line-height: 150%;
+        letter-spacing: -0.32px;
+        padding-right: 24px;
+      }
+    }
+    .accordion__content-wrap {
+      color: var(--Content-Base-base, #4B5563);
+      font-family: var(--font-family-Body);
+      font-size: var(--Font-Size-Paragraph-Regular);
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      margin-bottom: var(--Spacing-Container-sm);
+    }
+    @media(max-width: 768px) {
+      .accordion__content-wrap {
+        padding-right: 0px;
+      }
+    }
+    .accordion__content-wrap p {
+      margin: 0;        
+    }
+    .wrapper-{{ id }} .faq__icon {
+      position: absolute;
+      right: 24px;
+      top: 0;
+    }
+    .wrapper-{{ id }} .faq__icon span {
+      display: flex;
+      width: 24px;
+      height: 24px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border-radius: 56px;
+      background: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all 0.4s ease-in-out;
+    }
+    .wrapper-{{ id }} .faq__icon .minus {
+      opacity: 0;
+      transition: all 0.4s ease-in-out;
+    }
+    .wrapper-{{ id }} .accordion__faq.accordion.active .faq__icon .plus {
+      rotate: 45deg;
+      opacity: 0;
+    }
+    .wrapper-{{ id }} .accordion__faq.accordion.active .faq__icon .minus {
+      opacity: 1;
+    }
+    .wrapper-{{ id }} .subtab-container {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .wrapper-{{ id }} .subtab-container {
+      display: none;
+    }
+    .wrapper-{{ id }} .subtab-container.active {
+      display: flex;
+    }
+    .wrapper-{{ id }} .subtab {
+      text-transform: capitalize;
+      border-radius: var(--rounded-none, 0px);
+      background: #004027;
+      border: 1px solid #004027;
+      color: #fff;
+      text-align: center;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 16px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 16px);
+      padding: 12px 14px;
+      transition: all .4s ease-in-out;
+      cursor: pointer;
+      color: #004027;
+      background: #fff;
+    }
+    .wrapper-{{ id }} .subtab.active {
+      background: #004027;
+      border: 1px solid #004027;
+      color: #fff;
+    }
+    .wrapper-{{ id }} .subtab:hover {
+      opacity: 0.8;
+    }
+    @media(max-width: 600px) {
+      #shopify-section-{{id}} {
+        margin-top: {{section.settings.margin_top_m | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+        padding-top: {{section.settings.padding_top_m | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      }
+      .accordion__content-wrap p, .accordion__content-wrap a, .accordion__content-wrap li {
+        font-size: var(--Font-Size-Paragraph-Tiny);
+        line-height: var(--Line-Height-Paragraph-Tiny);        
+      }
+      .wrapper-{{ id }} .subtab-container {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .wrapper-{{ id }} .subtab {
+        font-size: var(--Font-Size-Paragraph-Tiny);
+        padding: 6px 12px;
+      }
+    }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="subtab-container">
+        {% for block in section.blocks %}
+          {% if block.type == 'category' %}
+            {% assign category_handle = block.settings.title | handleize %}
+            {% assign has_subcategories = false %}
+            {% for sub_block in section.blocks %}
+              {% if sub_block.type == 'subcategory' %}
+                {% assign sub_parent_handle = sub_block.settings.parent_category | handleize %}
+                {% if sub_parent_handle == category_handle %}
+                  {% assign has_subcategories = true %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {% if has_subcategories %}
+              <button class="subtab" data-subcategory="all" data-parent-category="{{ category_handle }}">All</button>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {% for block in section.blocks %}
+          {% if block.type == 'subcategory' %}
+            <button class="subtab" data-subcategory="{{ block.settings.title | handleize }}" data-parent-category="{{ block.settings.parent_category | handleize }}">{{ block.settings.title }}</button>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <accordion-element>
+        <div class="accordion-wrapper">
+          {% for block in section.blocks %}
+            {% if block.type == 'faq' %}
+              <div class="accordion__faq accordion" data-category="{{ block.settings.category | handleize | default: 'all' }}" data-subcategory="{{ block.settings.subcategory | handleize | default: 'all' }}">
+                <div class="accordion__intro_">
+                  {% if block.settings.title != blank %}
+                    <h4 class="faq_title">{{ block.settings.title }}</h4>
+                  {% endif %}
+                  <div class="faq__icon">
+                    <span class="plus">
+                      {% render 'all-icons', name: 'faq-plus' %}
+                    </span>
+                    <span class="minus">
+                      {% render 'all-icons', name: 'faq-minus' %}
+                    </span>
+                  </div>
+                </div>
+                {% if block.settings.text != blank %}
+                  <div class="accordion__content_">
+                    <div class="accordion__content-wrap">{{ block.settings.text }}</div>
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </accordion-element>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Expose categories to global scope
+  window.FAQCategories = window.FAQCategories || [];
+  window.FAQCategories.push({
+    sectionId: '{{ id }}',
+    categories: [
+      { handle: 'all', title: 'All' },
+      {% for block in section.blocks %}
+        {% if block.type == 'category' %}
+          { handle: '{{ block.settings.title | handleize }}', title: '{{ block.settings.title }}' },
+        {% endif %}
+      {% endfor %}
+    ]
+  });
+
+  class Accordion {
+    constructor(accordion = "", newOptions) {
+      let options = {
+        initOpenIndex: 1,
+        closeAll: false,
+        duration: 400,
+        activeClass: "active",
+      };
+      this.options = { ...options, ...newOptions };
+      this.handleValidAccordions(accordion);
+    }
+
+    handleValidAccordions(accordion) {
+      const accordions = document.querySelectorAll(accordion);
+      if (!accordions.length) {
+        console.error(`No accordions found with selector: ${accordion}`);
+        return;
+      }
+      this.accordion = accordions[0];
+      this.setIconsTransition();
+      this.tabItemsArray = Array.from(this.accordion.children);
+
+      if (this.tabItemsArray.length > 0) {
+        if (this.options.initOpenIndex > this.tabItemsArray.length) {
+          this.options.initOpenIndex = this.tabItemsArray.length;
+        }
+      } else {
+        console.warn('No accordion items found in the container.');
+      }
+
+      this.tabItemsArray?.forEach((tabElement, index, arr) => {
+        let item = this.handleAccordionItems(tabElement);
+        if (!item) {
+          console.warn(`Invalid accordion item at index ${index}`);
+          return;
+        }
+        this.contentInitialHeight(item[1]);
+        if (index === this.options.initOpenIndex - 1) {
+          this.InitialOpen(arr[index]);
+        }
+        this.handleAccordion(item, index);
+      });
+    }
+
+    setIconsTransition() {
+      if (this.accordion?.querySelectorAll("svg")) {
+        this.accordion
+          .querySelectorAll("svg")
+          .forEach(
+            (svg) => (svg.style.transition = `all ${this.options.duration}ms`)
+          );
+      } else {
+        console.warn('No SVG icons found for transition setup.');
+      }
+    }
+
+    contentInitialHeight(content) {
+      content.style.height = "0px";
+      content.style.overflow = "hidden";
+    }
+
+    handleAccordion(item, index) {
+      item[0].addEventListener("click", (e) => {
+        this.toggle(item);
+        this.currentIndex = index;
+        if (this.options.closeAll) this.closeAll();
+      });
+    }
+
+    handleAccordionItems(accordion) {
+      if (accordion.children.length >= 2) {
+        let title = accordion.children[0];
+        let content = accordion.children[1];
+        return [title, content];
+      }
+      return null;
+    }
+
+    InitialOpen(accordion) {
+      let item = this.handleAccordionItems(accordion);
+      if (item) {
+        this.setActiveClass(item);
+        this.open(item);
+      }
+    }
+
+    open(item) {
+      let content = item[1];
+      this.transition(content);
+      content.style.height = `${content.scrollHeight}px`;
+    }
+
+    close(item) {
+      let content = item[1];
+      content.style.height = `0px`;
+    }
+
+    toggle(item) {
+      let content = item[1];
+      let height = content.clientHeight;
+      this.transition(content);
+      if (height == 0) {
+        this.setActiveClass(item);
+        content.style.height = `${content.scrollHeight}px`;
+      } else {
+        this.removeActiveClass(item);
+        content.style.height = "0px";
+      }
+    }
+
+    transition(el) {
+      el.style.transition = `all ${this.options.duration}ms ease`;
+    }
+
+    closeAll() {
+      this.tabItemsArray?.forEach((accordion, index, arr) => {
+        let item = this.handleAccordionItems(accordion);
+        if (item && index !== this.currentIndex) {
+          this.close(item);
+          this.removeActiveClass(item);
+        }
+      });
+    }
+
+    setActiveClass(item) {
+      item[1].parentElement.classList.add(this.options.activeClass);
+    }
+
+    removeActiveClass(item) {
+      item[1].parentElement.classList.remove(this.options.activeClass);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize accordion
+    new Accordion('.wrapper-{{ id }} .accordion-wrapper', {
+      closeAll: true,
+      initOpenIndex: 1,
+      duration: 700,
+      activeClass: 'active'
+    });
+
+    // Subtab Functionality
+    const subtabs = document.querySelectorAll('.wrapper-{{ id }} .subtab');
+    const subtabContainer = document.querySelector('.wrapper-{{ id }} .subtab-container');
+    const faqs = document.querySelectorAll('.wrapper-{{ id }} .accordion__faq');
+
+    function filterFAQs(category, subcategory = 'all') {
+      faqs.forEach(faq => {
+        const faqCategory = faq.getAttribute('data-category');
+        const faqSubcategory = faq.getAttribute('data-subcategory');
+        const hasSubcategories = Array.from(subtabs).some(subtab => subtab.getAttribute('data-parent-category') === category && subtab.getAttribute('data-subcategory') !== 'all');
+        if (category === 'all' || faqCategory === category) {
+          if (!hasSubcategories || subcategory === 'all' || faqSubcategory === subcategory) {
+            faq.style.display = '';
+          } else {
+            faq.style.display = 'none';
+          }
+        } else {
+          faq.style.display = 'none';
+        }
+      });
+    }
+
+    function updateSubtabVisibility(category) {
+      const relevantSubtabs = Array.from(subtabs).filter(subtab => subtab.getAttribute('data-parent-category') === category);
+      const hasSubcategories = relevantSubtabs.some(subtab => subtab.getAttribute('data-subcategory') !== 'all');
+      if (hasSubcategories && relevantSubtabs.length > 0) {
+        subtabContainer.classList.add('active');
+        subtabs.forEach(subtab => {
+          const parentCategory = subtab.getAttribute('data-parent-category');
+          subtab.style.display = parentCategory === category ? '' : 'none';
+        });
+        // Ensure an active subtab
+        subtabs.forEach(s => s.classList.remove('active'));
+        const allSubtab = relevantSubtabs.find(s => s.getAttribute('data-subcategory') === 'all') || relevantSubtabs[0];
+        allSubtab.classList.add('active');
+      } else {
+        subtabContainer.classList.remove('active');
+        subtabs.forEach(s => s.classList.remove('active'));
+      }
+    }
+
+    // Expose filter functions for banner to use
+    window.FAQSection = window.FAQSection || {};
+    window.FAQSection['{{ id }}'] = {
+      filterFAQs,
+      updateSubtabVisibility
+    };
+
+    subtabs.forEach(subtab => {
+      subtab.addEventListener('click', () => {
+        subtabs.forEach(s => s.classList.remove('active'));
+        subtab.classList.add('active');
+        const subcategory = subtab.getAttribute('data-subcategory');
+        const parentCategory = subtab.getAttribute('data-parent-category');
+        filterFAQs(parentCategory, subcategory);
+      });
+    });
+
+    // Initialize with "All" category
+    updateSubtabVisibility('all');
+    filterFAQs('all');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Name",
+          "info": "Enter the name of the primary category. This will appear as a tab in the banner."
+        }
+      ]
+    },
+    {
+      "type": "subcategory",
+      "name": "Subcategory",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Subcategory Name",
+          "info": "Enter the name of the subcategory. This will appear as a subtab."
+        },
+        {
+          "type": "text",
+          "id": "parent_category",
+          "label": "Parent Category",
+          "info": "Enter the exact name of a Category block to associate this subcategory."
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "type": "faq",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Where is my order?"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category",
+          "info": "Enter the exact name of a Category block to associate this FAQ. Leave blank to include in 'All'."
+        },
+        {
+          "type": "text",
+          "id": "subcategory",
+          "label": "Subcategory",
+          "info": "Enter the exact name of a Subcategory block to associate this FAQ. Leave blank to include in 'All' for the category."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Section",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "General"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Shipping"
+          }
+        },
+        {
+          "type": "subcategory",
+          "settings": {
+            "title": "Quality",
+            "parent_category": "General"
+          }
+        },
+        {
+          "type": "subcategory",
+          "settings": {
+            "title": "Product Styling",
+            "parent_category": "General"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "title": "Where is my order?",
+            "text": "<p>Your order status can be checked in your account under 'Order History'.</p>",
+            "category": "Shipping"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "title": "What is your return policy?",
+            "text": "<p>We offer a 30-day return policy for unused items in original packaging.</p>",
+            "category": "General",
+            "subcategory": "Quality"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "title": "How do I style this product?",
+            "text": "<p>Our products can be styled with casual or formal outfits, depending on the occasion.</p>",
+            "category": "General",
+            "subcategory": "Product Styling"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "title": "What are your products like?",
+            "text": "<p>Our products are designed for comfort and style.</p>",
+            "category": "General"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

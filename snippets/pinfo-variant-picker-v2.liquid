@@ -1,0 +1,146 @@
+<pinfo-variant-picker>
+  {% for option in product.options_with_values %}
+    <div class="pinfo-variants-options {% if option.name == 'Color' or option.name == 'color' %}color-variant{% else %}others-variant{% endif %}">
+      <div class="pinfo-option-label-wrapper">
+        <p class="pinfo-filter-label">
+          {{ option.name }}:
+          {% if option.selected_value == 'SML' %}
+            S
+          {% elsif option.selected_value == 'MED' %}
+            M
+          {% elsif option.selected_value == 'LRG' %}
+            L
+          {% elsif option.selected_value == 'XLG' %}
+            XL
+          {% else %}
+            {{ option.selected_value }}
+          {% endif %}
+        </p>
+        {% if option.name == 'Size' or option.name == 'size' %}
+          <div class="pinfo-size-guide openPopup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M1.93473 8.55644L4.36535 10.501L4.73098 14.2527C4.77994 14.7573 5.19889 15.1375 5.70556 15.1375H10.927C11.4337 15.1375 11.8524 14.7573 11.9016 14.2527L12.2376 10.8033L14.7672 8.54186C15.0441 8.30186 15.0818 7.89082 14.8522 7.60582L12.7593 5.02019C12.432 4.6929 11.9785 4.5054 11.5147 4.5054H10.871C10.5826 4.5054 10.3297 4.68353 10.2426 4.94499C9.95744 5.76519 9.18202 6.31603 8.31306 6.31603C7.44327 6.31603 6.66952 5.7654 6.38806 4.94853C6.29973 4.68332 6.04535 4.5054 5.75514 4.5054H5.41494C4.99389 4.5054 4.58514 4.6579 4.23785 4.95957L1.8466 7.56103C1.71473 7.70457 1.65035 7.89686 1.67014 8.08874C1.68973 8.27957 1.79098 8.45373 1.93473 8.55644ZM2.30639 7.98353L4.6716 5.40769C4.87931 5.22874 5.14327 5.12999 5.41494 5.12999H5.75514C5.77806 5.12999 5.79348 5.14186 5.7966 5.14915C6.16535 6.22061 7.1766 6.94061 8.31285 6.94061C9.44723 6.94061 10.4597 6.22082 10.8322 5.14998L11.5145 5.12999C11.8137 5.12999 12.1066 5.25082 12.2956 5.43749L14.366 7.9979C14.3843 8.02061 14.381 8.0504 14.3543 8.07311L12.327 9.8854L12.5576 7.51853C12.5745 7.34686 12.4489 7.19436 12.2772 7.17769C12.1045 7.15498 11.9529 7.28665 11.936 7.45832L11.2799 14.1927C11.2622 14.3752 11.1104 14.5131 10.927 14.5131H5.70577C5.52223 14.5131 5.37035 14.3752 5.35264 14.1927L4.6966 7.45832C4.67994 7.28665 4.52785 7.15623 4.35556 7.17769C4.18369 7.19436 4.05827 7.34686 4.07494 7.51853L4.28098 9.63353L2.32514 8.06873L2.29139 8.02478C2.28973 8.00999 2.29514 7.99623 2.30639 7.98353Z" fill="black"/>
+              <path d="M13.8573 3.65043H15.9509V16.3498H13.8573C13.6848 16.3498 13.545 16.4896 13.545 16.6621C13.545 16.8346 13.6848 16.9744 13.8573 16.9744H18.0211C18.1938 16.9744 18.3334 16.8346 18.3334 16.6621C18.3334 16.4896 18.1938 16.3498 18.0211 16.3498H16.5757V14.3379H17.605C17.7775 14.3379 17.9173 14.1981 17.9173 14.0256C17.9173 13.8531 17.7775 13.7133 17.605 13.7133H16.5757V11.6661H17.605C17.7775 11.6661 17.9173 11.5263 17.9173 11.3538C17.9173 11.1813 17.7775 11.0415 17.605 11.0415H16.5757V8.99418H17.605C17.7775 8.99418 17.9173 8.85439 17.9173 8.68189C17.9173 8.50939 17.7775 8.3696 17.605 8.3696H16.5757V6.32272H17.605C17.7775 6.32272 17.9173 6.18293 17.9173 6.01043C17.9173 5.83793 17.7775 5.69814 17.605 5.69814H16.5757V3.65043H18.0211C18.1938 3.65043 18.3334 3.51064 18.3334 3.33814C18.3334 3.16564 18.1938 3.02585 18.0211 3.02585H13.8573C13.6848 3.02585 13.545 3.16564 13.545 3.33814C13.545 3.51043 13.685 3.65043 13.8573 3.65043Z" fill="black"/>
+            </svg>
+            <span>Size Guide</span>
+          </div>
+        {% endif %}
+      </div>
+      <div class="pinfo-options-values-wrapper {% if option.name == 'Color' or option.name == 'color' %}color-options{% else %}others-options{% endif %} {% if option.name == 'Size' or option.name == 'size' %}--size-option{% endif %}">
+        {% comment %} {% if option.name == 'Color' or option.name == 'color' %}
+          <div class="swiper">
+            <div class="swiper-wrapper">
+        {% endif %} {% endcomment %}
+        {% for value in option.values %}
+          {% if value.variant.available %}{% endif %}
+            {% comment %} {% if option.name == 'Color' or option.name == 'color' %}
+              <div class="swiper-slide">
+            {% endif %} {% endcomment %}
+            {% if value.variant.available %}{% endif %}
+              <div class="pinfo-option-value">
+                <input
+                  {% if value.selected %}
+                    checked
+                  {% endif %}
+                  {% unless value.available %}
+                    disabled-
+                  {% endunless %}
+                  class="hidden  {% if option.name == 'Color' or option.name == 'color' %}color__variant__btn{% endif %}"
+                  id="{{ option.position }}-{{ value.id }}-{{ forloop.index }}"
+                  type="radio"
+                  name="{{ option.name }}"
+                  data-variant-url="{{ value.variant.url }}"
+                  value="{{ value.name }}"
+                >
+                {% if option.name == 'Color' or option.name == 'color' %}
+                  <label
+                    class="{% unless  value.available %}disabled{% endunless %}"
+                    for="{{ option.position }}-{{ value.id }}-{{ forloop.index }}"
+                  >
+                    {% if value.variant.featured_media == blank %}
+                      {% liquid
+                        assign color_img = value.name | downcase | strip | replace: ' ', '-' | replace: '/', '-' | append: '.png'
+                      %}
+                      {% comment %}
+                      {% assign swatch_image = blank %}
+                      {% for variant in product.variants %}
+                        {% if variant.option1 == value.name and variant.featured_image %}
+                          {% assign swatch_image = variant.featured_image %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+                      {% if swatch_image != blank %}
+                        {{ swatch_image | image_url: width: 100 | image_tag  }}
+                      {% else %}
+                        {{ color_img | file_img_url: '100x' | img_tag }}
+                       {% endif %}
+                       
+                         
+                       {% endcomment %}
+                       {{ color_img | file_img_url: '100x' | img_tag }}
+                    {% else %}
+                      
+                      {{ value.variant.featured_media | image_url: width: 100 | image_tag }}
+                    {% endif %}
+                  </label>
+                {% else %}
+                  <label
+                    class="{% unless  value.available %}disabled{% endunless %}"
+                    for="{{ option.position }}-{{ value.id }}-{{ forloop.index }}"
+                  >
+                    {% if value.available %}
+                      {% if value.name == 'SML' %}
+                        S
+                      {% elsif value.name == 'MED' %}
+                        M
+                      {% elsif value.name == 'LRG' %}
+                        L
+                      {% elsif value.name == 'XLG' %}
+                        XL
+                      {% else %}
+                        {{ value.name }}
+                      {% endif %}
+                      <!-- {{ value.name }} -->
+                    {% else %}
+                      <s>
+                        {%- if value.name == 'SML' %}
+                          S
+                        {% elsif value.name == 'MED' %}
+                          M
+                        {% elsif value.name == 'LRG' %}
+                          L
+                        {% elsif value.name == 'XLG' %}
+                          XL
+                        {% else %}
+                          {{ value.name }}
+                        {% endif -%}
+                      </s>
+                    {% endif %}
+                  </label>
+                {% endif %}
+              </div>
+            {% comment %} {% if option.name == 'Color' or option.name == 'color' %}
+              </div>
+            {% endif %} {% endcomment %}
+          
+        {% endfor %}
+        {% comment %} {% if option.name == 'Color' or option.name == 'color' %}
+            </div>
+          </div>
+        {% endif %} {% endcomment %}
+        {% comment %} {% if option.name == 'Color' or option.name == 'color' %}
+          <div class="swiper-button-prev">
+            <svg width="20px" height="20px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 14L3 7.5L10 1" stroke="#000000" stroke-linecap="square"/>
+            </svg>
+          </div>
+          <div class="swiper-button-next">
+            <svg width="20px" height="20px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 14L12 7.5L5 1" stroke="#000000" stroke-linecap="square"/>
+            </svg>
+          </div>
+        {% endif %} {% endcomment %}
+      </div>
+    </div>
+  {% endfor %}
+</pinfo-variant-picker>

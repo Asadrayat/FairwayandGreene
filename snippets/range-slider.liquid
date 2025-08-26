@@ -1,0 +1,76 @@
+{% if localization.country.iso_code == 'US' %}
+  {% liquid
+    assign cartTotalPrice = cart.total_price | divided_by: 100.0
+    assign rangeToValue = cartTotalPrice | divided_by: free_shipping | times: 100
+    if rangeToValue > 100
+      assign rangeToValue = 100
+    endif
+    assign rangeToValue = rangeToValue | append: '%'
+  %}
+
+  <style>
+    .mcart-range-slider {
+      height: 6px;
+      width: 100%;
+      border-radius: 20px;
+      background: #E8E8E8;
+      box-sizing: border-box;
+      position: relative;
+      transition: .3s;
+      /* overflow: hidden; */
+      display: block !important;
+    }
+    .mcart-range-slider:before{
+      position: absolute;
+      content: "";
+      width: {{rangeToValue}};
+      height: 100%;
+      background: #004027;
+      transition: .3s;
+      border-radius: 20px;
+    }
+    .mcart-range-slider:after {
+      position: absolute;
+      content: ""; /* Optional, can be removed since background is used */
+      background: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M7%203.5H8.16863C8.29092%203.5%208.35207%203.5%208.40962%203.51382C8.46063%203.52606%208.50941%203.54627%208.55414%203.57368C8.6046%203.6046%208.64784%203.64784%208.73431%203.73431L10.7657%205.76569C10.8522%205.85216%2010.8954%205.8954%2010.9263%205.94586C10.9537%205.99059%2010.9739%206.03937%2010.9862%206.09038C11%206.14793%2011%206.20908%2011%206.33137V7.75C11%207.98297%2011%208.09946%2010.9619%208.19134C10.9112%208.31386%2010.8139%208.41119%2010.6913%208.46194C10.5995%208.5%2010.483%208.5%2010.25%208.5M7.75%208.5H7M7%208.5V3.6C7%203.03995%207%202.75992%206.89101%202.54601C6.79513%202.35785%206.64215%202.20487%206.45399%202.10899C6.24008%202%205.96005%202%205.4%202H2.6C2.03995%202%201.75992%202%201.54601%202.10899C1.35785%202.20487%201.20487%202.35785%201.10899%202.54601C1%202.75992%201%203.03995%201%203.6V7.5C1%208.05228%201.44772%208.5%202%208.5M7%208.5H5M5%208.5C5%209.32843%204.32843%2010%203.5%2010C2.67157%2010%202%209.32843%202%208.5M5%208.5C5%207.67157%204.32843%207%203.5%207C2.67157%207%202%207.67157%202%208.5M10.25%208.75C10.25%209.44036%209.69036%2010%209%2010C8.30964%2010%207.75%209.44036%207.75%208.75C7.75%208.05964%208.30964%207.5%209%207.5C9.69036%207.5%2010.25%208.05964%2010.25%208.75Z%22%20stroke%3D%22black%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") no-repeat center center;
+      background-size: 12px 12px; /* Ensure SVG scales correctly */
+      width: 20px;
+      height: 20px;
+      top: -8px;
+      right: 0px;
+      z-index: 10;
+      border-radius: 32px;
+      border: 1px solid #D0D0D0;
+      background-color: #F2F2F2;
+
+    }
+    .mcart-range-title{
+      color: var(--Content-Base-main, #1F2937);
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-Paragraph-Small, 14px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Small, 20px);
+      text-align: left;
+      display: flex;
+      gap: 8px;
+      align-items: end;
+      svg {
+        width: 20px;
+      }
+    }
+    .mcart-range-title span{
+      color: #004027;
+      font-weight: 700;
+      /* font-family: var(--font-heading-family); */
+    }
+  </style>
+  <h2 class="mcart-range-title">
+    {% if cartTotalPrice >= free_shipping %}
+      {% render 'all-icons', name: 'golf' %} Congrats! You've unlocked Free Shipping
+    {% else %}
+      Spend <span>{{ free_shipping | minus: cartTotalPrice | times: 100 | money }}</span> more to reach Free Shipping
+    {% endif %}
+  </h2>
+  <div class="mcart-range-slider"></div>
+{% endif %}

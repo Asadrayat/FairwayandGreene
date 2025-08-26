@@ -1,0 +1,508 @@
+<style>
+      stock-notify{
+        .stock-notify-popup{
+          position: fixed;
+          width: 100vw;
+          height: 100vh;
+          z-index: -999;
+          background: {{section.settings.shadow_bg}};
+          left: 0;
+          top: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .notify-container{
+          width: 100%;
+          max-width: 640px;
+          min-height: 242px;
+          border: 1px solid #E6E6E6;
+          background: var(--Background-base, #FFF);
+          box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.04), 0px 20px 25px -5px rgba(0, 0, 0, 0.10);
+          box-sizing: border-box;
+          padding: 40px 40px;
+          transfrom: translateY(140px);
+          opacity: 0;
+          @media(max-width: 645px) {
+            width: calc(100% - 20px);
+            padding: 30px 25px;
+          }
+          .notify-wrapper{
+            position: relative;
+            .notify-title{
+              color: var(--Balck, #000);
+              font-size: 26px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+              margin: 0 0 8px;
+              text-align: center;
+
+              @media(max-width: 768px) {
+                font-size: 24px;
+              }
+            }
+            .disclaimer_text,
+            .notify-text{
+              color: var(--Balck, #000);
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+              margin: 0;
+              /* text-align: center; */
+            }
+            .close-button{
+              position: absolute;
+              right: -20px;
+              top: -20px;
+              border: 0;
+              background: white;
+              width: 24px;
+              height: 24px;
+              cursor: pointer;
+              @media(max-width: 768px) {
+                right: -10px;
+                top: -25px;
+              }
+            }
+          }
+          form{
+            /* margin-top: 14px; */
+            .form-group{
+              /* display: grid; */
+              grid-template-columns: 1fr auto;
+              grid-template-rows: 48px;
+              align-items: center;
+              grid-gap: 0px;
+              /* background: #FFF5EE; */
+              @media(max-width: 768px) {
+                grid-template-columns: 1fr;
+                grid-template-rows: 48px 48px;
+                grid-gap: 9px;
+                background: transparent;
+              }
+              input{
+                color: var(--Balck, #000);
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 16px; /* 114.286% */
+                background: #212b3614;
+                border: 0;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                padding-inline: 16px;
+                padding-block: 10px;
+                margin-block: 10px;
+              }
+              input::placeholder{
+                color: var(--Balck, #000);
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 16px; /* 114.286% */
+                opacity: .7;
+                /* font-family: "RethinkSans-Regular"; */
+              }
+              button{
+                color: white;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 16px;
+                border: 0;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                padding-inline: 15px;
+                cursor: pointer;
+                background: #004027;
+                /* font-family: var(--font-heading-family); */
+                font-family: var(--font-body-family);
+                padding-block: 10px;
+                margin-bottom: 10px;
+                text-transform: uppercase;
+              }
+            }
+          }
+        }
+      }
+
+      stock-notify.active{
+        .stock-notify-popup{
+          z-index: 999;
+          .notify-container{
+            transfrom: translateY(0px);
+            opacity: 1;
+            transition: .4 linear;
+          }
+        }
+        .error-msg:empty,
+        .success-msg:empty{
+          display:none;
+        }
+        .error-msg{
+          color: red;
+        }
+        .success-msg{
+          margin-top: 14px;
+          letter-spacing: 0px;
+          color: black;
+          font-size: 16px;
+          text-align: center;
+          line-height: normal;
+        }
+      }
+
+    /* New Styling */
+      stock-notify.active{
+    .--new-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 20px;
+        @media(max-width: 768px){
+          grid-template-columns: minmax(0,1fr);
+        }
+    }
+    .--image-wrapper {
+        line-height: 0;
+    }
+    img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 9/10;
+        object-fit: cover;
+    }
+  .--text-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+  }
+.--top-text-block {
+    margin-bottom: 30px;
+}        
+h3.--variant-title {
+    margin-block: 0px 10px;
+    text-transform: uppercase;
+}     
+    .--option-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+    .--button {
+        /* color: #fff; */
+        /* background: #000; */
+        padding: 5px 10px;
+        border: 1px solid #000;
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+
+
+      }
+</style>
+
+<stock-notify
+  class=""
+  data-success-msg="{{ section.settings.success_message | default: "Thank you for your interest. We will get back to you via email as soon as this product is in stock." }}"
+>
+  <div class="stock-notify-popup">
+    <div class="notify-container">
+      <div class="notify-wrapper">
+        <button class="close-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M17 7L7 17M7 7L17 17" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+
+        <div class="--new-wrapper">
+          <div class="--image-wrapper">
+            <img src="{{ product.selected_variant.image | image_url}}" alt="Bi Stretch Slim Ankle Pant"  width="500" >
+            
+          </div>
+          <div class="--text-block">
+            <div class="--top-text-block">
+              <h3 class="--variant-title">{{ product.title }}</h3>
+              <div class="--option-wrapper">
+                  <div class="--button --option_1">{{ product.selected_variant.option1 }}</div>
+                  <div class="--button --option_2">{{ product.selected_variant.option2 }}</div>
+              </div>
+            </div>
+
+            <div class="--form-container">
+              <h2 class="notify-title hidden">{{ product.title }}</h2>
+              <p class="notify-text rethink-sans">{{ section.settings.text }}</p>
+              <form class="notify-form">
+                <div class="form-group">
+                  <input
+                    class="rethink-sans"
+                    type="email"
+                    name="email"
+                    placeholder="{{ section.settings.placeholder }}"
+                    required
+                  >
+                  
+                  <button type="button" class="notify-submit-button">{{ section.settings.button_text }}</button>
+                  <div class="disclaimer_text rethink-sans">{{ section.settings.disclaimer_text }}</div>
+                </div>
+                <small class="error-msg"></small>
+                <p class="success-msg rethink-sans"></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</stock-notify>
+
+<script>
+  class StockNotify extends HTMLElement{
+    constructor() {
+      super()
+
+      this.company_id = "{{ section.settings.company_id | strip }}"
+
+      this.titleEl = this.querySelector(".notify-title")
+      this.formEl = this.querySelector("form")
+      this.formButton = this.querySelector(".notify-submit-button")
+      this.errorEl = this.querySelector(".error-msg")
+      // this.successEl = this.querySelector(".success-msg")
+      this.successEl = this.querySelector(".notify-text")
+      this.formgroup = this.querySelector(".form-group")
+      this.closeBtn = this.querySelector(".close-button")
+      this.closeBtn.addEventListener("click", this.closePopup.bind(this))
+
+      this.formButton.addEventListener("click", this.handleFormSubmit.bind(this))
+
+      this.formEl.addEventListener("submit", e => {
+        e.preventDefault()
+        this.handleFormSubmit(e)
+      })
+    }
+
+    handleFormSubmit(e) {
+      let email = this.formEl.querySelector("input[type=email]").value
+      let isValid = this.validateEmail(email)
+      if(!this.company_id || this.company_id == null || this.company_id === '' || this.company_id.length < 1) {
+        return
+      }
+      if(isValid) {
+        this.errorEl.innerHTML = ""
+        this.callApi(email)
+      } else {
+        this.errorEl.innerHTML = "Please Enter a Valid Email"
+      }
+    }
+
+    validateEmail(email) {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    }
+
+    callApi(email) {
+      const options = {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          revision: '2024-05-15',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          data: {
+            type: 'back-in-stock-subscription',
+            attributes: {
+              channels: ['EMAIL'],
+              profile: {data: {type: 'profile', attributes: {email: email}}}
+            },
+            relationships: {
+              variant: {
+                data: {
+                  type: 'catalog-variant',
+                  id: '$shopify:::$default:::'+this.variant_id
+                }
+              }
+            }
+          }
+        })
+      };
+
+      fetch(`https://a.klaviyo.com/client/back-in-stock-subscriptions/?company_id=${this.company_id}`, options)
+      .then(response => {
+        console.log("klaviyo response", response)
+      })
+      .catch(err => {
+        console.error("klaviyo error: ", err)
+      })
+      .finally(() => {
+         // this.successEl.innerHTML = this.dataset.successMsg
+        this.successEl.innerHTML = "{{ section.settings.success_message }}";
+        this.formgroup.classList.add('hidden');
+      })
+    }
+
+    handleNotifyButton(e) {
+      e.preventDefault()
+      this.title = e.target.dataset.title
+      this.variant_id = e.target.dataset.variant
+      this.titleEl.innerHTML = this.title
+      this.openPopup()
+    }
+
+    openPopup() {
+      this.classList.add("active")
+      document.body.style.overflow = 'hidden'
+      this.removeAttribute('type')
+    }
+    closePopup() {
+      this.classList.remove("active")
+      document.body.style.overflow = 'inherit'
+      // this.successEl.innerHTML = ""
+      this.errorEl.innerHTML = ""
+    }
+  }
+
+  customElements.define("stock-notify", StockNotify)
+   let popupNotifyObject = document.querySelector("stock-notify")
+   
+window.update_modal_data = (variant) => {
+    // Locate the container for options in the popup
+    const existingOptionsContainer = popupNotifyObject.querySelector(".--option-wrapper");
+    const existingImage = popupNotifyObject.querySelector(".--image-wrapper img"); // Ensure you query the correct image element
+    // Update the image with the new variant's featured image
+      if (existingImage) {
+          // Update the image source
+          if (variant.featured_image && variant.featured_image.src) {
+              existingImage.src = variant.featured_image.src;
+              existingImage.alt = variant.featured_image.alt || "Product Image"; // Use provided alt text or fallback
+              console.log("Image updated successfully:", variant.featured_image.src);
+             
+          } else {
+              console.warn("Variant featured image is missing. Unable to update the image.");
+          }
+      } else {
+          console.warn("Image element not found in the modal!");
+      }
+
+  
+    
+    // Clear the existing options in the container
+    if (existingOptionsContainer) {
+        existingOptionsContainer.innerHTML = ''; // Clear previous options
+    }
+
+    // Iterate over the options and create buttons for each
+    for (const option of variant.options) {
+        // Create a new button element
+        const button = document.createElement('div');
+        button.className = '--button';
+        button.textContent = option; // Set the button's text to the option value
+
+        // Append the button to the container
+        if (existingOptionsContainer) {
+            existingOptionsContainer.appendChild(button);
+        }
+    }
+    if(popupNotifyObject){
+      let update_formgroup = popupNotifyObject.querySelector(".form-group")
+      let update_successEl = popupNotifyObject.querySelector(".notify-text")
+      
+      update_successEl.innerHTML = `{{ section.settings.text }}`;
+      update_formgroup.classList.remove('hidden');
+    }
+    console.log("Modal data updated:", variant);
+};
+
+
+ 
+   window.notifyPopup = (variant) => {
+     if(variant){
+       console.log("First Load");
+       update_modal_data(variant);
+     }
+      let popupNotifyButtons = document.querySelectorAll(".notify-stock-button-x")
+      popupNotifyButtons?.forEach(button => {
+        button.addEventListener("click", e => popupNotifyObject.handleNotifyButton(e))
+      })
+   }
+  const productSection = document.getElementById('product-information-container');
+
+  if (productSection) {
+    productSection.addEventListener("click", function (event) {
+      const button = event.target.closest(".notify-stock-button-x");
+      if (!button || !this.contains(button)) return;
+  
+      popupNotifyObject?.handleNotifyButton(event);
+    });
+  }
+  notifyPopup()
+
+  //   document.addEventListener('click',(e)=>{
+  //   console.log(e.target.classList);
+  //   if(e.target.classList.contains('notify-stock-button-x')){
+  //     popupNotifyObject.handleNotifyButton(e)
+  //   }
+  // })
+</script>
+
+{% schema %}
+{
+  "name": "Stock Notify Popup",
+  "settings": [
+    {
+      "type": "text",
+      "id": "company_id",
+      "label": "Company Id",
+      "default": "PGQBTc",
+      "info": "Come From API"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Register to receive a notification when this item comes back in stock"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Notify me when available"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input Placeholder",
+      "default": "Email"
+    },
+    {
+      "type": "color_background",
+      "id": "shadow_bg",
+      "label": "Shadow Background",
+      "default": "#ffffff99"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer_text",
+      "default": "By signing up, you agree to receive promotional and back-in-stock notifications via email. Opt out anytime.",
+      "label": "Disclaimer Text"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "default": "Thank you for your interest. We will get back to you via email as soon as this product is in stock.",
+      "label": "Success message"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stock Notify"
+    }
+  ]
+}
+{% endschema %}

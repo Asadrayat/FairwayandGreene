@@ -1,0 +1,323 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+
+  @media(max-width: 768px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+  #shopify-section-{{id}} {
+    .wrapper-{{ id }}{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));  
+      /* column-gap: var(--Spacing-Container-md, 24px);
+      row-gap: var(--Spacing-Container-lg, 40px); */
+      max-width: 1080px;
+      margin-inline: auto;
+      /* gap: var(--Spacing-Container-md, 24px) var(--Spacing-Container-sm, 16px); */
+      gap: var(--Spacing-Container-sm, 16px) var(--Spacing-Container-xxs, 8px);
+      @media(max-width: 768px){
+        grid-template-columns: minmax(0,1fr); 
+        /* gap: var(--Spacing-Container-xs, 12px); */
+      }
+    }
+    .content-wrapper{
+      display: grid;
+      grid-template-columns: minmax(0,1fr);   
+      gap: var(--Spacing-Container-sm, 16px);
+    }
+    .text-wrapper{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));  
+      gap: var(--Spacing-Container-xs, 8px);
+      @media(max-width: 768px){
+        grid-template-columns: minmax(0,1fr); 
+      }
+    }
+    .showroom-img{
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      /* border-radius: var(--rounded-lg, 8px); */
+    }
+    .left-wrapper{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;     
+    }
+    .name{
+      color: #000;
+      /* font-family: var(--font-family-Title, "Neue Plak"); */
+      font-size: var(--Font-Size-Heading-H3, 24px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H3, 28px); /* 116.667% */
+      margin: 0;
+    }
+    .time p{  
+      margin: 0;
+      color: #000;
+      font-family: var(--font-family-Title, Krylon);
+      font-size: var(--Font-Size-Heading-H3, 24px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H3, 28px); /* 116.667% */
+    }
+    .right-wrapper{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      @media(max-width: 768px){
+        gap: var(--Spacing-Container-xxs, 6px);
+      }
+    }
+    .address p{
+      color: #000;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-Paragraph-Regular, 16px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */ 
+      margin: 0;
+    }
+    .btn-wrapper{
+      display: flex;
+      align-items: flex-start;
+      gap: var(--Spacing-Container-md, 24px);
+      align-self: stretch;
+    }
+    .btn-wrapper a{
+      color: var(--Content-Base-main, #1F2937);
+      text-align: center;
+      /* font-family: var(--font-family-Body, "Neue Plak"); */
+      font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 16px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 16px); /* 100% */
+      text-decoration-line: underline;
+      text-decoration-style: solid;
+      text-decoration-skip-ink: none;
+      text-decoration-thickness: auto;
+      text-underline-offset: auto;
+      text-underline-position: from-font;
+      text-transform: capitalize;      
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {% for block in section.blocks %}
+        {% if block.type == 'showroom' %}
+          <div class="content-wrapper">
+            <div class="image-wrapper">
+            {% if block.settings.image != null %}
+              {{ block.settings.image  | image_url: width: block.settings.image.width | image_tag: class: 'showroom-img' }}
+            {% endif %}            
+            </div>
+            <div class="text-wrapper">
+              <div class="left-wrapper">
+                {% if block.settings.name != blank %}
+                <h3 class="name">{{ block.settings.name }}</h3>  
+                {% endif %}
+                {% comment %}
+                <div class="time">
+                  {% if block.settings.time != blank %}
+                    {{ block.settings.time }}  
+                  {% endif %}
+                </div>                  
+                {% endcomment %}
+              </div>
+              <div class="right-wrapper">
+                <div class="address">
+                  {% if block.settings.address != blank %}
+                    {{ block.settings.address }}  
+                  {% endif %} 
+                </div>
+                {% comment %}
+                <div class="btn-wrapper">
+                  {% if block.settings.map != blank %}
+                    <a href="{{ block.settings.map_url }}" class="map">{{ block.settings.map }}</a>
+                  {% endif %}
+                  {% if block.settings.appointment != blank %}
+                    <a href="{{ block.settings.appointment_url }}" class="appointment">{{ block.settings.appointment }}</a>
+                  {% endif %}
+                </div>                  
+                {% endcomment %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Showroom Gallery",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "showroom",
+      "name": "Showroom ",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "richtext",
+          "id": "address",
+          "label": "Address"
+        },
+        {
+          "type": "richtext",
+          "id": "time",
+          "label": "Time"
+        },
+        {
+          "type": "text",
+          "id": "map",
+          "label": "Map Text"
+        },
+        {
+          "type": "url",
+          "id": "map_url",
+          "label": "Map Url"
+        },
+        {
+          "type": "text",
+          "id": "appointment",
+          "label": "Appointment Text"
+        },
+        {
+          "type": "url",
+          "id": "appointment_url",
+          "label": "Appointment Url"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Showroom Gallery"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,74 @@
+{% comment %}
+  Size selector snippet:
+  - Displays size buttons for sizes available for the given color value (variant_option)
+  - Uses card_variant to validate the color and product variants to find matching sizes
+  - Builds size array using string concatenation and split to avoid push
+{% endcomment %}
+
+{%- if card_variant and variant_option -%}
+  {% assign color_value = variant_option %}
+  {% assign size_values_string = "" %}
+  {% assign color_option_index = nil %}
+  {% assign size_option_index = nil %}
+
+  {% comment %} Find the indices of Color and Size options {% endcomment %}
+  {% for option in product.options_with_values %}
+    {% assign normalized_option_name = option.name | downcase %}
+    {% if normalized_option_name contains 'color' or normalized_option_name contains 'Color' %}
+      {% assign color_option_index = forloop.index0 %}
+    {% elsif normalized_option_name contains 'size' %}
+      {% assign size_option_index = forloop.index0 %}
+    {% endif %}
+    {% if color_option_index != nil and size_option_index != nil %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} Validate color and collect size values for matching variants {% endcomment %}
+  {% if color_option_index != nil and size_option_index != nil %}
+    {% if card_variant.options[color_option_index] == color_value %}
+      {% for variant in product.variants %}
+        {% if variant.options[color_option_index] == color_value %}
+          {% assign size = variant.options[size_option_index] %}
+          {% unless size_values_string contains size %}
+            {% if size_values_string == "" %}
+              {% assign size_values_string = size %}
+            {% else %}
+              {% assign size_values_string = size_values_string | append: "," | append: size %}
+            {% endif %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+
+  {% comment %} Convert size_values_string to array and render size buttons {% endcomment %}
+  {% assign size_values = size_values_string | split: "," %}
+  {% if size_values.size > 0 %}
+    <div class="size-selector" data-product-id="{{ product.id }}">
+      {% for size in size_values %}
+        {% assign size_variant = nil %}
+        {% for variant in product.variants %}
+          {% if variant.options[color_option_index] == color_value and variant.options[size_option_index] == size %}
+            {% assign size_variant = variant %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        <button
+          type="button"
+          class="size-btn {% unless size_variant.available %}size-btn--disabled{% endunless %}"
+          data-variant-id="{{ size_variant.id | default: '' }}"
+          data-size-value="{{ size | escape }}"
+          {% if size_variant.available %}
+            data-variant-url="{{ size_variant.url }}"
+          {% else %}
+            disabled
+            aria-label="{{ size | escape }} (Out of stock)"
+          {% endif %}
+        >
+          {{ size }}
+        </button>
+      {% endfor %}
+    </div>
+  {% endif %}
+{%- endif -%}

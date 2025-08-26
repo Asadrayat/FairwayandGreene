@@ -1,0 +1,623 @@
+{% comment %} {{ 'component-card.css' | asset_url | stylesheet_tag }} {% endcomment %}
+
+{% style %}
+  #shopify-section-{{section.id}} {
+    box-sizing: border-box;
+    padding-block: {{section.settings.padding_block_desktop}};
+    {% unless section.settings.background_image == blank %}
+      background-image: url({{section.settings.background_image | image_url: width: section.settings.background_image.width }});
+      background-repeat: no-repeat;
+      background-size: cover;
+    {% else %}
+      background-color: {{ section.settings.bg_color }};
+    {% endunless %}
+
+    .hidden-collection{
+      display: none;
+    }
+
+    .full-width{
+      padding-inline: 40px;
+    }
+
+    .new-fc-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: var(--Spacing-Container-xl);
+      @media(max-width: 768px) {
+        /* gap: 24px; */
+      }
+    }
+      @media(max-width: 768px) {
+        gap: 24px;
+        padding-block: {{section.settings.padding_block_mobile}};
+      }
+    }
+    .new-fc-header {
+      display: flex;
+      /* flex-direction: column-reverse; */
+      flex-direction: column;
+      align-items: {{ section.settings.heading_alignment }};
+      gap: calc(8px + var(--Spacing-Container-md, 24px));
+
+      @media(max-width: 768px) {
+        display: flex;
+        gap: 24px;
+        align-items: {{ section.settings.heading_alignment }};
+        flex-direction: column;
+      }
+    }
+
+    .new-fc-header h2{
+      margin: 0;
+      color: #000;
+      text-align: left;
+      font-size: var(--Font-Size-Heading-H2);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H2);
+      letter-spacing: -0.96px;
+
+      @media(max-width: 768px) {
+        text-align: center;
+        font-size: var(--Font-Size-Heading-H2, 30px);
+        line-height: var(--Line-Height-Heading-H2, 36px);
+        letter-spacing: -0.6px;
+      }
+    }
+    .new-fc-list {
+      display: flex;
+      align-items: flex-start;
+      /* gap: var(--Spacing-Container-md, 24px); */
+      position: relative;
+    }
+    .new-fc-list:after{
+      position: absolute;
+      content: "";
+      background: #00402754;
+      width: 100%;
+      height: 2px;
+      bottom: -8px;
+      left: 0;
+      z-index: 1;
+    }
+    .new-fc-list-btn {
+      color: #004027;
+      /* font-family: var(--font-family-Body, "Sainte Colombe"); */
+      font-size: var(--Font-Size-Paragraph-Medium, 18px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Medium, 26px);
+      border: none;
+      position: relative;
+      padding: 0 12px;
+      margin: 0;
+      &:first-child {
+        padding-inline: 0 8px;
+      }
+      &:last-child {
+        padding-inline: 8px 0;
+      }
+    }
+    .new-fc-list-btn:after {
+      position: absolute;
+      content: "";
+      width: 0%;
+      background: #004027;
+      height: 2px;
+      left: 0%;
+      /* transform: translateX(-50%); */
+      bottom: -8px;
+      transition: width .1s ease-in;
+      z-index: 2;
+    }
+    .new-fc-list-btn.active{
+      color: #004027;
+    }
+    .new-fc-list-btn:hover:after,
+    .new-fc-list-btn.active:after {
+      width: 100%;
+    }
+    .next-{{ section.id }} {
+      right: 0
+    }
+    .new-fc-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .new-fc-view-all-btn {
+      display: block;
+      color: var(--Content-Base-main, #1f2937);
+      text-align: center;
+      font-family: var(--font-family-Control, "Archivo Expanded");
+      font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 16px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 16px);
+      text-decoration-line: underline;
+      text-decoration-style: solid;
+      text-decoration-skip-ink: none;
+      text-decoration-thickness: auto;
+      text-underline-offset: auto;
+      text-underline-position: from-font;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .new-fc-view-all-btn_ {
+      color: #FFF;
+      width: max-content;
+      margin: auto;
+      text-align: center;
+      font-family: "Aktiv Grotesk";
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 100%;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      border: 0;      
+      cursor: pointer;
+      border-radius: var(--rounded-none, 0px);
+      background: linear-gradient(90deg, #010D05 0%, #132D1B 100%);
+      display: flex;
+      padding: var(--Spacing-Container-sm, 12px) var(--Spacing-Container-lg, 32px);
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      align-self: stretch;
+      border: 1px solid #004027;
+      transition: all 0.4s;
+      margin: 0;
+    }    
+     .mfc__nav-scroll__wrapp {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        padding: 12px;
+      }
+      .button__wrapper_swiper {
+          display: flex;
+          gap: 16px;
+          align-items: center;
+      }
+      .--nav-icon {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          background: linear-gradient(90deg, #010D05 0%, #132D1B 100%);
+          line-height: 1;
+          /* position: absolute; */
+          position: relative;
+          /* top: 50%; */
+          z-index: 1;
+          border-radius: 0%;
+          align-items: center;
+          justify-content: center;
+          /* transform: translateY(-50%); */
+          box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+          cursor: pointer;
+          path {
+            stroke: #fff;
+          }
+      }
+      .swiper-scrollbar-{{ section.id }} {
+        position: relative !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        /* margin: var(--Spacing-Container-sm) 0 0 0; */
+        height: 3px !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        cursor: pointer;
+        padding-block: 16px;
+        z-index: 1;
+        background: transparent;
+        .swiper-scrollbar-drag {
+          background: #004027;
+          display: block !important;
+          height: 2px;
+        }
+      }
+      .swiper-scrollbar-{{ section.id }}::before {
+        position: absolute;
+        content: "";
+        background: var(--swiper-scrollbar-bg-color, rgba(0, 0, 0, .1));
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+      }
+      .--nav-icon.swiper-button-disabled {
+          background: #EDFCF6;
+          path {
+            stroke: #B3DCCC;
+          }
+      }
+        .prev-{{ section.id }}.--nav-icon {
+          /* left: -20px; */
+          /* left: 0px; */
+        }
+        .next-{{ section.id }}.--nav-icon {
+          /* right: -20px; */
+          /* right: 0px; */
+        }
+      }
+  }
+{% endstyle %}
+
+{% liquid
+  assign selected_collection = section.blocks.first.settings.collection
+%}
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+<div
+  id="{{ section.settings.nav_id }}"
+  class="{% if section.settings.full_width_section %}full-width{% else %}page-width{% endif %}"
+>
+  <div class="new-fc-wrapper">
+    <div class="new-fc-header">
+      <h2>{{ section.settings.heading }}</h2>
+      <div class="new-fc-list fc-list-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% unless block.settings.collection == blank %}
+            <button
+              class="new-fc-list-btn {% if forloop.first %}active{% endif %}"
+              data-collection="{{ block.settings.collection.handle }}"
+              data-url="{{ block.settings.collection.url }}"
+            >
+              {% if block.settings.title != blank %}{{ block.settings.title }}{%else %}{{ block.settings.collection.title }}{% endif %}              
+            </button>
+          {% endunless %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="new-fc-body">
+      <div class="swiper swiper-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% unless block.settings.collection == blank %}
+              {% for product in block.settings.collection.products limit: 8 %}
+                <div
+                  class="swiper-slide swiper-slide--{{ section.id }} {% unless selected_collection.handle == block.settings.collection.handle %}hidden-collection{% endunless %}"
+                  data-collection="{{ block.settings.collection.handle }}"
+                >
+                  {% render 'new-product-card-v1', product: product %}
+                </div>
+              {% endfor %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+        <div class="mfc__nav-scroll__wrapp">
+          <div class="swiper-scrollbar-{{ section.id }} swiper-scrollbar"></div>
+          <div class="button__wrapper_swiper">
+            <div class="prev-{{ section.id }} --nav-icon ">
+              {% comment %}
+                {% render 'all-icons', name: 'left_arrow' %}
+              {% endcomment %}
+              {% render 'all-icons', name: 'swiper_left' %}
+            </div>
+            <div class="next-{{ section.id }} --nav-icon ">
+              {% render 'all-icons', name: 'swiper_right' %}
+              {% comment %}
+                {% render 'all-icons', name: 'right_arrow' %}
+              {% endcomment %}
+            </div>
+          </div>
+        </div>
+        {% comment %}
+          <div class="prev-{{ section.id }} hero_slider__nav_icon">
+              {% render 'all-icons', name: 'left_arrow' %}
+            </div>
+            <div class="next-{{ section.id }} hero_slider__nav_icon">
+              {% render 'all-icons', name: 'right_arrow' %}
+            </div>
+          <div class="swiper-scrollbar-{{ section.id }} swiper-scrollbar"></div>
+        {% endcomment %}
+      </div>
+    </div>
+    {% unless section.settings.view_all_btn_text == blank %}
+      <div class="new-fc-footer">
+        <a
+          class="_btn-{{section.id}} new-fc-view-all-btn_ "
+          href="{{ section.settings.view_all_btn_url | default: section.blocks.first.settings.collection.url }}"
+        >
+          {{- section.settings.view_all_btn_text -}}
+        </a>
+      </div>
+    {% endunless %}
+  </div>
+</div>
+
+{% comment %}
+  document.addEventListener("DOMContentLoaded", e => {
+    {% comment %} swiperSliderNew["{{section.id}}"] = {}; {% endcomment %}
+     window.swiperSlider = window.swiperSlider || {};
+
+    swiperSliderNew["{{section.id}}"].swiperInit = () => swiperSliderNew["{{section.id}}"].swiper = new Swiper(".swiper-{{ section.id }}", {
+      slidesPerView: 3.2,
+      spaceBetween: 40,
+      navigation: {
+        nextEl: '.next-{{ section.id }}',
+        prevEl: '.prev-{{ section.id }}'
+      },
+      scrollbar: {
+        el: ".swiper-scrollbar-{{ section.id }}.swiper-scrollbar",
+        draggable: true,
+        hide: false
+      },
+      breakpoints: {
+        200: {
+          slidesPerView: 1.2,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 25,
+        },
+        1200: {
+          slidesPerView: 3.2,
+          spaceBetween: 30,
+        },
+        1400: {
+          slidesPerView: 4,
+          spaceBetween: 40,
+        },
+        1600: {
+          slidesPerView: 4,
+          spaceBetween: 40,
+        }
+      }
+    })
+
+    swiperSliderNew["{{section.id}}"].swiperInit()
+
+    swiperSliderNew["{{section.id}}"].lists = document.querySelectorAll(`.fc-list-{{section.id}} button`)
+    swiperSliderNew["{{section.id}}"].slides = document.querySelectorAll(`.swiper-{{section.id}} .swiper-slide--{{ section.id }}`)
+    swiperSliderNew["{{section.id}}"].viewAllBtn = document.querySelector(`.btn-{{section.id}}`)
+
+    swiperSliderNew["{{section.id}}"].updateSlider = (handle) => {
+      console.log("handle", handle)
+      if(swiperSliderNew["{{section.id}}"].slides) {
+        swiperSliderNew["{{section.id}}"].slides.forEach(slide => {
+          slide.dataset.collection === handle ? slide.classList.remove("hidden-collection") : slide.classList.add("hidden-collection")
+        })
+      }
+
+      if(swiperSliderNew["{{section.id}}"].swiper) swiperSliderNew["{{section.id}}"].swiper.destroy(true, true)
+      swiperSliderNew["{{section.id}}"].swiperInit()
+    }
+
+    if(swiperSliderNew["{{section.id}}"].lists) {
+      swiperSliderNew["{{section.id}}"].lists.forEach((list, index) => {
+        list.addEventListener("click", e => {
+          swiperSliderNew["{{section.id}}"].updateSlider(list.dataset?.collection)
+          swiperSliderNew["{{section.id}}"].lists.forEach((l,i) => index === i ? l.classList.add('active') : l.classList.remove('active'))
+          swiperSliderNew["{{section.id}}"].viewAllBtn.setAttribute("href", list.dataset?.url)
+        })
+      })
+    }
+  });
+{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize swiperSliderNew globally if not already defined
+    window.swiperSliderNew = window.swiperSliderNew || {};
+    const sectionId = '{{ section.id }}';
+
+    // Ensure the section-specific object exists
+    if (!window.swiperSliderNew[sectionId]) {
+      window.swiperSliderNew[sectionId] = {};
+    }
+
+    // Initialize Swiper for this section
+    window.swiperSliderNew[sectionId].swiperInit = () => {
+      window.swiperSliderNew[sectionId].swiper = new Swiper(`.swiper-${sectionId}`, {
+        slidesPerView: 3.2,
+        spaceBetween: 40,
+        navigation: {
+          nextEl: `.next-${sectionId}`,
+          prevEl: `.prev-${sectionId}`,
+        },
+        scrollbar: {
+          el: `.swiper-scrollbar-${sectionId}.swiper-scrollbar`,
+          draggable: true,
+          hide: false,
+        },
+        breakpoints: {
+          200: {
+            slidesPerView: 1.2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 25,
+          },
+          1200: {
+            slidesPerView: 3.2,
+            spaceBetween: 30,
+          },
+          1400: {
+            slidesPerView: 4,
+            spaceBetween: 40,
+          },
+          1600: {
+            slidesPerView: 4,
+            spaceBetween: 40,
+          },
+        },
+      });
+    };
+
+    window.swiperSliderNew[sectionId].swiperInit();
+
+    window.swiperSliderNew[sectionId].lists = document.querySelectorAll(`.fc-list-${sectionId} button`);
+    window.swiperSliderNew[sectionId].slides = document.querySelectorAll(
+      `.swiper-${sectionId} .swiper-slide--${sectionId}`
+    );
+    window.swiperSliderNew[sectionId].viewAllBtn = document.querySelector(`._btn-${sectionId}`);
+
+    window.swiperSliderNew[sectionId].updateSlider = (handle) => {
+      console.log('handle', handle);
+      if (window.swiperSliderNew[sectionId].slides) {
+        window.swiperSliderNew[sectionId].slides.forEach((slide) => {
+          slide.dataset.collection === handle
+            ? slide.classList.remove('hidden-collection')
+            : slide.classList.add('hidden-collection');
+        });
+      }
+
+      if (window.swiperSliderNew[sectionId].swiper) {
+        window.swiperSliderNew[sectionId].swiper.destroy(true, true);
+      }
+      window.swiperSliderNew[sectionId].swiperInit();
+    };
+
+    if (window.swiperSliderNew[sectionId].lists) {
+      window.swiperSliderNew[sectionId].lists.forEach((list, index) => {
+        list.addEventListener('click', (e) => {
+          window.swiperSliderNew[sectionId].updateSlider(list.dataset?.collection);
+          window.swiperSliderNew[sectionId].lists.forEach((l, i) =>
+            index === i ? l.classList.add('active') : l.classList.remove('active')
+          );
+          if (window.swiperSliderNew[sectionId].viewAllBtn) {
+            window.swiperSliderNew[sectionId].viewAllBtn.setAttribute('href', list.dataset?.url);
+          }
+        });
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Featured Collection Tab",
+  "settings": [
+    {
+      "type": "text",
+      "id": "nav_id",
+      "label": "Navigation ID"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width_section",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "left",        
+        },
+        {
+          "value": "center",
+          "label": "center",        
+        },
+        {
+          "value": "end",
+          "label": "right",        
+        },
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+
+    {
+      "type": "header",
+      "content": "View All Button"
+    },
+    {
+      "type": "text",
+      "id": "view_all_btn_text",
+      "label": "Button Text",
+      "default": "SHOP full  collection"
+    },
+    {
+      "type": "url",
+      "id": "view_all_btn_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "text",
+      "id": "padding_block_desktop",
+      "label": "Padding Block",
+      "default": "40px 80px",
+      "info": "0px 0px; means top 0px and bottom 0px"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing (Mobile)"
+    },
+    {
+      "type": "text",
+      "id": "padding_block_mobile",
+      "label": "Padding Block",
+      "default": "24px 24px",
+      "info": "0px 0px; means top 0px and bottom 0px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection Tab",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

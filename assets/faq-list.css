@@ -1,0 +1,233 @@
+.faq-list-v3__container {
+  .acr-content .button {
+    color: var(--Content-Base-main, #1f2937);
+    text-align: center;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 16px);
+    width: max-content;
+    /* margin: 0 0 32px; */
+  }
+  .accordion-wrapper {
+    /* display: grid;
+      grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
+      grid-gap: 40px; */
+    @media (max-width: 786px) {
+      /* grid-template-columns: minmax(0px, 1fr);
+        grid-gap: 0; */
+    }
+  }
+  .heading {
+    /* text-align: center; */
+    margin: 0 0 40px 0;
+    color: var(--Content-Base-main, #1f2937);
+
+    /* Headings/H2 */
+    font-family: var(--font-family-Title, "Parnaso Display Trial");
+    font-size: var(--Font-Size-Heading-H2, 48px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H2, 56px); /* 116.667% */
+    letter-spacing: -0.96px;
+    @media (max-width: 786px) {
+      margin: 0 0 24px 0;
+    }
+  }
+  .info {
+    img {
+      max-width: 400px;
+      height: auto;
+      @media (max-width: 768px) {
+        /* display: none; */
+        margin: 16px 0;
+      }
+    }
+  }
+  .wrapper {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .accordion--custom {
+    box-sizing: border-box;
+    padding: 0 0 16px 0;
+    margin-bottom: var(--Spacing-Container-md, 24px);
+    /* border-radius: var(--rounded-lg, 8px); */
+    /* border: 1px solid #E4E4E4;
+      background: rgba(255, 255, 255, 0.05); */
+    /* border-bottom: 1px solid var(--Border-Base-subtle, #e5e7eb); */
+    @media (max-width: 786px) {
+      margin-bottom: 16px;
+    }
+  }
+  .accordion--custom.active {
+    padding: 0;
+  }
+  .acr-title {
+    box-sizing: border-box;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    grid-gap: 20px;
+  }
+  .faq-question {
+    color: var(--Content-Base-main, #1f2937);
+
+    /* Headings/H4 */
+    font-family: var(--font-family-Title, "Parnaso Display Trial");
+    font-size: var(--Font-Size-Heading-H4, 24px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H4, 28px); /* 116.667% */
+    letter-spacing: -0.48px;
+    margin: 0;
+    @media (max-width: 768px) {
+      /* font-size: 15px;
+        line-height: 20px;
+        letter-spacing: -0.32px; */
+    }
+  }
+  .accordion--custom .acr-title svg {
+    transition: all 0.5s ease-in-out;
+  }
+  .accordion--custom.active .acr-title svg {
+    transform-origin: center;
+    transition: all 0.5s ease-in-out;
+    transform: rotate(180deg);
+  }
+  .acr-content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: Archivo Expanded;
+      font-weight: 600;
+    }
+  }
+  .faq__content * {
+    color: var(--Content-Base-base, #4b5563);
+
+    /* Paragraph/XS */
+    font-family: var(--font-family-Body, "Archivo Expanded");
+    /* font-size: var(--Font-Size-Paragraph-Medium, 16px); */
+    font-size: 14px;
+    line-height: 20px;
+    font-style: normal;
+    font-weight: 250;
+    padding: 0;
+    margin: 16px 0;
+    @media (max-width: 768px) {
+      /* font-size: 14px;
+          line-height: 20px; */
+    }
+  }
+  .faq__content {
+    margin: var(--Spacing-Container-md) 0 var(--Spacing-Container-sm) 0;
+  }
+  .faq__content h4 {
+    color: var(--Content-Base-main, #1f2937);
+    font-family: var(--font-heading-family);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 250;
+    line-height: 18px;
+    margin: 12px 0 24px;
+    @media (width > 768px) {
+      margin: 24px 0 8px;
+    }
+  }
+  .faq__content p {
+    color: var(--Content-Base-base, #4b5563);
+
+    /* Paragraph/XS */
+    font-family: var(--font-family-Body, "Archivo Expanded");
+    /* font-size: var(--Font-Size-Paragraph-Medium, 16px); */
+    font-size: 14px;
+    line-height: 20px;
+    font-style: normal;
+    font-weight: 250;
+    padding: 0;
+    margin: 0;
+    @media (max-width: 768px) {
+      /* font-size: 14px;
+          line-height: 20px; */
+    }
+  }
+
+  .accordion--custom .acr-content {
+    height: auto; /* Ensures expanded content is visible */
+    transition: height 0.3s ease;
+  }
+  .matched-faqs {
+    padding-block: 24px 0;
+    @media (max-width: 768px) {
+      padding-block: 16px 0;
+    }
+  }
+  /* New styles for tabs */
+  .tab-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    margin-bottom: var(--Spacing-Container-lg, 32px);
+    align-items: flex-start;
+    gap: var(--Spacing-Container-xs, 12px);
+    align-self: stretch;
+    @media (max-width: 786px) {
+      flex-wrap: unset;
+      overflow-x: auto;
+    }
+  }
+
+  .tab {
+    min-width: fit-content;
+    color: var(--Content-Base-main, #1f2937);
+    font-family: var(--font-family-Body, Archivo);
+    font-size: var(--Font-Size-Paragraph-Regular, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Regular, 24px);
+    display: flex;
+    padding: 10px var(--Spacing-Container-md, 24px)
+      var(--Spacing-Container-xxs, 8px) var(--Spacing-Container-md, 24px);
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: var(--rounded-none, 0px);
+    border: 1px solid rgba(209, 213, 219, 0.5);
+    background: #f9fafb;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    @media (max-width: 786px) {
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+  }
+
+  .tab.active {
+    border-radius: var(--rounded-none, 0px);
+    background: var(--Background-inverted-main, #1f2937);
+    color: var(--Content-Inverted-main, #f3f4f6);
+  }
+
+  /* Adjust accordion wrapper for single-column layout with tabs */
+  .accordion-wrapper-first--hs {
+    grid-column: span 2;
+    @media (max-width: 786px) {
+      grid-column: span 1;
+    }
+  }
+
+  /* Hide matched-faqs in faq-list section */
+  .matched-faqs {
+    display: none;
+  }
+}

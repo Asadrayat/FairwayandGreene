@@ -1,0 +1,48 @@
+{% comment %}
+  Size selector snippet:
+  - Displays buttons for 'Size' option values
+  - Disables buttons for unavailable variants
+  - Includes data-variant-id and data-size-value for JavaScript updates
+  - Fixed unterminated if condition
+  - Uses original loop-based variant lookup to ensure sizes are shown
+  - Added debug output for option names
+{% endcomment %}
+
+{%- assign size_option = product.options_with_values | where: 'name', 'Size' | first -%}
+
+{%- if size_option and size_option.values.size > 0 -%}
+  <div class="size-selector" data-product-id="{{ product.id }}">
+    {%- for size in size_option.values -%}
+      {%- assign size_variant = nil -%}
+      {%- for variant in product.variants -%}
+        {%- if variant.options contains size -%}
+          {%- assign size_variant = variant -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <button
+        type="button"
+        class="size-btn {% unless size_variant.available %}size-btn--disabled{% endunless %}"
+        data-variant-id="{{ size_variant.id | default: '' }}"
+        data-size-value="{{ size | escape }}"
+        {% if size_variant.available %}
+          data-variant-url="{{ size_variant.url }}"
+        {% else %}
+          disabled
+          aria-label="{{ size | escape }} (Out of stock)"
+        {% endif %}
+      >
+        {{ size }}
+      </button>
+    {%- endfor -%}
+  </div>
+{%- else -%}
+  {% comment %} Debug output to identify option names {% endcomment %}
+  <div class="size-selector-debug" style="display: none;">
+    Available option names: 
+    {%- for option in product.options_with_values -%}
+      {{ option.name | escape }}{% unless forloop.last %}, {% endunless %}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

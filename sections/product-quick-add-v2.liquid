@@ -1,0 +1,300 @@
+{% comment %}
+  <style>
+    .pqa-container--{{ section.id }}{
+      pqa-new{
+        /* display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        z-index: 1;
+        border-top: 1px solid var(--Border-Base-dense, #4B5563);
+        box-shadow: 0px -3px 6px 0px rgba(0, 0, 0, 0.15); */
+        display: none;
+        position: fixed;
+        top: 62px;
+        left: 0;
+        width: 100%;
+        background: #ffffffed;
+        z-index: 1;
+        border-bottom: 1px solid var(--Border-Base-dense, #4B5563);
+        border-top: 1px solid #4b556333;
+        box-shadow: 0px -3px 6px 0px rgba(0, 0, 0, 0.15);
+        @media(max-width: 768px) {
+          background: transparent;
+          border-top: 1px solid transparent;
+          border-bottom: 1px solid transparent;
+          bottom: unset;
+          top: 12px;
+        }
+      }
+      pqa-new.sticky-visible{
+        display: block;
+      }
+      .pqa-new-wrapper{
+        display: grid;
+        grid-template-columns: auto minmax(0,1fr) auto;
+        align-items: center;
+        gap: 12px;
+        padding: var(--Spacing-Section-Section-Horizontal-Padding, 12px) 0;
+        /* background: rgba(249, 250, 251, 0.80); */
+
+        @media screen and (max-width: 744px){
+          grid-template-columns: minmax(0,1fr);
+        }
+      }
+      .pqa-new-media img{
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        /* max-width: 80px; */
+        max-width: 65px;
+        aspect-ratio: 1;
+      }
+      .pqa--title{
+        color: #000;
+        margin: 0;
+        font-family: var(--font-family-Title, Krylon);
+        font-size: var(--Font-Size-Heading-H4, 24px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Heading-H4, 28px);
+      }
+      .pqa--price{
+        color: var(--Content-Base-main, #1F2937);
+        font-family: var(--font-family-Body, "Aktiv Grotesk");
+        font-size: var(--Font-Size-Paragraph-Regular, 16px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px); /* 125% */
+        letter-spacing: -0.32px;
+        margin: 0;
+      }
+
+      .pqa-new-variants{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--Spacing-Container-xxs, 8px);
+        flex: 1 0 0;
+      }
+       .pqa-new-form{
+        height: calc(100% - 24px);
+        /* background: #166534; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media(max-width: 768px) {
+          height: 100%;
+        }
+       }
+      .pqa-new-form button{
+        background: #166534;
+        border: 1px solid #166634;
+        display: flex;
+        padding: var(--Spacing-Container-xs, 12px) var(--Spacing-Container-xxl, 80px);
+        justify-content: center;
+        align-items: center;
+        gap: var(--Spacing-Container-xxs, 8px);
+        flex: 1 0 0;
+        /* border: none; */
+        border-radius: var(--rounded-none, 0px);
+        color: #FFF;
+        text-align: center;
+        font-family: var(--font-family-Body, "Aktiv Grotesk");
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 100%; /* 100% */
+        text-transform: uppercase;
+        transition: all 0.4s ease-in-out;
+      }
+      .pqa-new-form button:hover {
+        color: #166534;
+        background: #FFF;
+      }
+
+
+      @media screen and (max-width: 744px){
+        .pqa-new-form form {
+          width: 100%;
+        }
+        .pqa-new-wrapper{
+          grid-gap: 0;
+        }
+        .pqa-new-form button{
+          padding: 20px 12px;
+          width: 100%;
+          font-size: 13px;
+        }
+        .pqa-new-variants{
+          display: none;
+        }
+        .pqa-new-media{
+          display: none;
+        }
+      }
+    }
+  </style>
+
+  <div class="pqa-container pqa-container--{{ section.id }}">
+    <pqa-new class="page-width">
+      <div class="pqa-new-wrapper">
+        <div class="pqa-new-media">
+          {% if product.selected_or_first_available_variant.featured_image == blank %}
+            {{ product.featured_image | image_url: width: 80 | image_tag: loading: 'lazy' }}
+          {% else %}
+            {{
+              product.selected_or_first_available_variant.featured_image
+              | image_url: width: 80
+              | image_tag: loading: 'lazy'
+            }}
+          {% endif %}
+        </div>
+        <div class="pqa-new-variants">
+          <h4 class="pqa--title" id="pqa--title">{{ product.selected_or_first_available_variant.title }}</h4>
+          <p class="pqa--price">{{ product.selected_or_first_available_variant.price | money }}</p>
+        </div>
+
+        <div class="pqa-new-form">
+          {% form 'product', product %}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button
+              class="psatc-btn"
+              type="submit"
+              {% unless product.selected_or_first_available_variant.available %}
+                disabled
+              {% endunless %}
+            >
+              {% if product.selected_or_first_available_variant.available %}
+                Add To Cart
+              {% else %}
+                Sold Out
+              {% endif %}
+            </button>
+          {% endform %}
+        </div>
+      </div>
+    </pqa-new>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        setTimeout(function() {
+
+            fetch(window.Shopify.routes.root + "?section_id={pqa-variant-section}", {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch section');
+                }
+                return res.text();
+            })
+            .then(data => {
+                console.log(data);
+                if (!data['pqa-variant-section']) {
+                    console.warn('Section pqa-variant-section not found in response');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching section:', error);
+            });
+
+            const mainProductInfo = document.querySelector('#product-information-container');
+            const pqaNewElement = document.querySelector('pqa-new');
+            const footer = document.querySelector(".footer__section");
+
+            if (!mainProductInfo || !pqaNewElement) return;
+
+            if (window.innerWidth < 989 && footer) {
+                footer.parentElement.style.paddingBottom = '150px';
+            }
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        pqaNewElement.classList.remove('sticky-visible');
+                    } else {
+                        pqaNewElement.classList.add('sticky-visible');
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(handleIntersection, {
+                root: null,
+                rootMargin: '0px',
+                threshold: [0, 0.1, 0.9, 1]
+            });
+
+            observer.observe(mainProductInfo);
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth < 989 && footer) {
+                    footer.parentElement.style.paddingBottom = '150px';
+                } else if (footer) {
+                    footer.parentElement.style.paddingBottom = '';
+                }
+
+                const rect = mainProductInfo.getBoundingClientRect();
+                handleIntersection([{
+                    isIntersecting: rect.top <= window.innerHeight && rect.bottom >= 0,
+                    boundingClientRect: rect,
+                    intersectionRatio: Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0)) / rect.height
+                }]);
+            });
+
+            const initialRect = mainProductInfo.getBoundingClientRect();
+            handleIntersection([{
+                isIntersecting: initialRect.top <= window.innerHeight && initialRect.bottom >= 0,
+                boundingClientRect: initialRect,
+                intersectionRatio: Math.max(0, Math.min(initialRect.bottom, window.innerHeight) - Math.max(initialRect.top, 0)) / initialRect.height
+            }]);
+
+        }, 100);
+    });
+
+    if(document.querySelector(".psatc-btn")) {
+      document.querySelector(".psatc-btn").addEventListener("click", function() {
+
+        if (document.querySelector(".pinfo-add-to-cart")) {
+          document.querySelector(".pinfo-add-to-cart").click();
+        }
+
+        if (document.querySelector(".new-header-cart-icon")) {
+          document.querySelector(".new-header-cart-icon").click();
+        }
+
+        this.textContent = "Adding to cart...";
+        this.style.opacity = '.7'
+        this.setAttribute("disabled", true)
+
+        setTimeout(() => {
+          this.textContent = "Add to cart";
+          this.style.opacity = '1'
+          this.removeAttribute("disabled")
+        }, 2000)
+      })
+    }
+  </script>
+  {% schema %}
+  {
+    "name": "Product Quick Add",
+    "enabled_on": {
+      "templates": ["product"]
+    },
+    "presets": [
+      {
+        "name": "Product Quick Add"
+      }
+    ],
+    "settings": []
+  }
+  {% endschema %}
+{% endcomment %}

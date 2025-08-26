@@ -1,0 +1,127 @@
+{% comment %}
+  Renders a set of links for paginated results. Must be used within paginate tags.
+
+  Usage:
+  {% paginate results by 2 %}
+    {% render 'pagination', paginate: paginate, anchor: '#yourID' %}
+  {% endpaginate %}
+
+  Accepts:
+  - paginate: {Object}
+  - anchor: {String} (optional) This can be added so that on page reload it takes you to wherever you've placed your anchor tag.
+{% endcomment %}
+<style>
+  .custom__pagination-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row-reverse;
+    @media screen and (max-width: 749px){
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pagination{
+      min-width: max-content;
+      width: 100%;
+      flex: 1;
+      .pagination__list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        min-width: max-content;
+        @media screen and (max-width: 749px){
+          justify-content: center;
+        }
+      }
+    }
+    .pagination-info{
+      color: var(--Content-Base-primary, #111827);
+      font-family: var(--font-family-Body, "Neue Plak");
+      font-size: var(--Font-Size-Paragraph-Regular, 16px);
+      line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */
+      padding-left: 12px;
+    }
+    .pagination__item.pagination__item--current{
+      background: linear-gradient(90deg, #010D05 0%, #132D1B 100%);
+      color: #fff;
+      border-radius: 0px;
+    }
+    .pagination__item--current:after{
+      content: none;
+    }
+  }
+</style>
+{{ 'component-pagination.css' | asset_url | stylesheet_tag }}
+
+{%- if paginate.parts.size > 0 -%}
+  <div class="pagination-wrapper custom__pagination-wrapper">
+    <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+      <ul class="pagination__list list-unstyled" role="list">
+        {%- if paginate.previous -%}
+          <li class="hidden">
+            <a
+              href="{{ paginate.previous.url }}{{ anchor }}"
+              class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce"
+              aria-label="{{ 'general.pagination.previous' | t }}"
+            >
+              <span class="svg-wrapper">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- for part in paginate.parts -%}
+          <li>
+            {%- if part.is_link -%}
+              <a
+                href="{{ part.url }}{{ anchor }}"
+                class="pagination__item link"
+                aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+              >
+                {{- part.title -}}
+              </a>
+            {%- else -%}
+              {%- if part.title == paginate.current_page -%}
+                <a
+                  role="link"
+                  aria-disabled="true"
+                  class="pagination__item pagination__item--current "
+                  aria-current="page"
+                  aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                >
+                  {{- part.title -}}
+                </a>
+              {%- else -%}
+                <span class="pagination__item">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+
+        {%- if paginate.next -%}
+          <li class="hidden">
+            <a
+              href="{{ paginate.next.url }}{{ anchor }}"
+              class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce"
+              aria-label="{{ 'general.pagination.next' | t }}"
+            >
+              <span class="svg-wrapper">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </nav>
+    <div class="pagination-info">
+      Showing {{ paginate.current_offset | plus: 1 }}-
+      {%- if paginate.next -%}
+        {{- paginate.current_offset | plus: paginate.page_size -}}
+      {%- else -%}
+        {{- paginate.items -}}
+      {%- endif %}
+      of {{ paginate.items }} items
+    </div>
+  </div>
+{%- endif -%}

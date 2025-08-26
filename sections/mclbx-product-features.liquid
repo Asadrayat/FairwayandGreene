@@ -1,0 +1,307 @@
+{% liquid
+  assign id = section.id
+%}
+{% assign features_object = product.metafields.custom.product_features_section.value %}
+
+<style>
+      #shopify-section-{{id}} {
+        box-sizing: border-box;
+        margin-top: {{section.settings.margin_top | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+        padding-top: {{section.settings.padding_top | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+        background: var(--Background-base-subtle, #F3F4F6);
+        {% if features_object == blank %}
+          display: none;
+        {% endif %}
+      }
+
+      @media(max-width: 600px) {
+        #shopify-section-{{id}} {
+          margin-top: {{section.settings.margin_top_m | append: 'px'}};
+          margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+          padding-top: {{section.settings.padding_top_m | append: 'px'}};
+          padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+        }
+      }
+
+    .wrapper-{{ id }} {
+        display: grid;
+        grid-template-columns: repeat(3,minmax(0,1fr));
+        gap: var(--Spacing-Container-sm, 16px);
+        @media(max-width: 600px) {
+          grid-template-columns: minmax(0,1fr);
+          gap: var(--Spacing-Container-lg, 24px);
+        }
+
+
+
+
+
+
+    h3.--title {
+        color: #000;
+        font-family: var(--font-family-Title, "Neue Plak");
+        font-size: var(--Font-Size-Heading-H3, 24px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Heading-H3, 28px);
+        margin-block: 0 var(--Spacing-Container-xs);
+    }
+  h2,h4 {
+      color: var(--Content-Base-main, #1F2937);
+      margin-block: 0 var(--Spacing-Container-xs, 12px);
+  }
+  .--short-description {
+      color: var(--Content-Base-main, #1F2937);
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-Paragraph-Medium, 18px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Medium, 26px);
+      margin-block: var(--Spacing-Container-xs, 12px);
+  }
+  .--fabric-features {
+      margin-block: var(--Spacing-Container-lg, 32px);
+  }
+    /* .--content {
+        margin-block: var(--Spacing-Container-xs) var(--Spacing-Container-md);
+        color: #000;
+        font-family: var(--font-family-Body, "Neue Plak");
+        font-size: var(--Font-Size-Paragraph-Small, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px);
+    } */
+    .--icon-card-container {
+        display: flex;
+        gap: var(--Spacing-Container-lg);
+    }
+    .--card-wrapper {
+        text-align: center;
+        color: #000;
+        font-family: var(--font-family-Body, "Neue Plak");
+        font-size: var(--Font-Size-Paragraph-Small, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px);
+        img {
+          max-width: 50px;
+          aspect-ratio: 1;
+          margin: 0 auto var(--Spacing-Container-xs);
+        }
+    }
+
+
+.--materials ul {
+    color: var(--Content-Base-base, #4B5563);
+    font-family: var(--font-family-Body);
+    font-size: var(--Font-Size-Paragraph-Small, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Small, 20px);
+    padding-left: 20px;
+}
+.--materials ul li {
+  list-style-type: disc;
+}
+      
+
+  .--image-block-container {
+        grid-column: 2/-1;
+        @media(max-width: 600px) {
+           grid-column: 1/2;
+        }
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+
+
+
+
+
+    }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="--text-container">
+        {% if features_object.short_description != blank %}
+          <div class="--fit-and-feel">
+            <h2>Fit & Feel</h2>
+            <div class="--short-description">{{ features_object.short_description }}</div>
+          </div>
+        {% endif %}
+        {% if features_object.fabric_features != blank %}
+          <div class="--fabric-features">
+            <h4>Features</h4>
+            <div class="--icon-card-container">
+              {% for icon_block in features_object.fabric_features.value %}
+                {% if icon_block.title != blank and icon_block.icon != blank %}
+                  <div class="--card-wrapper">
+                    {{ icon_block.icon | image_url: width: 44 | image_tag }}
+                    {{ icon_block.title }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+        {% if features_object.material != blank %}
+          <div class="--materials">
+            <h4>Material & Care</h4>
+            <div>{{ features_object.material | metafield_tag }}</div>
+          </div>
+        {% endif %}
+      </div>
+      {% if features_object.images != blank %}
+        <div class="--image-block-container">
+          <div class="swiper swiper-{{ section.id }}">
+            <div class="swiper-wrapper">
+              {% for image in features_object.images.value %}
+                <div class="swiper-slide">
+                  {{ image | image_url: width: image.width | image_tag }}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  // document.addEventListener("DOMContentLoaded", (event) => {
+  //     new Swiper('.swiper-{{ section.id }}',{
+  //     slidesPerView: 2,
+  //     spaceBetween: 12,
+  //   })
+  // });
+
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  const xswiperContainer = document.querySelector('.swiper-{{ section.id }}');
+  
+  if (xswiperContainer) {
+    new Swiper(xswiperContainer, {
+      slidesPerView: 2,
+      spaceBetween: 12,
+    });
+  }
+});
+
+
+  
+</script>
+
+{% schema %}
+{
+  "name": "Product Features",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Features"
+    }
+  ]
+}
+{% endschema %}

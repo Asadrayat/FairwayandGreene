@@ -1,0 +1,248 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+  #shopify-section-{{id}} {
+  .sec-{{ id }}{
+    position: relative;
+  }
+  .wrapper-{{ id }}{
+    padding-block: var(--Spacing-Container-lg, 40px);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%
+  }
+  .wrapper-{{ id }} .content-wrraper{
+    display: flex;
+    justify-content: space-between;
+    @media(max-width: 768px){
+      flex-direction: column;
+      align-items: start;
+      gap: var(--Spacing-Container-xs, 12px);
+    }
+  }
+  .image-wrapper img{
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - 240px);
+    object-fit: cover;
+    /* filter: brightness(0.7); */
+    @media(max-width: 1440px){
+      max-height: calc(100vh - 160px);
+    }
+    @media(max-width: 768px){
+      aspect-ratio: 2 / 3;
+      object-position: center;
+    }
+  }
+  .title{
+    color: var(--Content-Inverted-main, #F3F4F6);
+    max-width: 540px;
+    margin: 0;
+    font-family: var(--font-family-Title, "Neue Plak");
+    font-size: var(--Font-Size-Heading-H2, 40px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H2, 40px); /* 100% */
+    letter-spacing: -0.4px;   
+  }
+  .article-content{
+    color: var(--Content-Inverted-main, #F3F4F6);
+    margin: 8px 0 0;
+    max-width: 540px;
+    font-family: var(--font-family-Body, Satoshi);
+    font-size: var(--Font-Size-Paragraph-Regular, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */    
+  }
+  .date-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: var(--Spacing-Container-xs, 12px);
+    flex: 1 0 0;
+  }
+  .date-wrapper span{
+    color: var(--Content-Inverted-main, #F3F4F6);
+    font-family: var(--font-family-Body, Satoshi);
+    font-size: var(--Font-Size-Paragraph-Regular, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */   
+    border-radius: var(--rounded-3xl, 24px);
+    border: 1px solid rgba(168, 168, 168, 0.34);
+    background: rgba(197, 197, 197, 0.30);
+    display: flex;
+    padding: var(--Spacing-Container-xxs, 8px) var(--Spacing-Container-md, 24px);
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+}
+</style>
+{% unless section.settings.article == blank %}
+  {% assign article = section.settings.article %}
+{% endunless %}
+<div class="sec-{{ id }}">
+  <div class="image-wrapper">
+    <a href="{{ article.url }}" class="full-unstyled-link">
+      {% unless article.image == blank %}
+        {{ article.image | image_url: width: article.image.width | image_tag  }}
+        {% else %}
+        {{ 'image' | placeholder_svg_tag }}
+      {% endunless %}
+    </a>
+  </div>
+  <div class="wrapper-{{ id }}">
+    <div class="{% unless section.settings.full_width %}page-width{% endunless %} content-wrraper">
+      <div class="title-wrapper">
+        <a href="{{ article.url }}" class="full-unstyled-link">
+          <h2 class="title">
+            {{ article.title }}
+          </h2>
+        </a>
+        {% unless section.settings.article == blank %}
+          <p class="article-content hidden">
+            {{ article.content | strip_html | truncatewords: 40}}
+          </p>
+        {% endunless %}
+      </div>
+      <div class="date-wrapper">
+        <span>{{ article.created_at | time_tag: format: 'date' }}</span>
+        <span>10 Minutes Read</span>        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Article Banner",
+  "enabled_on": {"templates": ["article","blog"]},
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "article",
+      "id": "article",
+      "label": "Article"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article Banner"
+    }
+  ]
+}
+{% endschema %}

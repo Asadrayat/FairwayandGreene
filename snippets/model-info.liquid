@@ -1,0 +1,18 @@
+{% for option in product.options_with_values %}
+  {% if option.name == 'Size' or option.name == 'size' %}
+    {% if product.selected_or_first_available_variant.metafields.custom.model_info != blank %}
+      <div class="p-model-info" style="margin-bottom: 10px;">
+        {% assign size_value = '' %}
+        {% for option in product.options_with_values %}
+          {% if option.name == 'Size' or option.name == 'size' %}
+            {% assign size_value = product.selected_or_first_available_variant.options[forloop.index0] %}
+          {% endif %}
+        {% endfor %}
+        {% if size_value != '' %}
+          {% comment %} <p>Model is {{ product.selected_or_first_available_variant.metafields.custom.model_info }} tall and wearing a size {{ size_value }}.</p> {% endcomment %}
+          <p>{{ product.selected_or_first_available_variant.metafields.custom.model_info }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endif %}
+{% endfor %}

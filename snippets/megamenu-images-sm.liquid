@@ -1,0 +1,51 @@
+{% if has_images %}
+  <div class="mega__items-sm">
+    <div class="mega__items-wrapper-sm">
+      {% liquid
+        assign title_handle = link.title | handleize
+        assign has_mega_item = false
+      %}
+      {% for block in section.blocks %}
+        {% liquid
+          assign menu_title = block.settings.heading | handleize
+
+          if menu_title == blank or menu_title != title_handle
+            continue
+          endif
+          if menu_title == title_handle
+            assign has_mega_item = true
+          endif
+        %}
+        {% if has_mega_item %}
+          {% for i in (1..5) %}
+            {% liquid
+              capture collection
+                echo 'collection_' | append: i
+              endcapture
+              capture image
+                echo 'image_' | append: i
+              endcapture
+            %}
+            {% if block.settings[collection] != blank %}
+              <div class="mega__menu-item-sm">
+                <div class="mega__menu-item-image-sm">
+                  {% if block.settings[image] %}
+                    {{ block.settings[image] | image_url: width: block.settings[image].width | image_tag }}
+                  {% elsif block.settings[collection].image %}
+                    {{
+                      block.settings[collection].image
+                      | image_url: width: block.settings[collection].width
+                      | image_tag
+                    }}
+                  {% endif %}
+                </div>
+                <p>{{ block.settings[collection].title }}</p>
+                <a href="{{ block.settings[collection].url }}"></a>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

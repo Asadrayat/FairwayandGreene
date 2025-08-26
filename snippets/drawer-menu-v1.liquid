@@ -1,0 +1,176 @@
+<div class="nav__drawer">
+  <div class="nav__drawer-wrapper">
+    {% if section.settings.menu.links != blank %}
+      <div class="nav-tab__container">
+        <div class="nav__tab-header">
+          {% for link in section.settings.menu.links %}
+            <div
+              {% if link.links != blank %}
+                data-tab="{{ link.title | handleize }}"
+              {% else %}
+                data-url="{{ link.url }}"
+              {% endif %}
+              class="{% if forloop.first %}active{% endif %} nav__tab-header-item"
+            >
+              {{ link.title }}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="nav__tab-contents">
+          {% for link in section.settings.menu.links %}
+            {% if link.links != blank %}
+              <div
+                data-content="{{ link.title | handleize }}"
+                class="nav__tab-content-item {% if forloop.first %}active{% endif %}"
+              >
+                <ul>
+                  <li class="child__menu-inner">
+                    <div data-fade class="child__menu-header">
+                        <a href="{{ link.url }}">{{ link.title }}</a>
+                    </div>
+                  </li>
+                  {% for child in link.links %}
+                    <li class="child__menu-inner">
+                        <div data-fade class="child__menu-header">
+                            <a href="{{ child.url }}">{{ child.title }}</a>
+                            {%- if child.links != blank -%}
+                            <button class="open-submenu" data-trigger="{{ child.title | handleize }}">
+                                {% render 'all-icons', name: 'plus' %}
+                                {% render 'all-icons', name: 'minus' %}
+                            </button>
+                            {%- endif -%}
+                        </div>
+                        {% if child.links != blank %}
+                            <ul class="grandchild__menu-wrapper">
+                            {% for grand in child.links %}
+                                <li>
+                                <a data-fade href="{{ grand.url }}">{{ grand.title }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% comment %}
+      <div class="nav__grands">
+        {% for link in section.settings.menu.links %}
+          {% if link.links != blank %}
+            {% for child in link.links %}
+              {% if child.links != blank %}
+                <div data-grand="{{ child.title | handleize }}" class="nav__grand-item">
+                  <button data-back="{{ child.title | handleize }}">
+                    {% render 'all-icons', name: 'link' -%}
+                    {{- child.title }}
+                  </button>
+                  <div class="nav__grand-item-wrapper">
+                    <ul>
+                      {% for grand in child.links %}
+                        <li>
+                          <a href="{{ grand.url }}">{{ grand.title }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endcomment %}
+    {% endif %}
+  </div>
+</div>
+{% comment %}
+  <nav id="mobile-navigation" class="menu-drawer__navigation">
+    <ul class="menu-drawer__menu list-menu ul__parent" role="list">
+      {%- for link in section.settings.menu.links -%}
+        <li class="menu-item {% if link.links != blank %} has-children {% endif %}">
+          <div class="menu-link">
+            <a href="{{ link.url }}">{{ link.title }}</a>
+            {%- if link.links != blank -%}
+              <button class="open-submenu" data-title="{{ link.title }}">{% render 'all-icons', name: 'link' %}</button>
+            {%- endif -%}
+          </div>
+          {%- if link.links != blank -%}
+            <div class="submenu">
+              <button class="back-button">
+                {% render 'all-icons', name: 'link' %}
+                <span>{{ link.title }}</span>
+              </button>
+              <ul class="submenu-list ul__child">
+                {%- for child_link in link.links -%}
+                  <li class="submenu-item {% if child_link.links != blank %} has-grandchildren {% endif %}">
+                    <div class="submenu-link">
+                      <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                      {%- if child_link.links != blank -%}
+                        <button class="toggle-grandchild">
+                          {% render 'all-icons', name: 'link' %}
+                            {% render 'all-icons', name: 'plus' -%}
+                            {%- render 'all-icons', name: 'minus' %}
+                        </button>
+                      {%- endif -%}
+                    </div>
+                    {%- if child_link.links != blank -%}
+                      <ul class="grandchild-menu ul__grand">
+                        {%- for grandchild_link in child_link.links -%}
+                          <li>
+                            <a href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+              {% liquid
+                assign title_handle = link.title | handleize
+                assign has_mega_item = false
+              %}
+              {% for block in section.blocks %}
+                {% liquid
+                  assign menu_title = block.settings.heading | handleize
+
+                  if menu_title == blank or menu_title != title_handle
+                    continue
+                  endif
+
+                  if menu_title == title_handle
+                    assign has_mega_item = true
+                  endif
+                %}
+                {% assign has_images = false %}
+                {% if has_mega_item == true %}
+                  {% for i in (1..5) %}
+                    {% liquid
+                      capture collection
+                        echo 'collection_' | append: i
+                      endcapture
+                    %}
+                    {% if block.settings[collection] != blank %}
+                      {% assign has_images = true %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+              {% if has_mega_item %}
+                {% render 'megamenu-images-sm',
+                  section: section,
+                  link: link,
+                  has_mega_item: has_mega_item,
+                  has_images: has_images
+                %}
+              {% endif %}
+            </div>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+{% endcomment %}

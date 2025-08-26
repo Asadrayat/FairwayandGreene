@@ -1,0 +1,12 @@
+<div class="--inventory-message">
+  {% if product.selected_or_first_available_variant.inventory_quantity > 0 %}
+    {% if product.selected_or_first_available_variant.inventory_quantity < 20
+      and product.selected_or_first_available_variant.inventory_quantity > 10
+    %}
+      <span class="--low-inventory">{% #render 'all-icons', name: 'inventory-icon' %} Low Inventory</span>
+    {% elsif product.selected_or_first_available_variant.inventory_quantity < 11 %}
+      <span class="--critical-inventory">{%# render 'all-icons', name: 'inventory-icon' %} Only {{ product.selected_or_first_available_variant.inventory_quantity }} left, SECURE YOURS!</span>
+    {% endif %}
+  {% endif %}
+</div>
+

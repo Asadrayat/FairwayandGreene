@@ -1,0 +1,167 @@
+
+<div id="product-information-container" data-id="{{ section.id }}">
+  {{ 'product-information.css' | asset_url | stylesheet_tag }}
+  <product-information data-update-url="true">
+    <div class="pinfo-wrapper">
+      <product-info-media>
+        {% case section.settings.image_style %}
+          {% when 'slider' %}
+            <div class="pinfo-slider-wrapper">
+              <div class="swiper pinfo-thumb-swiper">
+                <div class="swiper-wrapper">
+                  {% for media in product.media %}
+                    <div class="swiper-slide">
+                      {% unless media == blank %}
+                        <picture class="pinfo-thumb-pic">
+                          <source media="(max-width: 600px)" srcset="{{ media | image_url: width: 500 }}">
+                          <source media="(max-width: 1024px)" srcset="{{ media | image_url: width: 1024 }}">
+                          {% if forloop.first %}
+                            {{ media | image_url: width: media.width | image_tag }}
+                          {% else %}
+                            {{ media | image_url: width: media.width | image_tag: loading: 'lazy' }}
+                          {% endif %}
+                        </picture>
+                      {% endunless %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="swiper pinfo-gallery-swiper">
+                <div class="swiper-wrapper">
+                  {% for media in product.media %}
+                    <div class="swiper-slide">
+                      {% unless media == blank %}
+                        <picture class="pinfo-gallery-pic">
+                          <source
+                            media="(max-width: 600px)"
+                            srcset="{{ media | image_url: width: 400, height: 200, crop: 'top'}}"
+                          >
+                          {% if forloop.index >= 2 %}
+                            {{ media | image_url: width: 500, height: 200, crop: 'top' | image_tag: loading: 'lazy' }}
+                          {% else %}
+                            {{ media | image_url: width: 500, height: 200, crop: 'top' | image_tag }}
+                          {% endif %}
+                        </picture>
+                      {% endunless %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% when 'stack' %}
+          {% liquid
+            assign media_size = product.media.size
+            assign mod = media_size | modulo: 2
+            if mod == 0
+              assign is_event = true
+            else
+              assign is_event = false
+            endif
+          %}
+            <div class="info-media-stack-wrapper">
+              {% for media in product.media %}
+                {% case media.media_type %}
+                  {% when 'image' %}
+                    <div class="info-media-image {% if forloop.first %}first{% endif %} {% if forloop.last and is_event %}last{% endif %}">
+                      <picture class="pinfo-stack-picture">
+                        <source
+                          media="(max-width: 600px)"
+                          srcset="{{ media | image_url: width: 400 }}"
+                        >
+                        {% if forloop.index >= 2 %}
+                          {{ media | image_url: width: 600 | image_tag: loading: 'lazy' }}
+                        {% else %}
+                          {{ media | image_url: width: 1000 | image_tag }}
+                        {% endif %}
+                      </picture>
+                    </div>
+                {% endcase %}
+              {% endfor %}
+            </div>
+        {% endcase %}
+      </product-info-media>
+      <product-info-content>
+        {% render 'pinfo-top', product: product %}
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'buy-button' %}
+              {% render 'pinfo-buy-button', product: product, block: block %}
+            {% when 'variant-picker' %}
+              {% render 'pinfo-color-variant', product: product, block: block %}
+              {% render 'pinfo-variant-picker', product: product, block: block %}
+            {% when 'bundle' %}
+              {% render 'pinfo-bundle-products', product: product, block: block %}
+          {% endcase %}
+        {% endfor %}
+        
+      </product-info-content>
+    </div>
+  </product-information>
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Product Information",
+  "settings": [
+    {
+      "type": "select",
+      "id": "image_style",
+      "label": "Product Media",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Slider"
+        },
+        {
+          "value": "stack",
+          "label": "Stack"
+        }
+      ],
+      "default": "stack"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant-picker",
+      "name": "Variant Picker",
+      "limit": 1
+    },
+    {
+      "type": "buy-button",
+      "name": "Buy Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "dynamic_checkout_button",
+          "label": "Dynamic Checkout Button",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "bundle",
+      "name": "Bundle Products",
+      "limit": 1
+    },
+
+  ]
+}
+{% endschema %}

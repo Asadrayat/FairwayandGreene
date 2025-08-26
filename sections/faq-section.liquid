@@ -1,0 +1,778 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+  .wrapper-{{ id }} {
+    width: 65%;
+    min-width: 850px;
+  }
+  @media(max-width: 1200px) {
+    .wrapper-{{ id }} {
+       min-width: 100%;
+       width: auto;
+    }
+  }
+  .wrapper-{{ id }} .accordion__faq {
+    border-bottom: 1px solid var(--Border-Base-subtle, #E5E7EB);
+  }
+  .wrapper-{{ id }} .accordion__faq:not(:last-child) {
+    margin-bottom: var(--Spacing-Container-sm);
+  }
+  .wrapper-{{ id }} .accordion__intro_ {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    gap: var(--Spacing-Container-xs);
+    box-sizing: border-box;
+    transition: all 1s ease-in-out;
+    justify-content: space-between;
+    margin-bottom: var(--Spacing-Container-xs);
+  }
+  .wrapper-{{ id }} .accordion__intro_ h4 {
+    color: var(--Content-Base-main, #1F2937);
+    font-family: var(--font-family-Title);
+    font-size: var(--Font-Size-Heading-H4);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H4);
+    letter-spacing: -0.4px;
+    margin: 0;
+  }
+  @media(max-width: 768px) {
+    .wrapper-{{ id }} .accordion__intro_ h4 {
+      line-height: 150%;
+      letter-spacing: -0.32px;
+      padding-right: 24px;
+    }
+  }
+  .accordion__content-wrap {
+    color: var(--Content-Base-base, #4B5563);
+    font-family: var(--font-family-Body);
+    font-size: var(--Font-Size-Paragraph-Regular);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    margin-bottom: var(--Spacing-Container-sm);
+  }
+  @media(max-width: 768px) {
+    .accordion__content-wrap {
+      padding-right: 0px;
+    }
+  }
+  .accordion__content-wrap p {
+    margin: 0;
+  }
+  .wrapper-{{ id }} .faq__icon {
+    position: absolute;
+    right: 24px;
+    top: 0;
+  }
+  .wrapper-{{ id }} .faq__icon span {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 56px;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.4s ease-in-out;
+  }
+  .wrapper-{{ id }} .faq__icon .minus {
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+  }
+  .wrapper-{{ id }} .accordion__faq.accordion.active .faq__icon .plus {
+    rotate: 45deg;
+    opacity: 0;
+  }
+  .wrapper-{{ id }} .accordion__faq.accordion.active .faq__icon .minus {
+    opacity: 1;
+  }
+  .wrapper-{{ id }} .subtab-container {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .wrapper-{{ id }} .subtab-container {
+    display: none;
+  }
+  .wrapper-{{ id }} .subtab-container.active {
+    display: flex;
+  }
+  .wrapper-{{ id }} .subtab {
+    text-transform: capitalize;
+    border-radius: var(--rounded-none, 0px);
+    background: #004027;
+    border: 1px solid #004027;
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 16px);
+    padding: 12px 14px;
+    transition: all .4s ease-in-out;
+    cursor: pointer;
+    color: #004027;
+    background: #fff;
+  }
+  .wrapper-{{ id }} .subtab.active {
+    background: #004027;
+    border: 1px solid #004027;
+    color: #fff;
+  }
+  .wrapper-{{ id }} .subtab:hover {
+    opacity: 0.8;
+  }
+  .accordion__faq.active svg{
+    transform: rotate(180deg);
+  }
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+    .accordion__content-wrap p, .accordion__content-wrap a, .accordion__content-wrap li {
+      font-size: var(--Font-Size-Paragraph-Tiny);
+      line-height: var(--Line-Height-Paragraph-Tiny);
+    }
+    .wrapper-{{ id }} .subtab-container {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .wrapper-{{ id }} .subtab {
+      font-size: var(--Font-Size-Paragraph-Tiny);
+      padding: 6px 12px;
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="subtab-container">
+        {% for block in section.blocks %}
+          {% if block.type == 'subcategory' %}
+            <button
+              class="subtab"
+              data-subcategory="{{ block.settings.title | handleize }}"
+              data-parent-category="{{ block.settings.parent_category | handleize }}"
+            >
+              {{ block.settings.title }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <accordion-element>
+        <div class="accordion-wrapper">
+          {% for block in section.blocks %}
+            {% if block.type == 'faq' %}
+             
+
+              {% for i in (1..10) %}
+                {% assign title = "title_" | append: i %}
+                {% assign content = "faq_content_" | append: i %}
+
+                {% if block.settings[title] != blank and block.settings[content] != blank %}
+                  <div
+                    class="accordion__faq accordion"
+                    data-category="{{ block.settings.category | handleize | default: 'all' }}"
+                    data-subcategory="{{ block.settings.subcategory | handleize | default: 'all' }}"
+                  >
+                    <div class="accordion__intro_">
+                      <h4 class="faq_title">{{ block.settings[title] }}</h4>
+
+                      <div class="faq__icon">
+                        <span class="plus">
+                          <svg width="14" height="21" viewBox="0 0 21 21" fill="none">
+                            <path d="M20.875 6L10.8753 16.0003L0.875 6H3.0861L10.8753 13.7886L18.6639 6H20.875Z" fill="currentColor"></path>
+                          </svg>
+                        </span>
+                        <span class="minus">
+                          <svg width="14" height="21" viewBox="0 0 21 21" fill="none">
+                            <path d="M20.875 6L10.8753 16.0003L0.875 6H3.0861L10.8753 13.7886L18.6639 6H20.875Z" fill="currentColor"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="accordion__content_">
+                      <div class="accordion__content-wrap">{{ block.settings[content] }}</div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+              
+            {% endif %}
+          {% endfor %}
+        </div>
+      </accordion-element>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Expose categories to global scope
+  window.FAQCategories = window.FAQCategories || [];
+  window.FAQCategories.push({
+    sectionId: '{{ id }}',
+    categories: [
+      { handle: 'all', title: 'All' },
+      {% for block in section.blocks %}
+        {% if block.type == 'category' %}
+          { handle: '{{ block.settings.title | handleize }}', title: '{{ block.settings.title }}' },
+        {% endif %}
+      {% endfor %}
+    ]
+  });
+
+  class Accordion {
+    constructor(accordion = "", newOptions) {
+      let options = {
+        initOpenIndex: 1,
+        closeAll: false,
+        duration: 400,
+        activeClass: "active",
+      };
+      this.options = { ...options, ...newOptions };
+      this.handleValidAccordions(accordion);
+    }
+
+    handleValidAccordions(accordion) {
+      const accordions = document.querySelectorAll(accordion);
+      if (!accordions.length) {
+        console.error(`No accordions found with selector: ${accordion}`);
+        return;
+      }
+      this.accordion = accordions[0];
+      this.setIconsTransition();
+      this.tabItemsArray = Array.from(this.accordion.children);
+
+      if (this.tabItemsArray.length > 0) {
+        if (this.options.initOpenIndex > this.tabItemsArray.length) {
+          this.options.initOpenIndex = this.tabItemsArray.length;
+        }
+      } else {
+        console.warn('No accordion items found in the container.');
+      }
+
+      this.tabItemsArray?.forEach((tabElement, index, arr) => {
+        let item = this.handleAccordionItems(tabElement);
+        if (!item) {
+          console.warn(`Invalid accordion item at index ${index}`);
+          return;
+        }
+        this.contentInitialHeight(item[1]);
+        if (index === this.options.initOpenIndex - 1) {
+          this.InitialOpen(arr[index]);
+        }
+        this.handleAccordion(item, index);
+      });
+    }
+
+    setIconsTransition() {
+      if (this.accordion?.querySelectorAll("svg")) {
+        this.accordion
+          .querySelectorAll("svg")
+          .forEach(
+            (svg) => (svg.style.transition = `all ${this.options.duration}ms`)
+          );
+      } else {
+        console.warn('No SVG icons found for transition setup.');
+      }
+    }
+
+    contentInitialHeight(content) {
+      content.style.height = "0px";
+      content.style.overflow = "hidden";
+    }
+
+    handleAccordion(item, index) {
+      item[0].addEventListener("click", (e) => {
+        this.toggle(item);
+        this.currentIndex = index;
+        if (this.options.closeAll) this.closeAll();
+      });
+    }
+
+    handleAccordionItems(accordion) {
+      if (accordion.children.length >= 2) {
+        let title = accordion.children[0];
+        let content = accordion.children[1];
+        return [title, content];
+      }
+      return null;
+    }
+
+    InitialOpen(accordion) {
+      let item = this.handleAccordionItems(accordion);
+      if (item) {
+        this.setActiveClass(item);
+        this.open(item);
+      }
+    }
+
+    open(item) {
+      let content = item[1];
+      this.transition(content);
+      content.style.height = `${content.scrollHeight}px`;
+    }
+
+    close(item) {
+      let content = item[1];
+      content.style.height = `0px`;
+    }
+
+    toggle(item) {
+      let content = item[1];
+      let height = content.clientHeight;
+      this.transition(content);
+      if (height == 0) {
+        this.setActiveClass(item);
+        content.style.height = `${content.scrollHeight}px`;
+      } else {
+        this.removeActiveClass(item);
+        content.style.height = "0px";
+      }
+    }
+
+    transition(el) {
+      el.style.transition = `all ${this.options.duration}ms ease`;
+    }
+
+    closeAll() {
+      this.tabItemsArray?.forEach((accordion, index, arr) => {
+        let item = this.handleAccordionItems(accordion);
+        if (item && index !== this.currentIndex) {
+          this.close(item);
+          this.removeActiveClass(item);
+        }
+      });
+    }
+
+    setActiveClass(item) {
+      item[1].parentElement.classList.add(this.options.activeClass);
+    }
+
+    removeActiveClass(item) {
+      item[1].parentElement.classList.remove(this.options.activeClass);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize accordion
+    new Accordion('.wrapper-{{ id }} .accordion-wrapper', {
+      closeAll: true,
+      initOpenIndex: 1,
+      duration: 700,
+      activeClass: 'active'
+    });
+
+    // Subtab Functionality
+    const subtabs = document.querySelectorAll('.wrapper-{{ id }} .subtab');
+    const subtabContainer = document.querySelector('.wrapper-{{ id }} .subtab-container');
+    const faqs = document.querySelectorAll('.wrapper-{{ id }} .accordion__faq');
+
+    function filterFAQs(category, subcategory = '') {
+      faqs.forEach(faq => {
+        const faqCategory = faq.getAttribute('data-category');
+        const faqSubcategory = faq.getAttribute('data-subcategory');
+        const hasSubcategories = Array.from(subtabs).some(subtab => subtab.getAttribute('data-parent-category') === category);
+        if (category === 'all' || faqCategory === category) {
+          if (!hasSubcategories) {
+            // Show all FAQs for the category if no subcategories
+            faq.style.display = '';
+          } else if (subcategory && faqSubcategory === subcategory) {
+            // Show FAQs for the selected subcategory
+            faq.style.display = '';
+          } else {
+            faq.style.display = 'none';
+          }
+        } else {
+          faq.style.display = 'none';
+        }
+      });
+    }
+
+    function updateSubtabVisibility(category) {
+      const relevantSubtabs = Array.from(subtabs).filter(subtab => subtab.getAttribute('data-parent-category') === category);
+      if (relevantSubtabs.length > 0) {
+        subtabContainer.classList.add('active');
+        subtabs.forEach(subtab => {
+          const parentCategory = subtab.getAttribute('data-parent-category');
+          subtab.style.display = parentCategory === category ? '' : 'none';
+        });
+        // Set first subtab as active
+        subtabs.forEach(s => s.classList.remove('active'));
+        const firstSubtab = relevantSubtabs[0];
+        firstSubtab.classList.add('active');
+        const firstSubcategory = firstSubtab.getAttribute('data-subcategory');
+        filterFAQs(category, firstSubcategory);
+      } else {
+        subtabContainer.classList.remove('active');
+        subtabs.forEach(s => {
+          s.classList.remove('active');
+          s.style.display = 'none';
+        });
+        filterFAQs(category);
+      }
+    }
+
+    // Expose filter functions for banner to use
+    window.FAQSection = window.FAQSection || {};
+    window.FAQSection['{{ id }}'] = {
+      filterFAQs,
+      updateSubtabVisibility
+    };
+
+    subtabs.forEach(subtab => {
+      subtab.addEventListener('click', () => {
+        subtabs.forEach(s => s.classList.remove('active'));
+        subtab.classList.add('active');
+        const subcategory = subtab.getAttribute('data-subcategory');
+        const parentCategory = subtab.getAttribute('data-parent-category');
+        filterFAQs(parentCategory, subcategory);
+      });
+    });
+
+    // Initialize with "All" category
+    updateSubtabVisibility('all');
+    filterFAQs('all');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Name",
+          "info": "Enter the name of the primary category. This will appear as a tab in the banner."
+        }
+      ]
+    },
+    {
+      "type": "subcategory",
+      "name": "Subcategory",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Subcategory Name",
+          "info": "Enter the name of the subcategory. This will appear as a subtab."
+        },
+        {
+          "type": "text",
+          "id": "parent_category",
+          "label": "Parent Category",
+          "info": "Enter the exact name of a Category block to associate this subcategory."
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "type": "faq",
+      "settings": [
+
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category",
+          "info": "Enter the exact name of a Category block to associate this FAQ. Leave blank to include in 'All'."
+        },
+        {
+          "type": "text",
+          "id": "subcategory",
+          "label": "Subcategory",
+          "info": "Enter the exact name of a Subcategory block to associate this FAQ. Leave blank to include in 'All' for the category."
+        },
+        
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "FAQ Title 1",
+          
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_1",
+          "label": "FAQ Content 1"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "FAQ Title 2",
+         
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_2",
+          "label": "FAQ Content 2"
+        },
+        {
+          "type": "text",
+          "id": "title_3",
+          "label": "FAQ Title 3",
+          
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_3",
+          "label": "FAQ Content 3"
+        },
+        {
+          "type": "text",
+          "id": "title_4",
+          "label": "FAQ Title 4",
+         
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_4",
+          "label": "FAQ Content 4"
+        },
+        {
+          "type": "text",
+          "id": "title_5",
+          "label": "FAQ Title 5",
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_5",
+          "label": "FAQ Content 5"
+        },
+        {
+          "type": "text",
+          "id": "title_6",
+          "label": "FAQ Title 6",
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_6",
+          "label": "FAQ Content 6"
+        },
+        {
+          "type": "text",
+          "id": "title_7",
+          "label": "FAQ Title 7",
+         
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_7",
+          "label": "FAQ Content 7"
+        },
+        {
+          "type": "text",
+          "id": "title_8",
+          "label": "FAQ Title 8",
+          
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_8",
+          "label": "FAQ Content 8"
+        },
+        {
+          "type": "text",
+          "id": "title_9",
+          "label": "FAQ Title 9",
+         
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_9",
+          "label": "FAQ Content 9"
+        },
+        {
+          "type": "text",
+          "id": "title_10",
+          "label": "FAQ Title 10",
+        },
+        {
+          "type": "richtext",
+          "id": "faq_content_10",
+          "label": "FAQ Content 10"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Section",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "General"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Shipping"
+          }
+        },
+        {
+          "type": "subcategory",
+          "settings": {
+            "title": "Quality",
+            "parent_category": "General"
+          }
+        },
+        {
+          "type": "subcategory",
+          "settings": {
+            "title": "Product Styling",
+            "parent_category": "General"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "Shipping"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "subcategory": "Quality"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "subcategory": "Product Styling"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "General"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

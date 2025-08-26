@@ -1,0 +1,343 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+  .wrapper-{{ id }}.desktop--container--{{ section.id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    @media(max-width: 600px) {
+      {% comment %} gap: 8px;
+      grid-template-columns: repeat(2, 1fr); {% endcomment %}
+      display: none;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    img.\32 {
+      grid-column: 2/4;
+      grid-row: 1/2;
+      @media(max-width: 600px) {
+      grid-column: 1/-1;
+      grid-row: 2/2;
+      }
+    }
+    img.\34 {
+      grid-column: 1/3;
+      @media(max-width: 600px) {
+        grid-column: 1/3;
+        grid-row: 4;
+      }
+    }
+  }
+  .wrapper-{{ id }}.mbl--container--{{ section.id }} {
+    display: none;
+    @media(max-width: 600px) {
+      display: block;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .swiper-slide{
+     height: auto;
+    }
+  }
+
+
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+
+
+  #shopify-section-{{id}} {
+      .swiper-button-lock {
+          display: none !important;
+      }      
+     .mfc__nav-scroll__wrapp {
+          display: flex;
+          gap: 40px;
+          align-items: center;
+          padding: 32px 0 0;
+        }
+        .button__wrapper_swiper {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .--nav-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            background: var(--Primary, #004027);
+            line-height: 1;
+            /* position: absolute; */
+            position: relative;
+            /* top: 50%; */
+            z-index: 1;
+            border-radius: 0%;
+            align-items: center;
+            justify-content: center;
+            /* transform: translateY(-50%); */
+            box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+            cursor: pointer;
+            path {
+              stroke: #fff;
+            }
+        }
+        .swiper-scrollbar-{{ section.id }} {
+          position: relative !important;
+          left: 0 !important;
+          bottom: 0 !important;
+          /* margin: var(--Spacing-Container-sm) 0 0 0; */
+          height: 3px !important;
+          opacity: 1 !important;
+          width: 100% !important;
+          cursor: pointer;
+          padding-block: 16px;
+          z-index: 1;
+          background: transparent;
+          .swiper-scrollbar-drag {
+            background: #004027;
+            display: block !important;
+            height: 2px;
+          }
+        }
+        .swiper-scrollbar-{{ section.id }}::before {
+          position: absolute;
+          content: "";
+          background: var(--swiper-scrollbar-bg-color, rgba(0, 0, 0, .1));
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: 2px;
+        }
+        .--nav-icon.swiper-button-disabled {
+            background: #EDFCF6;
+            path {
+              stroke: #B3DCCC;
+            }
+        }
+    }
+
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+
+    <div class="wrapper-{{ id }} desktop--container--{{ section.id }}">
+      {% for block in section.blocks %}
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: class: forloop.index }}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="wrapper-{{ id }} mbl--container--{{ section.id }}">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: class: forloop.index }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="mfc__nav-scroll__wrapp">
+          <div class="swiper-scrollbar-{{ section.id }} swiper-scrollbar"></div>
+          <div class="button__wrapper_swiper">
+            <div class="prev-{{ section.id }} --nav-icon ">
+              {% comment %}
+                {% render 'all-icons', name: 'left_arrow' %}
+              {% endcomment %}
+              {% render 'all-icons', name: 'swiper_left' %}
+            </div>
+            <div class="next-{{ section.id }} --nav-icon ">
+              {% render 'all-icons', name: 'swiper_right' %}
+              {% comment %}
+                {% render 'all-icons', name: 'right_arrow' %}
+              {% endcomment %}
+            </div>
+          </div>
+        </div>          
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+      new Swiper(".wrapper-{{ id }} .swiper", {
+          slidesPerView: 1.2,
+          spaceBetween: 12,
+          breakpoints: {
+              500: {
+                slidesPerView: 1.2,
+                spaceBetween: 12,
+              },
+              850: {
+                slidesPerView: 2,
+                spaceBetween: 12,
+              },
+              969: {
+                slidesPerView: 2.3,
+                spaceBetween: 12,
+              },
+              1200: {
+                slidesPerView: 3,
+                spaceBetween: 12,
+              },
+            },
+        // loop: true,
+
+        scrollbar: {
+            el: ".swiper-scrollbar-{{ section.id }}.swiper-scrollbar",
+            draggable: true,
+            hide: false
+          },
+          navigation: {
+            nextEl: ".next-{{ section.id }}",
+            prevEl: ".prev-{{ section.id }}",
+          }  
+      });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Image Grid",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Grid",
+    }
+  ]
+}
+{% endschema %}

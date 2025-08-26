@@ -1,0 +1,213 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    margin-top: -150px;
+    position: relative;
+    z-index: 2;
+    @media(max-width: 1600px){
+      margin-top: -120px;
+    }
+    @media(max-width: 1300px){
+      margin-top: -90px;
+    }
+    @media(max-width: 990px){
+      margin-top: 32px;
+    }
+    .page-width {
+      max-width: 860px;
+    }
+    .contents {
+      padding: 20px 0;
+    }
+    h2 {
+      margin: 5px 0 12px 0;
+    }
+    .pretitle {
+      color: #000;
+      text-align: center;
+      font-family: var(--font-family-Body, Archivo);
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 16px; /* 133.333% */
+      letter-spacing: 0.72px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .description {
+      color: #000;
+      text-align: center;
+      font-family: var(--font-family-Body, Archivo);
+      font-size: var(--Font-Size-Paragraph-Small, 14px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Small, 20px);
+      margin: 0;
+    }
+  }
+
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {% unless section.settings.img == blank %}
+        <div class="image__wrap">
+          {{ section.settings.img | image_url: width: section.settings.img.width | image_tag }}
+        </div>
+      {% endunless %}
+      <div class="contents">
+        {% unless section.settings.pretitle == blank %}
+          <p class="pretitle center">{{ section.settings.pretitle }}</p>
+        {% endunless %}
+        {% unless section.settings.title == blank %}
+          <h2 class="title center">{{ section.settings.title }}</h2>
+        {% endunless %}
+        {% unless section.settings.description == blank %}
+          <p class="description center">{{ section.settings.description }}</p>
+        {% endunless %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Floating Banner",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "pretitle",
+      "label": "Pre Title",
+      "default": "Join the pack"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Members Only"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating Banner"
+    }
+  ]
+}
+{% endschema %}

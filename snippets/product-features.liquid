@@ -1,0 +1,46 @@
+{% liquid
+  assign id = section.id
+%}
+{% assign features_object = product.metafields.custom.product_features_section.value %}
+
+{% if features_object.fabric_features != blank %}
+  <style>
+    .--fabric-features{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .--icon-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--Spacing-Container-lg);
+      }
+      .--card-wrapper {
+        text-align: center;
+        color: #000;
+        font-family: var(--font-family-Body, "Neue Plak");
+        font-size: var(--Font-Size-Paragraph-Small, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px);
+        img {
+          max-width: 50px;
+          aspect-ratio: 1;
+          margin: 0 auto var(--Spacing-Container-xs);
+        }
+      }
+    }
+  </style>
+  <div class="--fabric-features">
+    <div class="--icon-card-container">
+      {% for icon_block in features_object.fabric_features.value %}
+        {% if icon_block.title != blank and icon_block.icon != blank %}
+          <div class="--card-wrapper">
+            {{ icon_block.icon | image_url: width: 44 | image_tag }}
+            {{ icon_block.title }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

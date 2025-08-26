@@ -1,0 +1,15 @@
+.predictive-search {
+  /* max-height: 500px; */
+  z-index: 11;
+  @media screen and (max-width: 1249px) {
+    /* max-height: 90vh; */
+  }
+}
+.template-search {
+  .template-search__search {
+    max-width: 100%;
+  }
+  #main-search-filters {
+    margin-bottom: 24px;
+  }
+}

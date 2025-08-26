@@ -1,0 +1,22 @@
+<div class="pinfo-top">
+  <div>
+    <div class="p-info__breadcrumbs mobile-only">{% render 'pinfo-breadcrumbs' %}</div>
+    <h1 class="pinfo-title">{{ product.title }}</h1>
+  </div>
+  <div class="pinfo-review">
+    {% comment %}
+      <div
+        class="ruk_rating_snippet"
+        data-sku="{{ product.handle }};{{ product.variants | map: 'sku' | join: ';' }};{{ product.variants | map: 'id' | join: ';' }}"
+      ></div>
+    {% endcomment %}
+     {% render 'pinfo-price' %}
+    <div
+      class="yotpo-widget-instance"
+      data-yotpo-instance-id="1080395"
+      data-yotpo-product-id="{{product.id}}"
+      data-yotpo-cart-product-id="{{item.product.id}}"
+      data-yotpo-section-id="{{template.name}}"
+    ></div>
+  </div>  
+</div>

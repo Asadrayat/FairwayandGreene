@@ -1,0 +1,27 @@
+<div class="search__card">
+  <div class="search__card-wrapper">
+    <div class="search__card-media">
+      {% if product.featured_image %}
+        {{ product.featured_image | image_url: width: product.featured_image.width | image_tag }}
+      {% else %}
+        {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+    <div class="search__card-info">
+      <h4>{{ product.title }}</h4>
+      {% assign color_count = 0 %}
+
+      {% for option in product.options_with_values %}
+        {% if option.name == 'Color' %}
+          {% assign color_values = option.values %}
+          {% assign color_count = color_values | size %}
+        {% endif %}
+      {% endfor %}
+      {% if color_count > 0 %}
+        <p>{{ color_count }} Colors</p>
+      {% endif %}
+      {% render 'price', product: product, price_class: '', show_compare_at_price: true %}
+    </div>
+  </div>
+  <a href="{{ product.url }}"></a>
+</div>

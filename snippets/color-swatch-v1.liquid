@@ -1,0 +1,51 @@
+{%- assign color_option = product.options_with_values | where: 'name', 'Color' | first -%}
+
+{%- if color_option and color_option.values.size > 0 -%}
+  <div class="color-swatches">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {% for color in color_option.values %}
+          {% assign color_variant = null %}
+          {% assign is_color_available = false %}
+          {% for variant in product.variants %}
+            {% if variant.options contains color %}
+              {% assign color_variant = variant %}
+              {% if variant.available %}
+                {% assign is_color_available = true %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
+          {% assign color_handle = color | handle %}
+          {% assign swatch_image = color_handle | append: '.png' | file_img_url: '50x' %}
+          <div class="swiper-slide">
+            <button
+              type="button"
+              class="color-swatch {% if forloop.first and is_color_available %}color-swatch--selected{% endif %} {% if images[color_handle] %}color-swatch--image{% endif %} {% unless is_color_available %}color-swatch--disabled{% endunless %}"
+              style="{% if images[color_handle] %}background-image: url({{ swatch_image }});background-size: 100% 100%;{% else %}background-color: {{ color_handle }}; {% endif %}"
+              data-variant-id="{{ color_variant.id | default: '' }}"
+              data-color-value="{{ color | escape }}"
+              data-filtered-color="{{ product.selected_or_first_available_variant.metafields.custom.parent_color.value }} {{  product.selected_or_first_available_variant.title }}"
+              {% unless is_color_available %}
+                disabled
+              {% endunless %}
+              aria-label="{{ color }}{% unless is_color_available %} (Out of stock){% endunless %}"
+            >
+              <span class="visually-hidden">{{ color }}</span>
+            </button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="swiper-button-prev">
+      <svg width="20px" height="20px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 14L3 7.5L10 1" stroke="#000000" stroke-linecap="square"/>
+      </svg>
+    </div>
+    <div class="swiper-button-next">
+      <svg width="20px" height="20px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 14L12 7.5L5 1" stroke="#000000" stroke-linecap="square"/>
+      </svg>
+    </div>
+  </div>
+{%- endif -%}

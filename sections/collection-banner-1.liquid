@@ -1,0 +1,436 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+
+  @media(max-width: 768px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+  .texts-{{ id }} h1{
+    color: #000;
+    font-family: var(--font-family-Title);
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -0.8px;
+    margin: 0 0 4px;
+  }
+  .texts-{{ id }} h1 sup{
+    color: #000;
+    font-family: var(--font-family-Body);
+    font-size: 20px;
+    line-height: normal;
+    letter-spacing: -0.4px;
+    margin-inline: 8px;
+  }
+  .texts-{{ id }} p{
+    color: #000;
+    font-family: var(--font-family-Body);
+    font-size: var(--Font-Size-Paragraph-Regular);
+    line-height: var(--Line-Height-Paragraph-Regular); /* 150% */
+    margin: 0;
+  }
+  /* Collection Lists */
+  .collections__nav-wrapper{
+    margin: 16px auto 0;
+  }
+  .collections__lists {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    @media(max-width: 768px){
+      flex-wrap: unset;
+    }
+  }
+  .collections__lists a {
+    min-width: max-content;
+    display: inline-block;
+    text-align: center;
+    color: var(--Content-Base-base);
+    font-family: var(--font-family-Body);
+    font-size: var(--Font-Size-Paragraph-Small);
+    line-height: var(--Line-Height-Paragraph-Small); /* 142.857% */
+    padding: 4px 16px;
+    border-radius: 0;
+    border: 1px solid var(--Border-Base-main, #D1D5DB);
+    background: rgba(255, 255, 255, 0.40);
+    transition: all 0.3s;
+  }
+
+  .collections__lists a:hover {
+    color: var(--Content-Base-main);
+    border: 1px solid #0040272e;
+    background-color: #0040272e;
+  }
+  .collections__lists a.active {
+    {% comment %} color: var(--Content-Base-main);
+    border: 1px solid var(--Border-Base-dense, #4B5563); {% endcomment %}
+    border: 1px solid #004027;
+    {% comment %} background-color: #004027; {% endcomment %}
+    background: linear-gradient(90deg, #010D05 0%, #132D1B 100%);
+    color: #fff;
+  }
+
+
+  .collections__nav-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .scroll-btn {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    transform: translateY(-50%);
+    /* border-radius: 50%; */
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    cursor: pointer;
+    background: linear-gradient(90deg, #FFF 0%, #FFF 100%);
+    filter: blur(6px);
+    @media screen and (max-width: 600px){
+      background: unset;
+    }
+  }
+
+  .scroll-btn.prev {
+    left: -10px;
+    /* display: none !important; */
+  }
+
+  .scroll-btn.next {
+    right: -2px;
+  }
+
+  .collections__lists {
+    scroll-behavior: smooth;
+  }
+
+  /* Collection Lists */
+  @media screen and (min-width: 1250px){
+    .heading-sm-{{ id }}{
+      display: none;
+    }
+  }
+  @media screen and (max-width: 1249px){
+    .heading-lg-{{ id }}{
+      display: none;
+    }
+    .heading-text-{{ id }}{
+      {% comment %} display: grid;
+      grid-template-columns: 50px 1fr;
+      grid-gap: 16px;
+      align-items: center; {% endcomment %}
+      position: relative;
+      margin: 0 0 12px;
+    }
+    .heading-logo{
+      position: absolute;
+      left: 0;
+    }
+    .heading-logo a{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .heading-logo a img{
+      display: block;
+      width: 100%;
+      max-width: 20px;
+      height: auto;
+    }
+    .heading-texts {
+      width: 100%;
+      text-align: center;
+    }
+    .texts-{{ id }} h1{
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .texts-{{ id }} p{
+
+    }
+    .desc-{{ id }}{
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="sec-{{ id }} --collection-banner">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="texts-{{ id }}">
+        <div class="heading-{{ id }} heading-lg-{{ id }}">
+          <h1>
+            {{ collection.title -}}
+            <sup
+              >({{ collection.all_products_count }}
+              <span>Club Picks</span>)</sup
+            >
+          </h1>
+          {% if collection.description != blank %}
+            {{ collection.description }}
+          {% else %}
+            {{ collection.metafields.custom.fallback_related_collections.value.description }}
+          {% endif %}
+        </div>
+        <div class="heading-{{ id }} heading-sm-{{ id }}">
+          <div class="heading-text-{{ id }}">
+            <div class="heading-logo">
+              {% if section.settings.logo %}
+                <a href="{{ routes.root_url }}">{{ section.settings.logo | image_url: width: section.settings.logo.width | image_tag }}</a>
+              {% endif %}
+            </div>
+            <div class="heading-texts">
+              <h1>{{ collection.title -}}</h1>
+              <p>({{ collection.all_products_count }}) Club Picks</p>
+            </div>
+          </div>
+          {% if collection.description != blank %}
+            <div class="desc-{{ id }}">
+              {{ collection.description }}
+            </div>
+          {% else %}
+            <div class="desc-{{ id }}">
+              {{ collection.metafields.custom.fallback_related_collections.value.description }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {%# render 'highligts', section %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("collectionsList");
+    const prevBtn = document.querySelector(".scroll-btn.prev");
+    const nextBtn = document.querySelector(".scroll-btn.next");
+
+    if (!container) {
+      console.warn("collectionsList container not found.");
+      return;
+    }
+    if (!prevBtn || !nextBtn) {
+      console.warn("Scroll buttons not found.");
+      return;
+    }
+
+    function updateButtonsVisibility() {
+      try {
+        const isScrollable = container.scrollWidth > container.clientWidth;
+
+        if (!isScrollable) {
+          prevBtn.style.display = "none";
+          nextBtn.style.display = "none";
+          return;
+        }
+
+        const isAtStart = container.scrollLeft <= 0;
+        const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
+
+        prevBtn.style.display = isAtStart ? "none" : "block";
+        nextBtn.style.display = isAtEnd ? "none" : "block";
+      } catch (error) {
+        console.error("Error updating scroll button visibility:", error);
+      }
+    }
+
+    function scrollToActive() {
+      try {
+        const activeLink = container.querySelector("a.active");
+        if (!activeLink) return;
+
+        const linkRect = activeLink.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        const scrollOffset = (linkRect.left + linkRect.right) / 2 - (containerRect.left + containerRect.right) / 2;
+        container.scrollLeft += scrollOffset;
+
+        setTimeout(updateButtonsVisibility, 300);
+      } catch (error) {
+        console.error("Error scrolling to active item:", error);
+      }
+    }
+
+    prevBtn.addEventListener("click", () => {
+      try {
+        container.scrollBy({ left: -200, behavior: "smooth" });
+        setTimeout(updateButtonsVisibility, 300);
+      } catch (error) {
+        console.error("Error scrolling left:", error);
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      try {
+        container.scrollBy({ left: 200, behavior: "smooth" });
+        setTimeout(updateButtonsVisibility, 300);
+      } catch (error) {
+        console.error("Error scrolling right:", error);
+      }
+    });
+
+    container.addEventListener("scroll", () => {
+      requestAnimationFrame(updateButtonsVisibility);
+    });
+
+    try {
+      const resizeObserver = new ResizeObserver(() => {
+        updateButtonsVisibility();
+      });
+      resizeObserver.observe(container);
+    } catch (error) {
+      console.warn("ResizeObserver is not supported or failed:", error);
+      window.addEventListener("resize", updateButtonsVisibility);
+    }
+
+    updateButtonsVisibility();
+    scrollToActive();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection Banner 1",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Banner 1"
+    }
+  ]
+}
+{% endschema %}

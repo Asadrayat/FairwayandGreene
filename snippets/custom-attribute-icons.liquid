@@ -1,0 +1,76 @@
+<style>
+  /* Snippet Name: custom-attribute-icons */
+  .--product-attribute-icon-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 40px;
+
+    @media(max-width: 768px){
+      gap: 20px;
+    }
+}
+ .--product-attribute-icon-wrapper {
+    .--single-attribute-icon {
+        text-align: center;
+    }
+    .--single-attribute-icon img {
+        display: block;
+        width: 60px;
+        height: auto;
+        margin: 10px auto;
+    }   
+    .--single-attribute-icon span {
+        display: block;
+        font-size: 14px;
+        line-height: 18px;
+        color: #000;
+        margin: 16px 0 0;
+        text-align: left;
+    }   
+ }
+  .pr-faq-content{
+    .--product-attribute-icon-wrapper {
+      margin: 16px  0 16px;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 16px;
+    
+      @media(max-width: 768px){
+        grid-template-columns: repeat(2,1fr);
+        gap: 16px;
+      }
+    }
+    .--product-attribute-icon-wrapper {
+      .--single-attribute-icon {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-align: center;
+      }
+      .--single-attribute-icon img {
+          display: block;
+          width: 48px;
+          height: auto;
+          margin: 0;
+      }   
+      .--single-attribute-icon span {
+          display: block;
+          font-size: 14px;
+          line-height: 18px;
+          color: #000;
+          margin: 0;
+      }   
+    }
+}
+</style>
+<div class=" --product-attribute-icon-wrapper">
+  <!-- Snippet Name: custom-attribute-icons -->
+  {% for x in shop.metaobjects.fabric_features.values %}
+    {% if product.metafields.custom.product_attribute_list.value contains x.title %}
+      <div class="--single-attribute-icon">
+        {{ x.icon | image_url: width: x.icon.width | image_tag }}
+        <span>{{ x.title }}</span>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>

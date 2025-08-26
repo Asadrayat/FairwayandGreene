@@ -1,0 +1,206 @@
+<product-card class="product-card" data-product-handle="{{ product.handle }}" data-product-url="{{ product.url }}">
+  <script type="application/json" data-product-json>
+    {{ product | json }}
+  </script>
+
+  <div class="product-card__container {% if product.media.size > 1 %}product-card__container--hoverable{% endif %}">
+    <div class="product-card__content">
+      <div class="product-card__media ">
+        {% comment %}
+            <div class="--custom-badge-wrapper">
+            {% if product.metafields.custom.product_badge.value %}
+              {% for badge in product.metafields.custom.product_badge.value limit: 2 %}
+                <span class="--single-badge">
+                  {% if forloop.last %}
+                    <a href="{{ product.url }}">{{ badge | strip | escape }}</a>
+                  {% else %}
+                    <a href="{{ product.url }}">{{ badge | strip | escape }}</a>
+                  {% endif %}
+                </span>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endcomment %}
+
+        {% assign color_value = variant_option %}
+        {% assign matched_media = product.media | where: 'alt', color_value %}
+        {% assign media_index = 0 %}
+        {% if card_variant.featured_image %}
+          {% for m in product.media %}
+            {% if m.id == card_variant.featured_image.id %}
+              {% assign media_index = forloop.index0 %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% assign next_index = media_index | plus: 1 %}
+        <a
+          href="{{ card_variant.url | default: product.url }}"
+          class="product-card__image-link js-product-link {% if matched_media.size > 1 %}
+            has-multiple-media
+          {% elsif matched_media.size == 0 and card_variant.featured_image and product.media.size > next_index %}
+            has-multiple-media-reverse
+          {% endif %}"
+        >
+          {% if matched_media.size > 0 %}
+            {% assign first_media = matched_media.first %}
+            {{
+              first_media
+              | image_url: width: 600
+              | image_tag:
+                class: 'product-card__primary-image',
+                loading: 'lazy',
+                widths: '300, 400, 500, 600',
+                sizes: '(max-width: 767px) 100vw, 50vw'
+            }}
+          {% elsif matched_media.size == 0 and card_variant.featured_image %}
+            {% if product.media.size > next_index %}
+              {% assign first_media = product.media[next_index] %}
+              {{
+                first_media
+                | image_url: width: 600
+                | image_tag:
+                  class: 'product-card__primary-image',
+                  loading: 'lazy',
+                  widths: '300, 400, 500, 600',
+                  sizes: '(max-width: 767px) 100vw, 50vw'
+              }}
+            {% endif %}
+          {% endif %}
+        </a>
+
+        <div
+          class="product-card__gallery swiper-container--lazy {% if matched_media.size > 1 %}
+            has-multiple-media
+          {% elsif matched_media.size == 0 and card_variant.featured_image and product.media.size > next_index %}
+            has-multiple-media-reverse
+          {% endif %}"
+          data-media-count="{{ product.media.size }}"
+          {% if matched_media.size > 1 %}
+            data-start="1"
+          {% endif %}
+          aria-hidden="true"
+        >
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              {% if matched_media.size > 0 %}
+                {% for media in matched_media %}
+                  <div
+                    class="swiper-slide {% if forloop.first %}first-swiper-slide{% elsif forloop.index == 2 %}second-swiper-slide{% endif %}"
+                    data-media-id="{{ media.id }}"
+                    data-media-position="{{ forloop.index }}"
+                    data-variant-id="{{ card_variant.id | default: product.variants.first.id | default: '' }}"
+                  >
+                    <a href="{{ card_variant.url | default: product.url }}">
+                      {{
+                        media
+                        | image_url: width: 600
+                        | image_tag:
+                          class: 'product-card__gallery-image swiper-lazy',
+                          loading: 'lazy',
+                          widths: '300, 400, 500, 600',
+                          sizes: '(max-width: 767px) 100vw, 50vw'
+                      }}
+                    </a>
+                  </div>
+                {% endfor %}
+              {% elsif card_variant.featured_image %}
+                {% assign media = card_variant.featured_image %}
+                <div
+                  class="swiper-slide first-swiper-slide"
+                  data-media-id="{{ media.id }}"
+                  data-media-position="1"
+                  data-variant-id="{{ card_variant.id | default: product.variants.first.id | default: '' }}"
+                >
+                  <a href="{{ card_variant.url | default: product.url }}">
+                    {{
+                      media
+                      | image_url: width: 600
+                      | image_tag:
+                        class: 'product-card__gallery-image swiper-lazy',
+                        loading: 'lazy',
+                        widths: '300, 400, 500, 600',
+                        sizes: '(max-width: 767px) 100vw, 50vw'
+                    }}
+                  </a>
+                </div>
+              {% else %}
+                {% assign media = product.media.first %}
+                {% if media %}
+                  <div
+                    class="swiper-slide first-swiper-slide"
+                    data-media-id="{{ media.id }}"
+                    data-media-position="1"
+                    data-variant-id="{{ card_variant.id | default: product.variants.first.id | default: '' }}"
+                  >
+                    <a href="{{ card_variant.url | default: product.url }}">
+                      {{
+                        media
+                        | image_url: width: 600
+                        | image_tag:
+                          class: 'product-card__gallery-image swiper-lazy',
+                          loading: 'lazy',
+                          widths: '300, 400, 500, 600',
+                          sizes: '(max-width: 767px) 100vw, 50vw'
+                      }}
+                    </a>
+                  </div>
+                {% endif %}
+              {% endif %}
+            </div>
+            <div class="swiper-pagination"></div>
+            <button class="swiper-button-prev">{% render 'card-icons', name: 'prev' %}</button>
+            <button class="swiper-button-next">{% render 'card-icons', name: 'next' %}</button>
+          </div>
+        </div>
+
+        {% render 'size-swatch-v1-split',
+          product: product,
+          card_variant: card_variant,
+          variant_option: variant_option
+        %}
+      </div>
+
+      <div class="product-card__details">
+        {% render 'color-swatch-v1-split',
+          product: product,
+          card_variant: card_variant,
+          variant_option: variant_option
+        %}
+        {% if product.metafields.custom.product_badge.value %}
+          <div class="npc__badge__wrap ">
+            {% for badge in product.metafields.custom.product_badge.value limit: 2 %}
+              <span class="">
+                {% if forloop.last %}
+                  <div class="npc__pd-attribute npc__pd-attribute-{{ forloop.index }}">
+                    {{- badge | strip | escape -}}
+                  </div>
+                {% else %}
+                  <div class="npc__pd-attribute npc__pd-attribute-{{ forloop.index }}">
+                    {{- badge | strip | escape -}}
+                  </div>
+                {% endif %}
+              </span>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="product-card__header">
+          <h3 class="product-card__title">
+            <a href="{{ product.url }}">{{ product.title | escape }} - {{ variant_option }}</a>
+          </h3>
+          {% if product.metafields.descriptors.subtitle %}
+            <p class="product-card__subtitle">{{ product.metafields.descriptors.subtitle }}</p>
+          {% endif %}
+        </div>
+
+        <div class="product-card__pricing" data-price-container>
+          {% render 'new-price-v1-split',
+            product: product,
+            card_variant: card_variant,
+            variant_option: variant_option
+          %}
+        </div>
+      </div>
+    </div>
+  </div>
+</product-card>

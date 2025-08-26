@@ -1,0 +1,273 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    background: {{ section.settings.bg }};
+  }
+  .wrapper-{{ id }}  .swiper-wrapper{
+    transition-timing-function: linear !important;
+  }
+  .badge__img {
+    max-width: 70px;
+    @media(width < 768px) {
+      max-width: 50px;
+    }
+  }
+  .badge__img img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+  }
+  .wrapper-{{ id }} .content__wrapper {
+    color: #000;
+    font-family: var(--font-family-Title, Krylon);
+    font-size: var(--Font-Size-Heading-H4, 20px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H4, 24px);
+    width: max-content;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .wrapper-{{ id }} h4{
+    margin: 0;
+    text-align: center;
+    color: {{ section.settings.content_color }};
+  }
+  .wrapper-{{ id }} p{
+    font-size: var(--Font-Size-Heading-H4);
+    line-height: var(--Line-Height-Heading-H3);
+    font-family: var(--font-family-Title);
+    margin: 0;
+    text-align: center;
+    color: {{ section.settings.content_color }};
+  }
+  
+  .wrapper-{{ id }} .swiper-slide{
+    display: flex;
+    justify-content: center;
+  }
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="swiper badges-{{ id }}">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">
+              <div class="content__wrapper">
+                {% if block.settings.badge != blank %}
+                  <div class="badge__img">
+                    {{ block.settings.badge | image_url: width: block.settings.badge.width | image_tag }}
+                  </div>
+                {% endif %}
+                {% if block.settings.text != blank %}
+                  <div>{{ block.settings.text }}</div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const swiperOptions = {
+      slidesPerView: 2.3,
+      spaceBetween: 12,
+      breakpoints: {
+        500: {
+          slidesPerView: 3.2,
+          spaceBetween: 12,
+        },
+        850: {
+          slidesPerView: 3.8,
+          spaceBetween: 12,
+        },
+        969: {
+          slidesPerView: 4.2,
+          spaceBetween: 12,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 64,
+        },
+      },
+    };
+
+    // Conditionally add autoplay if screen width < 600
+    if (screen.width < 600) {
+      swiperOptions.loop = true;
+      swiperOptions.speed = 5000;
+      swiperOptions.autoplay = {
+        delay: 0,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      }; 
+    }
+
+    new Swiper('.badges-{{ id }}.swiper', swiperOptions);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background Color",
+      "default": "#fcfaf6"
+    },
+    {
+      "type": "color",
+      "id": "content_color",
+      "label": "Content Color"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "badge",
+          "label": "Badge"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Badge Text",
+          "default": "<p>Fast Shipping<p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Badges",
+      "blocks": [{ "type": "text" }, { "type": "text" }]
+    }
+  ]
+}
+{% endschema %}

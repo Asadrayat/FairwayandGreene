@@ -1,0 +1,60 @@
+{% liquid
+  assign collection_custom_title = collection.metafields.custom.related_collection_titles.value
+  assign fallback_related_collection = collection.metafields.custom.fallback_related_collections.value
+%}
+
+{% comment %} {{ fallback_related_collection | json }}
+{{ fallback_related_collection.metafields.custom.related_collection.value | json  }} {% endcomment %}
+{% if collection.metafields.custom.related_collection.value != blank or fallback_related_collection.metafields.custom.related_collection.value != blank %}
+  <div class="collections__nav-wrapper">
+    <button class="scroll-btn prev" aria-label="Scroll Left"></button>
+
+    {% if collection.metafields.custom.related_collection.value != blank %}
+      <div class="collections__lists" id="collectionsList">
+        {% for xcollection in collection.metafields.custom.related_collection.value %}
+          <a href="{{ xcollection.url }}" class="{% if xcollection.url == collection.url %}active{% endif %}">
+            {% if collection_custom_title[forloop.index0] %}
+              <span> {{ collection_custom_title[forloop.index0] }}</span>
+            {% else %}
+              <span> {{ xcollection.title }}</span>
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="collections__lists" id="collectionsList">
+        {% for xcollection in fallback_related_collection.metafields.custom.related_collection.value %}
+          <a href="{{ xcollection.url }}" class="{% if xcollection.url == collection.url %}active{% endif %}">
+            {% if fallback_related_collection.metafields.custom.related_collection_titles.value[forloop.index0] %}
+              <span> {{ fallback_related_collection.metafields.custom.related_collection_titles.value[forloop.index0] }}</span>
+            {% else %}
+              <span> {{ xcollection.title }}</span>
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <button class="scroll-btn next" aria-label="Scroll Right"></button>
+  </div>
+{% endif %}
+{% comment %}
+  <div class="collections__nav-wrapper">
+    <div class="collections__lists" id="collectionsList">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% if block.settings.collection %}
+              {% assign collection_url = block.settings.collection.url %}
+              {% assign current_url = request.path %}
+              <a href="{{ collection_url }}" class="swiper-slide {% if current_url == collection_url %}active{% endif %}">
+                {{ block.settings.collection.title }}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endcomment %}

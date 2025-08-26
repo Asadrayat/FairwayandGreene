@@ -1,0 +1,322 @@
+<style>
+  .account__drawer{
+    max-width: 648px;
+    .account__drawer-wrapper{
+      background: linear-gradient(180deg, #010D05 0%, #132D1B 100%);      
+    }
+    .account__steps{
+      height: 100%;
+    }
+    .account__steps-wrapper{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+.locker--icon-wrapper {
+    position: relative;
+}
+.locker--icon-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+    .account__drawer-close{
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      path{
+        stroke: #ffd !important;
+      }
+    }
+    .account__steps--logo {
+      display: flex;
+      justify-content: center;
+    }
+    .account--drawer-logo{
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      max-width: 295px;
+    }
+    .account__steps--top--title{
+      color: #DFBC6E;
+      text-align: center;
+      font-family: var(--font-family-Title, Krylon);
+      font-size: 52px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 56px; /* 107.692% */   
+      margin: 0;
+      @media(max-width: 768px){
+        font-size: 36px;
+        line-height: 42px; /* 107.692% */   
+      }
+    }
+    .locker-icon--title{
+      color: #000;
+      text-align: center;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: 28px;
+      {% comment %} font-size: var(--Font-Size-Paragraph-Large, 20px); {% endcomment %}
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */
+      text-transform: uppercase;   
+      margin: 0;
+      margin-bottom: 8px;
+    }
+    .locker-icon--no{
+      color: #000;
+      text-align: center;
+      font-family: "Aktiv Grotesk";
+      {% comment %} font-size: var(--Font-Size-Heading-H3, 24px); {% endcomment %}
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: var(--Line-Height-Heading-H3, 28px); /* 116.667% */
+      margin: 0;
+    }
+    .account__steps--middle--text{
+      color: #DFBC6E;
+      text-align: center;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: 26px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Large, 30px); /* 115.385% */ 
+      margin: 0;
+    }
+    .account__steps--bottom--title{
+      color: #DFBC6E;
+      text-align: center;
+      margin: 0;
+      font-family: var(--font-family-Title, Krylon);
+      font-size: var(--Font-Size-Heading-H2, 36px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H2, 36px); /* 100% */  
+    }
+    .account__steps--bottom--des{
+      color: #DFBC6E;
+      text-align: center;
+      margin: 0;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-Paragraph-Large, 20px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Large, 30px); /* 150% */  
+      max-width: 60%;
+      @media(max-width: 768px){
+        max-width: unset;
+      }
+    }
+    .account__steps--bottom--btn{
+      display: flex;
+      padding: var(--Spacing-Container-sm, 16px) var(--Spacing-Container-xl, 48px);
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--rounded-none, 0);
+      border: 1px solid #AA8C3F;
+      background: #BFA259;
+      color: #132D1B;
+      text-align: center;
+      margin: 0;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-UI-Controls-Control-Button-Regular, 20px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-UI-Controls-Control-Button-Regular, 20px); /* 100% */
+    }
+    .account__steps--bottom{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-width: 80%;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        padding: 30px 0;
+    }
+    .account__steps--bottom{
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 80%;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      padding: 30px 0;
+    }
+    .account__steps--middle{
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+</style>
+<div class="account__drawer">
+  <div class="account__drawer-wrapper">
+    <div class="account__drawer-close">
+      <button account-drawer-close class="btn-reset">{% render 'all-icons', name: 'close' %}</button>
+    </div>
+    <div class="account__steps">
+
+      <div class="account__steps-wrapper">
+        <div class="account__steps--logo">
+          {% if settings.account_drawer_logo != null %}
+            {{
+              settings.account_drawer_logo
+              | image_url: width: settings.account_drawer_logo.width
+              | image_tag: class: 'account--drawer-logo'
+            }}
+          {% endif %}
+        </div>
+        <div class="account__steps--top">
+          <h4 class="account__steps--top--title">{{ settings.account_drawer_title }}</h4>
+          <div class="locker--icon-wrapper">
+            <div class="locker--icon">
+              {% if settings.account_drawer_locker_icon != null %}
+                {{
+                  settings.account_drawer_locker_icon
+                  | image_url: width: settings.account_drawer_locker_icon.width
+                  | image_tag: class: 'account--drawer-locker-icon'
+                }}
+              {% endif %}
+            </div>
+            <div class="locker--icon-content">
+              <p class="locker-icon--title">LOCKER NO.</p>
+              <p class="locker-icon--no">{{ settings.account_drawer_locker_no }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="account__steps--middle">
+            <p class="account__steps--middle--text">Order History</p>
+            <p class="account__steps--middle--text">Locker Settings</p>
+            <p class="account__steps--middle--text">Clubhouse Messages</p>
+        </div>
+        <div class="account__steps--bottom">
+            <p class="account__steps--bottom--title">{{ settings.account_drawer_bottom_title }}</p>
+            <p class="account__steps--bottom--des">{{ settings.account_drawer_bottom_des }}</p>
+            <a href="/account" class="account__steps--bottom--btn">{{ settings.account_drawer_button_label }}</a>
+        </div>
+      </div>
+
+      {% comment %} <div class="account__steps-wrapper">
+        {% unless customer %}
+          <div data-step="1" class="account__login account__step-item">
+            <h5>LOGIN</h5>
+            <p>Enter your credentials to log in :</p>
+            <div class="account__login-form">
+              {% form 'customer_login' %}
+                {%- if form.errors -%}
+                  {{ form.errors | default_errors }}
+                {% endif %}
+                <div class="email">
+                  <input placeholder="Email" type="email" name="customer[email]">
+                </div>
+                {%- if form.password_needed -%}
+                  <div class="password">
+                    <input placeholder="Password" type="password" name="customer[password]">
+                  </div>
+                {% endif %}
+                <div class="submit">
+                  <button class="primary-btn" type="submit">Sign In</button>
+                </div>
+                <div class="account__recover">
+                  <button class="btn-reset linked-btn" data-procceed="2" account-recovery-btn>Forgot Password</button>
+                </div>
+              {% endform %}
+            </div>
+            <div class="account__signup-link">
+              <h6>Create a Fairway & Greene account</h6>
+              <p>
+                Save all your favourite products and easily find them in your account, so you can quickly add them to
+                your cart Make e-reservations in store
+              </p>
+              <button class="secondary-btn" data-procceed="3" signup-step-link>Sign Up</button>
+            </div>
+          </div>
+
+          <div data-step="2" class="account__recovery account__step-item">
+            <h5>RECOVERY</h5>
+            <p>Enter your mail to recover :</p>
+            <div class="account__recovery-form">
+              {%- form 'recover_customer_password' -%}
+                {% assign recover_success = form.posted_successfully? %}
+                <div class="email">
+                  <input
+                    type="email"
+                    value=""
+                    name="email"
+                    placeholder="Email"
+                  >
+                </div>
+                {%- if form.errors -%}
+                  <small>
+                    {{ form.errors.messages.form }}
+                  </small>
+                {%- endif -%}
+                <div class="submit">
+                  <button class="primary-btn" recovery-submit>Submit</button>
+                </div>
+                <div class="cancel">
+                  <button data-procceed="1" class="secondary-btn btn-reset" recovery-cancel>Cancel</button>
+                </div>
+              {%- endform -%}
+            </div>
+          </div>
+
+          <div data-step="3" class="account__signup account__step-item">
+            <h5>SIGNUP</h5>
+            <p>Enter your credentials to sign up :</p>
+            <div class="account__signup-form">
+              {% form 'create_customer' %}
+                {%- if form.errors -%}
+                  {{ form.errors | default_errors }}
+                {% endif %}
+                <div class="first-name">
+                  <input placeholder="First name" type="text" name="customer[first_name]">
+                </div>
+
+                <div class="last-name">
+                  <input placeholder="Last name" type="text" name="customer[last_name]">
+                </div>
+
+                <div class="email">
+                  <input placeholder="Email" type="email" name="customer[email]">
+                </div>
+
+                <div class="password">
+                  <input placeholder="Password" type="password" name="customer[password]">
+                </div>
+
+                <div class="submit">
+                  <button class="primary-btn" type="submit">Sign Up</button>
+                </div>
+              {% endform %}
+            </div>
+            <div class="account__sign-link">
+              <h6>Login to your Fairway & Greene account If You are already registered</h6>
+              <button class="secondary-btn" data-procceed="1" login-step-link>Sign In</button>
+            </div>
+          </div>
+        {% else %}
+          <div data-step="4" class="account__details account__step-item">
+            <h5>Hi, {{ customer.name }}</h5>
+            <div class="account__details-customer">
+              <a href="/account">Account Details</a>
+              <a href="/account/addresses">Adresses</a>
+              <a href="/account/login#recover">Reset Your Password</a>
+              <a href="/account/logout">Sign Out</a>
+            </div>
+          </div>
+        {% endunless %}
+      </div> {% endcomment %}
+
+    </div>
+  </div>
+</div>
+<div class="overlay"></div>

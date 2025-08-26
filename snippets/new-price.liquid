@@ -1,0 +1,20 @@
+{% if product.available %}
+  {% if product.variants.size > 1 %}
+    {% assign lowest_price = product.variants | sort: 'price' | first %}
+    <p>From {{ lowest_price.price | money }}</p>
+    {% if lowest_price.compare_at_price > lowest_price.price %}
+      <p>
+        <s>{{ lowest_price.compare_at_price | money }}</s>
+      </p>
+    {% endif %}
+  {% else %}
+    <p>{{ product.price | money }}</p>
+    {% if product.compare_at_price > product.price %}
+      <p>
+        <s>{{ product.compare_at_price | money }}</s>
+      </p>
+    {% endif %}
+  {% endif %}
+{% else %}
+  <p class="sold-out"><s>Sold Out</s></p>
+{% endif %}

@@ -1,0 +1,75 @@
+<predictive-search-new class="predictive-search-container glass__bg-full">
+  <div class="predictive-search-wrapper">
+      <a class="psw__logo">
+        {% unless logo_sm and logo_lg %}
+          <h2>{{ shop.name }}</h2>
+        {% else %}
+          <picture>
+            <source media="(min-width: 744px)" srcset="{{ logo_lg | image_url: width: logo_lg_width }}">
+            {{ logo_sm | image_url: width: logo_sm_width | image_tag: class: 'regular__logo', loading: 'lazy' }}
+          </picture>
+        {% endunless %}
+      </a>    
+    <div>
+      <button class="close-search" aria-label="Close search">{% render 'all-icons', name: 'close' %} Close</button>
+    </div>
+    <form action="/search" method="get" class="search-form">
+      <input
+        type="text"
+        name="q"
+        id="predictive-search"
+        placeholder="Search"
+        autocomplete="off"
+      >
+      <button class="search-btn" type="submit">{% render 'header-icons', name: 'search' %}</button>
+    </form>
+     {% if settings.ps_f_img != blank or settings.ps_f_img1 != blank %}
+      <div class="search-popular">
+        {% if settings.title != blank %}
+          <h4>{{ settings.title }}</h4>
+        {% endif %}
+        <div class="popular-collections frames">            
+            <div class="popular-item">
+              <div class="popular__item-image">
+                {% if settings.ps_f_img %}
+                  {{ settings.ps_f_img | image_url: width: settings.ps_f_img.width | image_tag }}
+                {% endif %}
+              </div>
+              <a href="{{ settings.ps_url }}"></a>
+            </div>
+            <div class="popular-item">
+              <div class="popular__item-image">
+                {% if settings.ps_f_img1 %}
+                  {{ settings.ps_f_img1 | image_url: width: settings.ps_f_img1.width | image_tag }}
+                {% endif %}
+              </div>
+              <a href="{{ settings.ps_url1 }}"></a>
+            </div>
+          </div>
+      </div>
+    {% endif %} 
+    {% if settings.collection_list != blank %}
+      <div class="search-popular">
+        {% if settings.title_1 != blank %}
+          <h4>{{ settings.title_1 }}</h4>
+        {% endif %}
+        <div class="popular-collections">
+          {% for collection in settings.collection_list %}
+            <div class="popular-item">
+              <div class="popular__item-image">
+                {% if collection.image %}
+                  {{ collection.image | image_url: width: collection.image.width | image_tag }}
+                {% elsif collection.featured_image %}
+                  {{ collection.featured_image | image_url: width: collection.featured_image.width | image_tag }}
+                {% endif %}
+              </div>
+              <p>{{ collection.title }}</p>
+              <a href="{{ collection.url }}"></a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    <div id="predictive-results" class="predictive-results"></div>
+  </div>
+</predictive-search-new>

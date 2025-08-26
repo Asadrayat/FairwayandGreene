@@ -1,0 +1,9 @@
+{% assign selected_variant = product.selected_or_first_available_variant %}
+{% for option in product.options_with_values %}
+  {% if option.name == 'Color' or option.name == 'color' %}
+    <div class="pd-selected-color">
+      <p class="pd-selected-color-value">{{ selected_variant.options[forloop.index0] }}</p>
+    </div>
+    {% break %}
+  {% endif %}
+{% endfor %}

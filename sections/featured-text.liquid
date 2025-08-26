@@ -1,0 +1,447 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+  #shopify-section-{{id}} {
+    .wrapper-{{ id }}{
+      display: flex;
+      max-width: 100%;
+      flex-direction: column;
+      gap: var(--Spacing-Container-sm, 16px);
+      {% if section.settings.content_alignment == 'left' %}
+        align-items: start;
+      {% elsif section.settings.content_alignment == 'right' %}
+        align-items: end;
+      {% else %}
+        align-items: center;
+      {% endif %}
+    }
+    .text-wrapper{
+      width: 100%;   
+      display: flex;
+      {% if section.settings.content_alignment == 'left' %}
+        justify-content: start;
+      {% elsif section.settings.content_alignment == 'right' %}
+        justify-content: end;
+      {% else %}
+        justify-content: center;
+      {% endif %}
+    }
+    .text{
+      {% if section.settings.content_alignment == 'left' %}
+        text-align: left;
+      {% elsif section.settings.content_alignment == 'right' %}
+        text-align: right;
+      {% else %}
+        text-align: center;
+      {% endif %}
+      color: var(--Content-Base-main, #1F2937);
+      margin: 0;
+      /* font-family: var(--font-family-Body, "Neue Plak"); */
+      font-size: var(--Font-Size-Paragraph-Medium, 18px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Medium, 26px); /* 144.444% */
+    }
+    .richtext-wrapper{
+      {% if section.settings.content_alignment == 'left' %}
+        text-align: left;
+      {% elsif section.settings.content_alignment == 'right' %}
+        text-align: right;
+      {% else %}
+        text-align: center;
+      {% endif %}
+      p{
+        color: var(--Content-Base-main, #1F2937);
+        /* font-family: var(--font-family-Body, "Neue Plak"); */
+        font-size: var(--Font-Size-Paragraph-Large, 20px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Large, 30px); /* 150% */  
+        margin: 0 0 var(--Spacing-Container-xs, 12px);
+      }
+      h3{
+        {% if section.settings.content_alignment == 'left' %}
+          text-align: left;
+        {% elsif section.settings.content_alignment == 'right' %}
+          text-align: right;
+        {% else %}
+          text-align: center;
+        {% endif %}
+        color: var(--Content-Base-main, #1F2937);
+        margin: 0;
+        /* font-family: var(--font-family-Title, "Neue Plak"); */
+        font-size: var(--Font-Size-Heading-H3, 24px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+      }      
+    }
+    .review-wrapper{
+      max-width: 840px;   
+      display: flex;
+      flex-direction: column;
+      gap: var(--Spacing-Container-sm, 16px);
+      @media(max-width: 768px){
+        max-width: unset;          
+      }
+    }
+    .review-bottom{
+      display: flex;
+      align-items: center;    
+      {% if section.settings.content_alignment == 'left' %}
+        justify-content: start;
+      {% elsif section.settings.content_alignment == 'right' %}
+        justify-content: end;
+      {% else %}
+        justify-content: center;
+      {% endif %}
+    }
+    .name{
+      color: var(--Content-Base-main, #1F2937);
+      text-align: center;
+      margin: 0;
+      /* font-family: var(--font-family-Body, "Neue Plak"); */
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 24px; /* 120% */
+      letter-spacing: 1.2px;
+      text-transform: uppercase;      
+    }
+    .name span{
+      color: var(--Content-Base-main, #1F2937);
+      margin: 0;
+      /* font-family: var(--font-family-Body, "Neue Plak"); */
+      font-size: var(--Font-Size-Paragraph-Regular, 16px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Regular, 24px);
+      letter-spacing: normal;
+      text-transform: capitalize;
+    }
+    .buttons-wrapper{
+      width: 100%;
+      display: flex;
+      {% if section.settings.content_alignment == 'left' %}
+        justify-content: start;
+      {% elsif section.settings.content_alignment == 'right' %}
+        justify-content: end;
+      {% else %}
+        justify-content: center;
+      {% endif %}
+    }
+    .dark{
+      cursor: pointer;
+      color: #FFF;
+      text-align: center;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-UI-Controls-Control-Button-Regular, 20px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-UI-Controls-Control-Button-Regular, 20px); /* 100% */  
+      display: flex;
+      padding: var(--Spacing-Container-xs, 12px) var(--Spacing-Container-lg, 32px);
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--rounded-none, 0px);
+      background: #004027;      
+      @media(max-width: 768px){
+        padding:  12px 24px;
+      }
+    }
+    .light {
+      cursor: pointer;
+      color: #004027;
+      border: 2px solid #004027;
+      text-align: center;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-UI-Controls-Control-Button-Regular, 20px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-UI-Controls-Control-Button-Regular, 20px); /* 100% */  
+      display: flex;
+      padding: var(--Spacing-Container-xs, 12px) var(--Spacing-Container-lg, 32px);
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--rounded-none, 0px);
+      background: #fff;  
+      text-transform: capitalize;
+      transition: all 0.4s;
+    }
+    .light:before,
+    .light:after {
+      content: unset !important;
+    }
+    .light:hover {
+      background: #004027;
+      color: #fff;
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'text' -%}
+            <div class="text-wrapper">
+              <p class="text">
+                {{ block.settings.text }}
+              </p>
+            </div>
+          {%- when 'richtext' -%}
+            <div class="richtext-wrapper">
+              {{ block.settings.richtext }}
+            </div>
+          {%- when 'button' -%}
+            <div class="buttons-wrapper">
+              {% if block.settings.button_label != blank %}
+                <a href="{{ block.settings.button_link }}" class="{% if block.settings.btn_color == 'light' %}light{% else %}dark{% endif %}">{{ block.settings.button_label }}</a>
+              {% endif %}
+            </div>
+          {%- when 'review' -%}
+            <div class="review-wrapper">
+              <div class="richtext-wrapper">
+                {{ block.settings.review_text }}
+              </div>
+              <div class="review-bottom">
+                {% if block.settings.name != blank %}
+                  <!-- <p class="name">{{ block.settings.name }} <span>{{ block.settings.designation }}</span></p> -->
+                  <h4 class="name">{{ block.settings.name }} <span>{{ block.settings.designation }}</span></h4>
+                {% endif %}
+              </div>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Text",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Content Alignment"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Richtext",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "richtext",
+          "label": "Richtext"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Url"
+        },
+        {
+          "type": "select",
+          "id": "btn_color",
+          "label": "Button Color scheme",
+          "options": [
+            {
+              "value": "dark",
+              "label": "Dark Mode"
+            },
+            {
+              "value": "light",
+              "label": "Light Mode"
+            },
+          ],
+          "default": "light"
+        },
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "review_text",
+          "label": "Review"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "designation",
+          "label": "Designation"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Text"
+    }
+  ]
+}
+{% endschema %}

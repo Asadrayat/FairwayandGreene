@@ -1,0 +1,44 @@
+{% comment %}
+  Single color swatch snippet:
+  - Displays one color swatch based on card_variant and variant_option (color value)
+  - Uses variant_option as the color value directly
+  - Verifies the color exists in card_variant.options
+{% endcomment %}
+
+{%- if card_variant and variant_option -%}
+  {% assign color_value = variant_option %}
+  {% assign is_color_valid = false %}
+  
+  {% comment %} Verify if variant_option exists in card_variant.options {% endcomment %}
+  {% for option in product.options_with_values %}
+    {% assign normalized_option_name = option.name | downcase %}
+    {% if normalized_option_name contains 'color' or normalized_option_name contains 'Color' %}
+      {% if card_variant.options contains color_value %}
+        {% assign is_color_valid = true %}
+      {% endif %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if is_color_valid and color_value %}
+    {% assign is_available = card_variant.available %}
+    {% assign color_handle = color_value | handle %}
+    {% assign swatch_image = color_handle | append: '.png' | file_img_url: '50x' %}
+
+    <div class="color-swatches">
+      <button
+        type="button"
+        class="color-swatch color-swatch--selected {% if images[color_handle] %}color-swatch--image{% endif %} {% unless is_available %}color-swatch--disabled{% endunless %}"
+        style="{% if images[color_handle] %}background-image: url({{ swatch_image }});{% else %}background-color: {{ color_handle }};{% endif %}"
+        data-variant-id="{{ card_variant.id | default: '' }}"
+        data-color-value="{{ color_value | escape }}"
+        {% unless is_available %}
+          disabled
+        {% endunless %}
+        aria-label="{{ color_value }}{% unless is_available %} (Out of stock){% endunless %}"
+      >
+        <span class="visually-hidden">{{ color_value }}</span>
+      </button>
+    </div>
+  {% endif %}
+{%- endif -%}

@@ -1,0 +1,341 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+    #shopify-section-{{id}} {
+      box-sizing: border-box;
+      margin-top: {{section.settings.margin_top | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+      padding-top: {{section.settings.padding_top | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    }
+
+
+    @media(max-width: 600px) {
+      #shopify-section-{{id}} {
+        margin-top: {{section.settings.margin_top_m | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+        padding-top: {{section.settings.padding_top_m | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      }
+    }
+
+  .sec-{{ id }}{
+        .--desktop-only{
+      @media(max-width:600px){
+        display: none!important
+      }
+    }
+    .--mobile-only{
+      @media(min-width:601px){
+        display: none!important
+      }
+    }
+    .wrapper-{{ id }}{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: var(--Spacing-Container-xs, 12px);
+        @media(max-width: 768px){
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+    }
+    .--green-column {
+        color: var(--Content-Inverted-main, #F3F4F6);
+    background: #004027;
+    padding: var(--Spacing-Container-md, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-xl, 32px);
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.--tagline {
+    /* color: var(--Content-Inverted-main, #F3F4F6); */
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.96px;
+    text-transform: uppercase;
+}
+.--green-column .--text-box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-md, 16px);
+}
+.--green-column h3 {
+    color: var(--Content-Inverted-main, #F3F4F6);
+    font-family: var(--font-family-Title, Krylon);
+    font-size: var(--Font-Size-Heading-H3, 24px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H3, 28px);
+    margin: 0;
+}
+.--green-column .--content {
+    /* color: var(--Content-Inverted-main, #F3F4F6); */
+    /* font-family: var(--font-family-Body, "Aktiv Grotesk"); */
+    font-size: var(--Font-Size-Paragraph-Small, 14px);
+    font-style: normal;
+    /* font-weight: 400; */
+    line-height: var(--Line-Height-Paragraph-Small, 20px);
+}
+.--green-column  a.--button {
+    display: block;
+    background: #FFF;
+    max-width: max-content;
+    padding: var(--Spacing-Container-sm, 16px) var(--Spacing-Container-lg, 32px);
+    color: #004027;
+    text-align: center;
+    font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 16px);
+    line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 16px);
+}
+
+
+.--image-column {
+    position: relative;
+}
+.--review-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    padding: var(--Spacing-Container-md, 24px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+.--review-box {
+    color: var(--Content-Inverted-main, #F9FAFB);
+    max-width: 500px;
+    border-radius: var(--rounded-none, 0);
+    background: rgba(0, 0, 0, 0.50);
+    backdrop-filter: blur(5px);
+    padding: var(--Spacing-Container-md, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-xs, 12px);
+}
+.--review-text {
+    font-family: var(--font-family-Title, Krylon);
+    font-size: var(--Font-Size-Heading-H3, 24px);
+    line-height: var(--Line-Height-Heading-H3, 28px);
+}
+.--reviewer-name {
+    font-size: var(--Font-Size-Paragraph-Small, 14px);
+    line-height: var(--Line-Height-Paragraph-Small, 20px);
+}
+
+  }
+</style>
+
+<div id="{{ section.settings.id_nav | downcase }}" class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="--green-column">
+        <div class="--tagline">Limited offer</div>
+        <div class="--text-box">
+          <h3>{{ section.settings.title }}</h3>
+          <div class="--content">{{ section.settings.content }}</div>
+          {% if section.settings.button_label != blank %}
+            <a class="--button" href="{{ section.settings.button_url }}">{{ section.settings.button_label }}</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="--image-column">
+        {% if section.settings.image != blank %}
+          {{ section.settings.image | image_url: width: section.settings.image.width | image_tag: class: '--desktop-only' }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag:  '--desktop-only' }}
+        {% endif %}
+        {% if section.settings.image_mobile != blank %}
+          {{ section.settings.image_mobile | image_url: width: section.settings.image_mobile.width | image_tag: class: '--mobile-only' }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: '--mobile-only' }}
+        {% endif %}
+        <div class="--review-container">
+          <div class="--review-box">
+            <div class="--review-stars">{% render 'all-icons', name: 'white-5-star' %}</div>
+            {% if section.settings.review != blank %}
+              <div class="--review-text">"{{ section.settings.review | strip_html }}"</div>
+            {% endif %}
+            {% if section.settings.reviewer_name != blank %}
+              <div class="--reviewer-name">- {{ section.settings.reviewer_name | strip_html }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Limited Offer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+     {
+      "type": "text",
+      "id": "id_nav",
+      "label": "Id for Navigtion"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Get the product with 50% off"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Content",
+      "default": "Leverage the incredible power of our cutting-edge store builder specifically designed for Shopify."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop The Product"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Url"
+    },
+
+    {
+      "type": "header",
+      "content": "Review"
+    },
+    {
+      "type": "text",
+      "id": "reviewer_name",
+      "label": "Reviewer Name",
+      "default": "Jane Doe"
+    },
+    {
+      "type": "textarea",
+      "id": "review",
+      "label": "Review",
+      "default": "Instant has saved us tons of hours of work, keeping our team in control."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Select Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Select Image (Mobilee)"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Limited Offer"
+    }
+  ]
+}
+{% endschema %}

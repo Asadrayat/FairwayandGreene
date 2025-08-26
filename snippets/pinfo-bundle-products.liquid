@@ -1,0 +1,7 @@
+{% if product.metafields.custom.bundle != blanl %}
+<div class="pinfo-bundle-wrapper">
+  {% for p in product.metafields.custom.bundle.value %}
+    {% render 'new-product-card-v1', product: p %}
+  {% endfor %}
+</div>
+{% endif %}

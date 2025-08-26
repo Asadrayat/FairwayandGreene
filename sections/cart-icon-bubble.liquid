@@ -1,0 +1,12 @@
+<a
+  id="cart-icon-bubble"
+  class="new-header-cart-icon"
+  aria-label="header cart icon"
+  cart-drawer
+  href="{{ routes.cart_url }}"
+>
+  {%- render 'header-icons', name: 'bag' -%}
+  {% if cart != empty %}
+    <span class="cart__counter">{{ cart.item_count }}</span>
+  {% endif %}
+</a>

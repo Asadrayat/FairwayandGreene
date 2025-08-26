@@ -1,0 +1,519 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    background: #162229;
+  }
+
+  @media(max-width: 768px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      /* position: sticky;
+      top: 0;
+      z-index: 9; */
+    }
+  }
+  .sec-{{ id }} {
+    position: relative;
+    transition: .3s;
+  }
+  .heading-{{ id }} h2{
+    color: var(--colors-black-500, #212121);
+    font-family: Urbanist;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 56px;
+  }
+  .wrapper-{{id}} {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+    padding: var(--Spacing-Container-xs, 12px) 0px;
+  }
+  a:not([href]) {
+      cursor: pointer;
+  }
+  .btn-{{id}} {
+    color: var(--Content-Inverted-main, #F3F4F6);
+    font-family: var(--font-family-Title, Krylon);
+    font-size: var(--Font-Size-Heading-H4, 20px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H4, 24px); /* 120% */
+    letter-spacing: -0.4px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-{{ id }}:hover:after{
+    width: 100%;
+  }
+
+  /* .btn-{{ id }}.active{
+    color: white;
+  } */
+
+  .btn-{{id}}:after{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    content: "";
+    width: 0;
+    height: 1px;
+    background: #fff;
+    transition: all .4s ease;
+  }
+  .btn-{{id}}.active:after{
+    width: 100%;
+  }
+
+  .stickyTop {
+    position: fixed;
+    top: 52px;
+    left: 0;
+    z-index: 8;
+    width: 100%;
+    height: max-content;
+    background: #162229;
+    box-shadow: 0px 10px 10px 0px rgba(60, 32, 88, 0.08);
+    @media(max-width: 1250px) {
+      top: 0;
+    }
+  }
+
+  .stickyTop .heading-{{ id }} {
+    display: none;
+  }
+
+
+
+  @media(min-width: 769px) {
+    /* .stickyTop .wrapper-{{id}} {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 40px;
+      justify-content: center;
+    } */
+
+    /* .stickyTop .btn-{{ id }} {
+      background: transparent;
+      border: none;
+      color: #3D4852;
+      flex-grow: unset;
+      flex-shrink: unset;
+      padding: 0;
+    } */
+    .stickyTop .btn-{{ id }}:hover{
+      color: #fff !important;
+      filter: unset;
+    }
+    .stickyTop .btn-{{ id }}.active{
+      color: #fff !important;
+      filter: unset;
+    }
+
+  }
+  @media(max-width: 768px) {
+    .wrapper-{{id}} {
+      gap: 8px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      /* flex-direction: column; */
+    }
+    .heading-{{ id }} h2{
+      font-size: 24px;
+      line-height: 32px;
+      margin-bottom: 20px;
+    }
+    .stickyTop {
+      top: 0;
+      bottom: 0;
+      width: 100vw;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow: auto;
+      box-sizing: border-box;
+      /* padding: 10px 0; */
+      flex-direction: row;
+    }
+    .stickyTop::-webkit-scrollbar{
+      display: none;
+    }
+    .stickyTop .wrapper-{{id}} {
+      flex-direction: row;
+    }
+    .stickyTop .btn-{{ id }} {
+      padding: 0 16px;
+      height: 36px;
+      line-height: 33px;
+      font-size: 14px;
+      border-radius: 4px;
+      color: #fff;
+      border: 2px solid var(--colors-black-500, #212121);
+      /* background: #FFF; */
+      min-width: max-content;
+    }
+    .stickyTop .btn-{{ id }}:hover{
+      padding: 0 16px;
+      height: 36px;
+      line-height: 33px;
+      font-size: 14px;
+      border-radius: 4px;
+      color: #fff;
+      border: 2px solid var(--colors-black-500, #212121);
+      /* background: #FFF; */
+      min-width: max-content;
+    }
+    .stickyTop .btn-{{ id }}.active{
+      filter: unset;
+      border-color: #004027;
+      background: #004027;
+      color: #fff;
+    }
+    .btn-{{ id }}.active:after{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      content: "";
+      width: 100%;
+      height: 0px;
+      background: transparent;
+    }
+  }
+
+  @media(max-width: 768px) {
+    .wrapper-{{id}} {
+      display: none;
+    }
+    .sec--container-{{ section.id }}{
+      width: 100%;
+    }
+
+    .mobile-dropdown {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      /* font-size: 16px; */
+      background: #162229;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      appearance: none; /* Removes default dropdown arrow */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      position: relative;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%23FFFFFF"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px;
+      cursor: pointer;
+
+      color: var(--Content-Inverted-main, #f3f4f6);
+      font-family: var(--font-family-Title, Krylon);
+      font-size: var(--Font-Size-UI-Controls-Control-Button-Regular);
+      font-style: normal;
+      font-weight: 400;
+      line-height: 100%;
+      min-height: 48px;
+    }
+
+    /* For iOS styling */
+    .mobile-dropdown:focus {
+      outline: none;
+      border-color: #00291B;
+    }
+    .mobile-dropdown:focus-visible {
+      outline: unset;
+      outline-offset: unset;
+      box-shadow: unset;
+    }
+  }
+
+  @media(min-width: 769px) {
+    .sec--container-{{ section.id }}{
+      position: relative;
+    }
+    .mobile-dropdown {
+      display: none;
+    }
+  }
+
+  /* Progress Bar Styles */
+  .progress-gift-page-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: #757575;
+    z-index: 2;
+  }
+
+  .progress-bar--gift-page {
+    display: block !important;
+    width: 0%;
+    height: 1px;
+    background: #fff;
+    transition: width 0.1s linear;
+  }
+</style>
+
+<div class="sec-{{ id }}" id="secondaryNav">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %} sec--container-{{ section.id }}">
+    <div class="heading-{{ id }}">
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    <div class="wrapper-{{ id }}" id="secondNav">
+      {% for block in section.blocks %}
+        <a
+          href="{{ block.settings.url | downcase }}"
+          data-id="{{ block.settings.url | downcase | remove: "#" }}"
+          class="btn-{{ id }}"
+        >
+          {{- block.settings.text -}}
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <select class="mobile-dropdown" id="mobileNav">
+      {% for block in section.blocks %}
+        <option value="{{ block.settings.url | downcase }}">{{ block.settings.text }}</option>
+      {% endfor %}
+    </select>
+
+    <div class="progress-gift-page-container">
+      <div class="progress-bar--gift-page"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.onscroll = function() {
+    updateProgressBar();
+  };
+
+  function updateProgressBar() {
+    let scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+    let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    let progress = (scrollPosition / scrollHeight) * 100;
+    console.log(progress)
+    document.querySelector(".progress-bar--gift-page").style.width = progress + "%";
+  }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      var secondaryNav = document.getElementById('secondaryNav');
+      var elementPosition = secondaryNav.offsetTop;
+      var navSecs = document.querySelectorAll(".shopify-section");
+      var navBtns = document.querySelectorAll("#secondNav a");
+      var mobileNav = document.getElementById("mobileNav");
+
+      window.addEventListener("scroll", function() {
+          if (window.pageYOffset > elementPosition) {
+              secondaryNav.classList.add("stickyTop");
+          } else {
+              secondaryNav.classList.remove("stickyTop");
+          }
+
+          navSecs.forEach(function(secP) {
+              if (secP.querySelector(".belongsToNav")) {
+                  var sec = secP.querySelector(".belongsToNav");
+                  if (sec.getAttribute('id')) {
+                      var top = sec.getBoundingClientRect().top + window.pageYOffset - (80 + 48 + 20);
+                      var height = sec.offsetHeight;
+                      var wTop = window.pageYOffset;
+                      var topH = top + height;
+                      var id = sec.getAttribute('id');
+
+                      if (top <= wTop && topH >= wTop) {
+                          navBtns.forEach(function(btn) {
+                              var url = btn.getAttribute('data-id');
+                              if (url === id) {
+                                  btn.classList.add("active");
+                                  mobileNav.value = `#${id}`;
+                              } else {
+                                  btn.classList.remove("active");
+                              }
+                          });
+                      }
+                  }
+              }
+          });
+      });
+
+      document.querySelectorAll('#secondNav a').forEach(function(anchor) {
+          anchor.addEventListener('click', function(event) {
+              event.preventDefault();
+              var id = this.getAttribute('href');
+              var targetElement = document.querySelector(id);
+              var top = targetElement.getBoundingClientRect().top + window.pageYOffset - (80 + 48 + 20);
+
+              document.documentElement.style.scrollBehavior = 'inherit';
+
+              window.scrollTo({
+                  top: top,
+                  behavior: 'smooth'
+              });
+
+              setTimeout(function() {
+                  document.documentElement.style.scrollBehavior = 'smooth';
+              }, 600);
+          });
+      });
+
+      // Mobile Dropdown Change Event
+      mobileNav.addEventListener("change", function() {
+          var target = document.querySelector(this.value);
+          if (target) {
+              var top = target.getBoundingClientRect().top + window.pageYOffset - (80 + 48 + 20);
+              window.scrollTo({ top: top, behavior: "smooth" });
+          }
+      });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Floating Navigation",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "heading",
+      "default": "What health issue do you want to heal?"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating Navigation"
+    }
+  ]
+}
+{% endschema %}

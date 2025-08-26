@@ -1,0 +1,314 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+
+  @media(max-width: 768px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+
+  .heading-{{ id }}{
+    margin: 0 0 24px;
+  }
+  .heading-{{ id }} h2{
+    color: #000;
+    font-family: var(--font-family-Title);
+    font-size: var(--Font-Size-Heading-H2);
+    line-height: var(--Line-Height-Heading-H2);
+    margin: 0;
+  }
+  .items-{{ id }}{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 16px 8px;
+  }
+  .horizontal__item{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 12px;
+    align-items: center;
+  }
+  .items-{{ id }} .horizontal__item:nth-child(4n - 1) .info-{{ id }}{
+    order: 1;
+  }
+  .items-{{ id }} .horizontal__item:nth-child(4n) .info-{{ id }}{
+    order: 1;
+  }
+  .items-{{ id }} .horizontal__item:nth-child(4n - 1) .image-{{ id }}{
+    order: 2;
+  }
+  .items-{{ id }} .horizontal__item:nth-child(4n) .image-{{ id }}{
+    order: 2;
+  }
+  .image-{{ id }} img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 364.00/291.20;
+  }
+  .vertical__item .info-{{ id }}{
+    margin: 12px 0 0;
+  }
+  .info-{{ id }} h4{
+    color: var(--Content-Base-main);
+    font-family: var(--font-family-Title);
+    font-size: var(--Font-Size-Heading-H4);
+    line-height: var(--Line-Height-Heading-H4);
+    margin: 0 0 8px;
+  }
+  .info-{{ id }} p{
+    color: var(--Content-Base-main);
+    font-family: var(--font-family-Body);
+    font-size: var(--Font-Size-Paragraph-Small);
+    line-height: var(--Line-Height-Paragraph-Small);
+    margin: 0;
+  }
+
+  @media screen and (min-width: 769px){
+    .items__sm{
+      display: none;
+    }
+  }
+  @media screen and (max-width: 768px){
+    .items__lg{
+      display: none;
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {% if section.settings.title != blank %}
+        <div class="heading-{{ id }}">
+          <h3>{{ section.settings.title }}</h3>
+        </div>
+      {% endif %}
+      {% if section.blocks.size > 0 %}
+        <div class="items-{{ id }} items__lg">
+          {% for block in section.blocks %}
+            <div class="item-{{ id }} {% if section.settings.card_style == 'horizontal' %}horizontal__item{% elsif section.settings.card_style == 'vertical' %}vertical__item{% endif %}">
+              {% if block.settings.image %}
+                <div class="image-{{ id }}">
+                  {{ block.settings.image | image_url: width: block.settings.image.width | image_tag }}
+                </div>
+              {% endif %}
+              {% if block.settings.title != blank or block.settings.text != blank %}
+                <div class="info-{{ id }}">
+                  {% if block.settings.title != blank %}
+                    <h4>{{ block.settings.title }}</h4>
+                  {% endif %}
+                  {% if block.settings.text != blank %}
+                    <p>{{ block.settings.text }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="slider-{{ id }} items__sm">
+          <div class="swiper key__features-slider">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                <div class="swiper-slide">
+                  <div class="item-{{ id }} vertical__item">
+                    {% if block.settings.image %}
+                      <div class="image-{{ id }}">
+                        {{ block.settings.image | image_url: width: block.settings.image.width | image_tag }}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.title != blank or block.settings.text != blank %}
+                      <div class="info-{{ id }}">
+                        {% if block.settings.title != blank %}
+                          <h4>{{ block.settings.title }}</h4>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                          <p>{{ block.settings.text }}</p>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const keyFeaturesSlider = new Swiper('.slider-{{ id }} .key__features-slider', {
+      slidesPerView: 1.2,
+      spaceBetween: 12,
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Key Features",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Key Features"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card Style",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        },
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        }
+      ],
+      "default": "vertical"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Select Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Key Features"
+    }
+  ]
+}
+{% endschema %}

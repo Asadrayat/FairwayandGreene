@@ -1,0 +1,44 @@
+{% comment %}
+    Price snippet:
+    - Shows Compare at Price and Regular Price if Compare at Price > Regular Price
+    - Otherwise shows Regular Price
+
+{% endcomment %}
+  <div
+    class="price-wrapper"
+    data-product-id="{{ product.id }}"
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  >
+    <span class="price-regular">
+      {% if product.selected_or_first_available_variant.compare_at_price
+          > product.selected_or_first_available_variant.price
+      %}
+        <span class="price-sale">{{ product.selected_or_first_available_variant.price | money }}</span>
+        <span class="price-compare-at">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+      {% else %}
+        <span class="price-standard">{{ product.selected_or_first_available_variant.price | money }}</span>
+      {% endif %}
+    </span>
+  </div>
+
+{% comment %}
+<div
+  class="price-wrapper"
+  data-product-id="{{ product.id }}"
+  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+>
+  {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price
+  %}
+    <span class="price price--on-sale">
+      <span class="visually-hidden">Regular price</span>
+      <span class="price__sale">{{ product.selected_or_first_available_variant.price | money }}</span>
+      <span class="visually-hidden">Sale price</span>
+      <span class="price__compare">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+    </span>
+  {% else %}
+    <span class="price">
+      <span class="price__regular">{{ product.selected_or_first_available_variant.price | money }}</span>
+    </span>
+  {% endif %}
+</div>
+{% endcomment %}

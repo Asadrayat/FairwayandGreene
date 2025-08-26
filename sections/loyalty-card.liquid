@@ -1,0 +1,512 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+        #shopify-section-{{id}} {
+          box-sizing: border-box;
+          margin-top: {{section.settings.margin_top | append: 'px'}};
+          margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+          padding-top: {{section.settings.padding_top | append: 'px'}};
+          padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+          .page-width {
+            max-width: 1160px;
+          }
+          .button.outlined {
+            margin: var(--Spacing-Container-sm) 0 0 0 ;
+            width: 100%;
+          }
+          a.button.outlined {
+                color: #FFF;
+                text-align: center;
+                font-family: "Aktiv Grotesk";
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 100%;
+                text-transform: uppercase;
+                box-sizing: border-box;
+                border: 0;
+                width: 100%;
+                cursor: pointer;
+                border-radius: var(--rounded-none, 0px);
+                background: #004027;
+                display: flex;
+                padding: var(--Spacing-Container-sm, 12px) var(--Spacing-Container-lg, 32px);
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                align-self: stretch;
+                border: 1px solid #004027;
+                transition: all 0.4s;
+                &:hover {
+                border-radius: var(--rounded-none, 0px);
+                background: #fff;
+                color: #004027;                    
+                }
+            }     
+            a.button.outlined::before, a.button.outlined::after {
+             content: unset;
+            }     
+        }
+
+        @media(max-width: 600px) {
+          #shopify-section-{{id}} {
+            margin-top: {{section.settings.margin_top_m | append: 'px'}};
+            margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+            padding-top: {{section.settings.padding_top_m | append: 'px'}};
+            padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+          }
+        }
+
+      .wrapper-{{ id }} {
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+          align-items: center;
+          @media(max-width: 600px) {
+            grid-template-columns: 1fr;
+            gap: var(--Spacing-Container-lg, 24px);
+          }
+
+
+      .--image-wrapper {
+          line-height: 0;          
+          @media(max-width: 600px) {
+             /* grid-row: 1/2; */
+           }
+        img {
+          width: 100%;
+        {% if section.settings.image_size == 'adaptive' %}
+          aspect-ratio: 2/3;
+        {% endif %}
+        }
+
+      }
+
+      .--text-block-container.--text-first {
+          padding-right: var(--Spacing-Container-lg);
+           @media(max-width: 600px) {
+             padding-right: unset;
+           }
+      }
+      .--text-block-container.--text-last {
+          padding-left: var(--Spacing-Container-lg);
+          @media(max-width: 600px) {
+             padding-left: unset;
+           }
+      }
+      .pretitle {
+        color: #000;
+        font-family: var(--font-family-Body, "Archivo Expanded");
+        font-size: var(--Font-Size-Paragraph-Regular, 16px);
+        font-style: normal;
+        font-weight: 250;
+        line-height: var(--Line-Height-Paragraph-Regular, 24px);
+        text-transform: uppercase;
+        padding-block: 0 var(--Spacing-Container-xs);
+        margin: 0;
+      }
+      h2.--title {
+          margin-block: 0 var(--Spacing-Container-xs);
+      }
+
+      .--content {
+        margin-block: var(--Spacing-Container-sm) var(--Spacing-Container-lg);
+      }
+      .--content p{
+        color: #000;
+
+        /* Paragraph/S */
+        font-family: var(--font-family-Body, "Aktiv Grotesk");
+        font-size: var(--Font-Size-Paragraph-Small, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px); /* 142.857% */
+      }
+
+        h3 {
+            color: #000;
+
+            /* UI Controls/Contextual/tagline/small */
+            font-family: var(--font-family-Body, "Aktiv Grotesk");
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px; /* 125% */
+            letter-spacing: 0.96px;
+            text-transform: uppercase;
+        }
+      }
+      .--content * {
+        margin: 0 0 8px;
+      }
+
+  .product__wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--Spacing-Container-sm);
+      align-items: stretch; /* Ensure grid items stretch to equal height */
+      @media(width < 1100px ) {
+        grid-template-columns: 1fr ;
+      }
+  }
+
+  .pd__block {
+      position: relative;
+      display: grid;
+      grid-template-rows: 1fr auto ; /* Image takes available space, title takes natural height */
+      height: 100%; /* Fill grid cell */
+  }
+
+  .pd_image__wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .pd_image__wrap img {
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      @media( 600px < width < 1100px ) {
+        max-width: 50%;
+      }
+  }
+
+  p.pd__title {
+      color: #1F2937;
+      text-align: center;
+      margin: 0 ;
+      padding: 8px 0;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+  }
+
+  a.absolute_link {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+  }
+
+      /* .product__wrapper {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--Spacing-Container-sm);
+      }
+
+
+      .pd__block {
+          position: relative;
+      }
+      a.absolute_link {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          display: block;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+      }
+       p.pd__title {
+          color: #1F2937;
+          text-align: center;
+          margin-top: 12px;
+      }
+      .pd_image__wrap img{
+        aspect-ratio: 4 / 5;
+      }
+      } */
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'image' %}
+            <div class="--image-wrapper">
+              {% unless block.settings.image == blank %}
+                {{ block.settings.image | image_url: width: block.settings.image.width | image_tag }}
+              {% else %}
+                {{ 'image' | placeholder_svg_tag }}
+              {% endunless %}
+            </div>
+          {% when 'text' %}
+            <div class="--text-block-container {% if forloop.first %} --text-first {% else %}--text-last{% endif %}">
+              <h2 class="--title">{{ block.settings.title }}</h2>
+              {% unless block.settings.pretitle == blank %}
+                <p class="pretitle">{{ block.settings.pretitle }}</p>
+              {% endunless %}
+              <div class="--content">{{ block.settings.content }}</div>
+              {% if block.settings.product or block.settings.product1 %}
+                {% assign product1 = block.settings.product %}
+                {% assign product2 = block.settings.product1 %}
+                <div class="product__wrapper">
+                  <div class="pd__block">
+                    {% comment %}
+                      <a class="absolute_link" href="{{ product1.url }}"></a>
+                    {% endcomment %}
+                    
+                    <div class="pd_image__wrap">
+                      {% if block.settings.cm1 %}
+                        {{- block.settings.cm1 | image_url: width: block.settings.cm1.width | image_tag -}}
+                      {% else %}
+                        {% if product1.featured_image -%}
+                          {{- product1.featured_image | image_url: width: product1.featured_image.width | image_tag -}}
+                        {%- else -%}
+                          {{- 'product-1' | placeholder_svg_tag -}}
+                        {%- endif %}
+                      {% endif %}
+                    </div>
+                    <p class="pd__title">{{ product1.title }}</p>
+                    {% unless block.settings.btn_label == blank %}
+                      <a class="button outlined" href="{{ block.settings.btn_url }}">{{ block.settings.btn_label }}</a>
+                    {% endunless %}
+                  </div>
+                  <div class="pd__block">
+                    {% comment %}
+                      <a class="absolute_link" href="{{ product1.url }}"></a>
+                    {% endcomment %}
+                    
+                    <div class="pd_image__wrap">
+                      {% if block.settings.cm2 %}
+                        {{- block.settings.cm2 | image_url: width: block.settings.cm2.width | image_tag -}}
+                      {% else %}
+                        {% if product2.featured_image -%}
+                          {{- product2.featured_image | image_url: width: product2.featured_image.width | image_tag -}}
+                        {%- else -%}
+                          {{- 'product-2' | placeholder_svg_tag -}}
+                        {%- endif %}
+                      {% endif %}
+                    </div>
+                    <p class="pd__title">{{ product2.title }}</p>
+                    {% unless block.settings.btn_label1 == blank %}
+                      <a class="button outlined" href="{{ block.settings.btn_url1 }}">
+                        {{- block.settings.btn_label1 -}}
+                      </a>
+                    {% endunless %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image Card Section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "select",
+      "id": "image_size",
+      "label": "Image Size",
+      "options": [
+        {
+          "value": "original",
+          "label": "Original"
+        },
+        {
+          "value": "adaptive",
+          "label": "adaptive"
+        }
+      ],
+      "default": "original"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text Block",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "01 Membership"
+        },
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Pretitle",
+          "default": "33.50 USD"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "header",
+          "content": "Products"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "cm1",
+          "label": "Custom Image 1"
+        },
+        {
+          "type": "product",
+          "id": "product1",
+          "label": "Product 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "cm2",
+          "label": "Custom Image 2"
+        },
+        {
+          "type": "header",
+          "content": "Button Groups"
+        },
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Button Label 1"
+        },
+        {
+          "type": "url",
+          "id": "btn_url",
+          "label": "Button Url 1"
+        },
+        {
+          "type": "text",
+          "id": "btn_label1",
+          "label": "Button Label 2"
+        },
+        {
+          "type": "url",
+          "id": "btn_url1",
+          "label": "Button Url 2"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Card Section"
+    }
+  ]
+}
+{% endschema %}

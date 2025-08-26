@@ -1,0 +1,42 @@
+   
+{% comment %} mclbx-embroider-message.liquid {% endcomment %}
+ {% if product.tags contains 'embroider' %}
+  <style>
+      .--custom-embroidery-message-wrapper{
+        border: 1px solid black;
+        padding: 10px;
+        margin-top: 30px;
+        width: 100%;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    .--icon-wrapper {
+        svg {
+          width: 80px;
+          height: auto;
+        }
+    }
+    p{
+      margin-block: 0px;
+      font-size: var(--Font-Size-Paragraph-Tiny, 12px);
+      line-height: var(--Line-Height-Paragraph-Tiny, 16px);
+      text-align: left;
+    }
+    p:first-child{
+        {% comment %} margin-block: 0px 10px;       {% endcomment %}
+    }
+      }
+  </style>
+  <div class="--custom-embroidery-message-wrapper">
+    <div class="--icon-wrapper">
+      {% render 'all-icons', name: 'sewing' %}
+    </div>
+
+    <div>
+      <p>Decorated Item - Final Sale</p>
+      <p>
+        Your custom gear is worth the wait — please allow 5-7 business days for us to prepare it before it ships. Since each piece is made just for you, decorated items are final sale and can't be returned or exchanged.
+      </p>
+    </div>
+  </div>
+{% endif %}

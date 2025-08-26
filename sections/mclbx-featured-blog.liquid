@@ -1,0 +1,419 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+    #shopify-section-{{id}} {
+      box-sizing: border-box;
+      margin-top: {{section.settings.margin_top | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+      padding-top: {{section.settings.padding_top | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    }
+
+    @media(max-width: 600px) {
+      #shopify-section-{{id}} {
+        margin-top: {{section.settings.margin_top_m | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+        padding-top: {{section.settings.padding_top_m | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      }
+    }
+
+  .sec-{{ id }}{
+    h2.--section-title {
+        color: var(--Content-Base-main, #1F2937);
+        /* text-align: center; */
+        font-family: var(--font-family-Title, Archivo);
+        font-size: var(--Font-Size-Heading-H2, 40px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Heading-H2, 40px);
+        letter-spacing: -0.4px;
+        margin-block: 0 var(--Spacing-Container-sm, 16px);;
+         @media(max-width: 600px){
+           text-align: center;
+         }
+    }
+    p.--section-subtitle {
+        color: var(--Content-Base-main, #1F2937);
+        margin-block: 0  var(--Spacing-Container-sm);
+        font-family: var(--font-family-Body, Archivo);
+        font-size: var(--Font-Size-Paragraph-Regular, 16px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */
+        max-width: 640px;
+         @media(max-width: 600px){
+           text-align: center;
+         }
+    }
+    .--card-container {
+        display: grid;
+        grid-template-columns: repeat({{ section.settings.slides_per_view }},1fr);
+        gap: var(--Spacing-Container-xxs);
+        @media(max-width: 600px){
+          grid-template-columns: 1fr;
+        }
+    }
+  .--card-wrapper {
+    position: relative;
+  }
+  .--image-wrapper img , svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      {% if section.settings.img_ratio == 'portrait' %}
+        aspect-ratio: 100/123;
+      {% elsif section.settings.img_ratio == 'landecape' %}
+        aspect-ratio: 123/100;
+      {% elsif section.settings.img_ratio == 'square' %}
+        aspect-ratio: 1;
+      {% endif %}
+      object-fit: cover;
+      object-position: center;
+      overflow: hidden;
+      /* border-radius: 16px; */
+      @media(max-width: 600px){
+      {% if section.settings.img_ratio_mobile == 'portrait' %}
+        aspect-ratio: 3/4;
+      {% elsif section.settings.img_ratio_mobile == 'landecape' %}
+        aspect-ratio: 4/3;
+      {% elsif section.settings.img_ratio_mobile == 'square' %}
+        aspect-ratio: 1;
+      {% endif %}
+      }
+  }
+    svg {
+        border: 1px solid #0000004a;
+    }
+    h4.--card-title {
+        color: var(--Content-Base-main, #1F2937);
+        font-family: var(--font-family-Title, "Neue Plak");
+        font-size: var(--Font-Size-Heading-H4, 20px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Heading-H4, 24px);
+        letter-spacing: -0.4px;
+        margin-block: var(--Spacing-Container-sm) var(--Spacing-Container-xxs);
+    }
+    .--content {
+        overflow: hidden;
+        color: var(--Content-Base-main, #1F2937);
+        text-overflow: ellipsis;
+        font-family: var(--font-family-Body, "Neue Plak");
+        font-size: var(--Font-Size-Paragraph-Small, 16px);
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 24px);
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        align-self: stretch;
+    }
+.absolute-link {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {% if section.settings.title != blank %}
+        <h2 class="--section-title">
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      <p class="--section-subtitle">{{ section.settings.subtitle }}</p>
+      <div class="--card-container">
+        {% if section.settings.related_article == false %}
+          {% for block in section.blocks %}
+            <div class="--card-wrapper">
+              {% if block.settings.article.url != blank %}
+                <a class="absolute-link" href="{{ block.settings.article.url  }}"></a>
+              {% endif %}
+              <div class="--image-wrapper">
+                {% if block.settings.image != blank %}
+                  {{ block.settings.image | image_url: width: block.settings.image.width | image_tag }}
+                {% elsif  block.settings.article.image != blank %}
+                  {{ block.settings.article.image | image_url: width: block.settings.article.image.width | image_tag }}
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag }}
+                {% endif %}
+              </div>
+              <div class="--text-block">
+                <h4 class="--card-title">
+                  {% if block.settings.title != blank %}
+                    {{ block.settings.title }}
+                  {% else %}
+                    {{ block.settings.article.title }}
+                  {% endif %}
+                </h4>
+                <div class="--content">
+                  {{ block.settings.content }}
+                  {% if block.settings.content != blank %}
+                    {{ block.settings.content }}
+                  {% else %}
+                    {{ block.settings.article.content | strip_html }}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          {% assign itaration_count = 3 %}
+          {% for related_article in blog.articles %}
+            {% if related_article.handle == article.handle %}
+              {% assign itaration_count = 4 %}
+            {% endif %}
+          {% endfor %}
+          {% for related_article in blog.articles limit: itaration_count %}
+            {% if related_article.handle != article.handle %}
+              <div class="--card-wrapper">
+                {% if related_article.url != blank %}
+                  <a class="absolute-link" href="{{ related_article.url  }}"></a>
+                {% endif %}
+                <div class="--image-wrapper">
+                  {% unless related_article.image == blank %}
+                    {{ related_article.image | image_url: width: related_article.width | image_tag }}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag }}
+                  {% endunless %}
+                </div>
+                <div class="--text-block">
+                  <h4 class="--card-title">{{ related_article.title }}</h4>
+                  <div class="--content">
+                    {{ related_article.content | strip_html }}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          {% for block in section.blocks %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Blog",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "related_article",
+      "label": "Enable Dynamic Blog ",
+      "default": false,
+      "info": "Works only in Blog Posts"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides Per View",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "img_ratio",
+      "label": "Image Ratio",
+      "options": [
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landecape",
+          "label": "Landscape"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "original",
+          "label": "Original"
+        }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "img_ratio_mobile",
+      "label": "Image Ratio (Mobile)",
+      "options": [
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landecape",
+          "label": "Landscape"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "original",
+          "label": "Original"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "blog",
+      "name": "Blog",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Use this to display Custom Card Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Use this to display Custom Article Title"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Short Description",
+          "info": "Use this to display Custom Article Short Description"
+        },
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Select Article"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Blog"
+    }
+  ]
+}
+{% endschema %}

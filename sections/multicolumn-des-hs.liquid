@@ -1,0 +1,472 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+    #shopify-section-{{id}} {
+      box-sizing: border-box;
+      margin-top: {{section.settings.margin_top | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+      padding-top: {{section.settings.padding_top | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+      overflow: hidden;
+    }
+
+    @media(max-width: 600px) {
+      #shopify-section-{{id}} {
+        margin-top: {{section.settings.margin_top_m | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+        padding-top: {{section.settings.padding_top_m | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      }
+    }
+    #shopify-section-{{id}}{
+      .title{
+        /* font-family: var(--font-family-Title, Krylon); */
+        margin: 0 0 var(--Spacing-Container-md, 24px);
+        font-size: var(--Font-Size-Heading-H1, 48px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Heading-H1, 48px); /* 100% */
+        max-width: 544px;
+        text-align: center;
+        margin: auto;
+        margin-bottom: var(--Spacing-Container-lg, 32px);
+        text-transform: capitalize;
+      }
+      .card-grid-container{
+        display: grid;
+        grid-template-columns: repeat({{ section.settings.grid_desktop }}, minmax(0,1fr));
+        gap: var(--Spacing-Container-xxs, 16px);
+        @media(max-width: 600px){
+          grid-template-columns: repeat({{ section.settings.grid_desktop_mbl }}, minmax(0,1fr));
+        }
+      }
+
+    .collection-card-wrapper{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: var(--Spacing-Container-sm, 16px);
+      .card-collection-link{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        cursor: pointer;
+        display: block;
+      }
+      .collection-media-img{
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        aspect-ratio: 488 / 540;
+      }
+      .card-content-wrapper{
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--Spacing-Container-xxs, 8px);
+        align-self: stretch;
+      }
+      .card-title{
+        color: var(--Content-Base-main, #1F2937);
+        font-family: var(--font-family-Body);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px; /* 125% */
+        letter-spacing: 0.96px;
+        text-transform: uppercase;
+        margin: 0;
+        @media(max-width: 600px){
+          /* font-size: var(--Font-Size-Heading-H4, 18px);
+          line-height: var(--Line-Height-Heading-H4, 22px); */
+        }
+      }
+      .card-name{
+        color: var(--Content-Base-main, #1F2937);
+        margin: 0;
+        font-family: var(--font-family-Title);
+        font-size: var(--Font-Size-Heading-H3, 24px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Heading-H3, 28px); /* 116.667% */        
+      }
+      .description p{
+        color: #000;
+        margin: 0;
+        font-family: var(--font-family-Body);
+        font-size: var(--Font-Size-Paragraph-Small, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px); /* 142.857% */        
+      }
+    }
+
+
+      /* Swiper Navigation */
+      .collection-list-wrapper{
+        position: relative;
+      }
+      .swiper-button-next:after,
+      .swiper-button-prev:after {
+        content: 'none';
+      }
+      .swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled{
+        display: none!important;
+      }
+      #slider-next--{{ section.id }} {
+        color: #000;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 50%;
+        display: flex;
+        padding: 8px;
+        align-items: center;
+        border-radius: var(--rounded-full, 999999px);
+        background: #FFF;
+        box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+        {% if section.settings.full_width %}
+          right: 12px;
+        {% else %}
+          right: 0;
+        {% endif %}
+        @media(max-width: 600px){
+          /* transform: unset; */
+          right: 2px;
+        }
+      }
+      #slider-next--{{ section.id }} svg{
+        width: 24px;
+        height: 24px;
+      }
+     #slider-prev--{{ section.id }}{
+        color: #000;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        display: flex;
+        padding: 8px;
+        align-items: center;
+        border-radius: var(--rounded-full, 999999px);
+        background: #FFF;
+        box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+        {% if section.settings.full_width %}
+          left: 12px;
+        {% else %}
+          left: 0;
+        {% endif %}
+        @media(max-width: 600px){
+
+        }
+     }
+     #slider-prev--{{ section.id }} svg{
+        width: 24px;
+        height: 24px;
+     }
+    .swiper:not(.swiper-initialized) .swiper-slide {
+        max-width: calc(var(--page-width)/{{ section.settings.slides_per_view }}) !important;
+        margin-right: 16px;
+        overflow: hidden;
+        @media(max-width: 600px){
+          max-width: calc(var(--page-width)/{{ section.settings.slides_per_view_mbl }}) !important;
+        }
+    }
+  }
+</style>
+
+<div class="sec-{{ id }} belongsToNav" id="collection-list--{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="top-wrapper">
+        {% if section.settings.title != blank %}
+          <h2 class="title">{{ section.settings.title }}</h2>
+        {% endif %}
+      </div>
+      <div class="collection-list-wrapper">
+        {% if section.settings.enable_slider == true %}
+          <div class="swiper swiper-{{ section.id }}">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                <div class="swiper-slide">
+                  <div class="collection-card-wrapper">
+                    {% if block.settings.url != null %}
+                      <a href="{{ block.settings.url }}" class="card-collection-link"></a>
+                    {% endif %}
+                    <div class="media-wrapper">
+                      {% if block.settings.image != null %}
+                        {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: class: 'collection-media-img' }}
+                      {% else %}
+                        {{ 'image' | placeholder_svg_tag }}
+                      {% endif %}
+                    </div>
+                    <div class="card-content-wrapper">
+                      {% if block.settings.title != blank %}
+                        <p class="card-title">{{ block.settings.title }}</p>
+                      {% endif %}
+                      {% if block.settings.name != blank %}
+                        <h3 class="card-name">{{ block.settings.name }}</h3>
+                      {% endif %}
+                      {% if block.settings.des != blank %}
+                        <div class="description">
+                          {{ block.settings.des }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="swiper-button-next" id="slider-next--{{ section.id }}">
+            {% render 'all-icons', name: 'right_arrow' %}
+          </div>
+          <div class="swiper-button-prev" id="slider-prev--{{ section.id }}">
+            {% render 'all-icons', name: 'left_arrow' %}
+          </div>
+        {% else %}
+          <div class="card-grid-container">
+            {% for block in section.blocks %}
+              <div class="card-grid">
+                <div class="collection-card-wrapper">
+                  {% if block.settings.url != null %}
+                    <a href="{{ block.settings.url }}" class="card-collection-link"></a>
+                  {% endif %}
+                  <div class="media-wrapper">
+                    {% if block.settings.image != null %}
+                      {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: class: 'collection-media-img' }}
+                    {% else %}
+                      {{ 'image' | placeholder_svg_tag }}
+                    {% endif %}
+                  </div>
+                  <div class="card-content-wrapper">
+                    {% if block.settings.title != blank %}
+                      <p class="card-title">{{ block.settings.title }}</p>
+                    {% endif %}
+                    {% if block.settings.name != blank %}
+                      <h3 class="card-name">{{ block.settings.name }}</h3>
+                    {% endif %}
+                    {% if block.settings.des != blank %}
+                      <div class="description">
+                        {{ block.settings.des }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper(".swiper-{{ section.id }}", {
+      slidesPerView: {{ section.settings.slides_per_view_mbl }},
+      spaceBetween: 2,
+      breakpoints: {
+        768: {
+          slidesPerView: {{ section.settings.slides_per_view }},
+          spaceBetween: 2,
+        },
+      },
+      navigation: {
+        nextEl: "#slider-next--{{ section.id }}",
+        prevEl: "#slider-prev--{{ section.id }}",
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Multi Column With Des",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "range",
+      "id": "grid_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Column (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_desktop_mbl",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Column (Mobile)",
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable Slider",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 3,
+      "max": 6,
+      "step": 0.2,
+      "label": "Slides Per View",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mbl",
+      "min": 1,
+      "max": 2,
+      "step": 0.2,
+      "label": "Slides Per View On Mobile",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "richtext",
+          "id": "des",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multi Column With Description"
+    }
+  ]
+}
+{% endschema %}

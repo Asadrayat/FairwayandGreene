@@ -1,0 +1,199 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+  .wrapper-{{ id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--Spacing-Container-lg);
+    @media(max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .wrapper-{{ id }} h2 {
+    color: var(--Content-Base-main, #1F2937);
+
+    /* Headings/H2 */
+    font-family: var(--font-family-Title);
+    font-size: var(--Font-Size-Heading-H2);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H2); /* 100% */
+    margin: 0 0 var(--Spacing-Container-xs) 0;
+  }
+  .wrapper-{{ id }} p{
+    color: var(--Content-Base-main, #1F2937);
+
+    /* Paragraph/M */
+    font-family: var(--font-family-Body);
+    font-size: var(--Font-Size-Paragraph-Regular);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Regular); /* 150% */
+    margin: 0;
+  }
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      {% for block in section.blocks %}
+        <div class="content__wrapper">
+          {% if block.settings.heading != blank %}
+            <h2 class="heading">{{ block.settings.heading }}</h2>
+          {% endif %}
+          {% if block.settings.desc != blank %}
+            <p>{{ block.settings.desc }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Text Column",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Leading the Way in Sustainable Fashion"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "desc",
+          "label": "Description",
+          "default": "Zero Restriction is at the forefront of sustainable fashion, recognized for our pioneering upcycling techniques. We proudly made the shortlist for the BFC/Vogue Designer Fashion Fund in both 2021 and 2022, and we were thrilled to receive the BFC Fashion Trust Fund in those years as well. "
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text Column",
+      "blocks": [
+        {"type": "text"},
+        {"type": "text"}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,484 @@
+{% liquid
+  assign id = section.id
+  assign product_cards = product.metafields.custom.product_card.value
+  assign product_cards_images = product.metafields.custom.priduct_card_images.value
+%}
+{% if product_cards != null and product_cards_images == null %}
+  <style>
+    #shopify-section-{{id}} {
+      box-sizing: border-box;
+      margin-top: {{section.settings.margin_top | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+      padding-top: {{section.settings.padding_top | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+      background: {{ section.settings.bg_color }};
+      .swiper-button-lock {
+          display: none !important;
+      }      
+     .mfc__nav-scroll__wrapp {
+          display: flex;
+          gap: 40px;
+          align-items: center;
+          padding: 32px 0 0;
+        }
+        .button__wrapper_swiper {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .--nav-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            background: var(--Primary, #004027);
+            line-height: 1;
+            /* position: absolute; */
+            position: relative;
+            /* top: 50%; */
+            z-index: 1;
+            border-radius: 0%;
+            align-items: center;
+            justify-content: center;
+            /* transform: translateY(-50%); */
+            box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+            cursor: pointer;
+            path {
+              stroke: #fff;
+            }
+        }
+        .swiper-scrollbar-{{ section.id }} {
+          position: relative !important;
+          left: 0 !important;
+          bottom: 0 !important;
+          /* margin: var(--Spacing-Container-sm) 0 0 0; */
+          height: 3px !important;
+          opacity: 1 !important;
+          width: 100% !important;
+          cursor: pointer;
+          padding-block: 16px;
+          z-index: 1;
+          background: transparent;
+          .swiper-scrollbar-drag {
+            background: #004027;
+            display: block !important;
+            height: 2px;
+          }
+        }
+        .swiper-scrollbar-{{ section.id }}::before {
+          position: absolute;
+          content: "";
+          background: var(--swiper-scrollbar-bg-color, rgba(0, 0, 0, .1));
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: 2px;
+        }
+        .--nav-icon.swiper-button-disabled {
+            background: #EDFCF6;
+            path {
+              stroke: #B3DCCC;
+            }
+        }
+          .prev-{{ section.id }}.--nav-icon {
+            /* left: -20px; */
+            /* left: 0px; */
+          }
+          .next-{{ section.id }}.--nav-icon {
+            /* right: -20px; */
+            /* right: 0px; */
+          }
+        }
+        {% comment %}
+
+      .--nav-icon {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          background: #fff;
+          line-height: 1;
+          position: absolute;
+          top: 50%;
+          z-index: 1;
+          border-radius: 0%;
+          align-items: center;
+          justify-content: center;
+          transform: translateY(-50%);
+          box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+          cursor: pointer;
+      }
+      .--nav-icon.swiper-button-disabled {
+          display: none;
+      }
+        .prev-{{ section.id }}.--nav-icon {
+          /* left: -20px; */
+          left: 0px;
+        }
+        .next-{{ section.id }}.--nav-icon {
+          /* right: -20px; */
+          right: 0px;
+        }
+        {% endcomment %}
+
+      }         
+    }
+
+    @media(max-width: 768px) {
+      #shopify-section-{{id}} {
+        margin-top: {{section.settings.margin_top_m | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+        padding-top: {{section.settings.padding_top_m | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      }
+    }
+    .heading--{{ id }} {
+      margin: 0 0 var(--Spacing-Container-lg);    
+    }
+    .heading--{{ id }} h2{
+      color: #592B06;
+      text-align: center;
+      font-family: var(--font-family-Title, Krylon);
+      font-size: var(--Font-Size-Heading-H2, 36px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H2, 36px);
+
+      margin: 0 0 var(--Spacing-Container-sm);
+      padding: 0;
+      text-align: center;
+      
+    }
+    .heading--{{ id }} svg{
+      max-width: 350px;
+      width: 100%;  
+      margin: auto;
+    }    
+    .wrapper-{{ id }}{
+      position: relative;
+      .swiper{
+        width: 100%;
+      }
+    .cv__container {
+      position: relative;
+    }
+    .divider__frame {
+      margin: var(--Spacing-Container-md) 0;
+      svg {
+        width: 100%;
+        height: auto;
+        object-fit: contain;      
+      }      
+    }
+    .cv__texts{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .cv__texts-wrap {
+      max-width: 390px;
+      width: 80%;
+    }
+      .cv__media img{
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* aspect-ratio: 4/5; */
+      }
+      .cv__texts{
+        /* margin: 12px 0 0; */
+        h3{
+          color: #592B06;
+          text-align: center;
+          -webkit-text-stroke-width: 0.5px;
+          -webkit-text-stroke-color: #592B06;
+          font-family: var(--font-family-Title, Krylon);
+          font-size: 32px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 44px;
+          letter-spacing: 0.96px;
+          margin: 0;          
+          @media(width < 1300px) {
+            font-size: 24px;
+            {% comment %} padding-bottom: 8px;
+            margin: 0 0 8px; {% endcomment %}
+          }
+        }
+        p{
+          color: #592B06;
+          text-align: center;
+
+          /* Paragraph/M */
+          font-family: var(--font-family-Body, "Aktiv Grotesk");
+          font-size: var(--Font-Size-Paragraph-Regular, 16px);
+          font-style: normal;
+          font-weight: 400;
+          line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */
+          margin: 0;
+          @media(width < 1300px) {
+            font-size: 14px;
+            {% comment %} padding-bottom: 8px;
+            margin: 0 0 8px; {% endcomment %}
+          }          
+        }
+      }
+   
+      {% comment %} .--nav-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        background: #fff;
+        line-height: 1;
+        position: absolute;
+        top: 50%;
+        z-index: 1;
+        border-radius: 0%;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+        cursor: pointer;
+     }
+      .--nav-icon.swiper-button-disabled {
+          display: none;
+      }
+      .prev-{{ section.id }}.--nav-icon {
+        left: 0px;
+      }
+      .next-{{ section.id }}.--nav-icon {
+        right: 0px;
+      } {% endcomment %}
+    }
+
+    .swiper.swiper-{{ section.id }} .swiper-wrapper {
+      @media(min-width: 601px){
+        justify-content: center;
+      }
+        
+    }
+
+  </style>
+
+  <div class="sec-{{ id }}">
+    <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+      <div class="heading--{{ id }}">
+        {% if section.settings.title != blank %}
+          <h2>{{ section.settings.title }}</h2>
+          <div class="divider__heading">{% render 'all-icons', name: 'divider_heading' %}</div>
+        {% endif %}
+      </div>
+      <div class="wrapper-{{ id }}">
+        <div class="swiper swiper-{{ section.id }}">
+          <div class="swiper-wrapper">
+            {% for block in product_cards %}
+              <div class="swiper-slide">
+                <div class="cv__container">
+                  <div class="cv__media">
+                    {% unless section.settings.image == blank %}
+                      {{ section.settings.image | image_url: width: section.settings.image.width | image_tag }}
+                    {% endunless %}
+                  </div>
+                  {% if product_cards[forloop.index0] != blank %}
+                    {% assign card_title = product_cards[forloop.index0] | split: '#' | first %}
+                    {% assign card_content = product_cards[forloop.index0] | split: '#' | last %}
+
+                    <div class="cv__texts">
+                      <div class="cv__texts-wrap">
+                        <h3>{{ card_title }}</h3>
+                        <div class="divider__frame">{% render 'all-icons', name: 'divider' %}</div>
+                        <p>{{ card_content }}</p>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="mfc__nav-scroll__wrapp">
+            <div class="swiper-scrollbar-{{ section.id }} swiper-scrollbar"></div>
+            <div class="button__wrapper_swiper">
+              <div class="prev-{{ section.id }} --nav-icon ">
+                {% comment %}
+                  {% render 'all-icons', name: 'left_arrow' %}
+                {% endcomment %}
+                {% render 'all-icons', name: 'swiper_left' %}
+              </div>
+              <div class="next-{{ section.id }} --nav-icon ">
+                {% render 'all-icons', name: 'swiper_right' %}
+                {% comment %}
+                  {% render 'all-icons', name: 'right_arrow' %}
+                {% endcomment %}
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        new Swiper(".wrapper-{{ id }} .swiper", {
+            slidesPerView: 1.2,
+            spaceBetween: 12,
+            breakpoints: {
+                500: {
+                  slidesPerView: 1.2,
+                  spaceBetween: 12,
+                },
+                850: {
+                  slidesPerView: 2,
+                  spaceBetween: 12,
+                },
+                969: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                1200: {
+                  slidesPerView: 4.1,
+                  spaceBetween: 12,
+                },
+              },
+          // loop: true,
+
+          scrollbar: {
+              el: ".swiper-scrollbar-{{ section.id }}.swiper-scrollbar",
+              draggable: true,
+              hide: false
+            },
+            navigation: {
+              nextEl: ".next-{{ section.id }}",
+              prevEl: ".prev-{{ section.id }}",
+            }  
+        });
+    });
+  </script>
+{% endif %}
+{% schema %}
+{
+  "name": "Content Block New",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Why We Love It"
+    },    
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Frame Image"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content Block New",
+    }
+  ]
+}
+{% endschema %}

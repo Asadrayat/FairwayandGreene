@@ -1,0 +1,247 @@
+<style>
+  .cart__related-product {
+    .pinfo-review {
+      display: none;
+    }
+    margin: 0;
+    .variant-select option {
+      font-size: 12px;
+      line-height: 1.4;
+      padding: 6px;
+    }
+    #rbr-container-element-false  {
+      display: none !important;
+    }
+    .pqa-new-variants{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 8px;
+      justify-content: start;
+      margin: var(--Spacing-Container-xxs) 0 0 0;
+      min-width: 100%;
+      @media(max-width: 768px) {
+        padding: 0;
+      }
+    }
+    .pqa-new-option select{
+      width: 100%;
+      color: var(--Content-Base-base, #4B5563);
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 14px;
+      text-transform: capitalize;
+      cursor: url(https://cdn.shopify.com/s/files/1/0012/9954/6178/files/asas.png?v=1754903011) 0 0, auto;  
+      {% comment %} cursor: pointer; {% endcomment %}
+      -webkit-appearance: none; /* Fix for Safari */
+      -moz-appearance: none; /* Fix for Firefox */
+      appearance: none; /* Fix for other browsers */
+
+      background: url('data:image/svg+xml;utf8,<svg fill="%23000000" width="20px" height="20px" viewBox="-5 -8 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin"><path d="M7.071 5.314l4.95-4.95a1 1 0 1 1 1.414 1.414L7.778 7.435a1 1 0 0 1-1.414 0L.707 1.778A1 1 0 1 1 2.121.364l4.95 4.95z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: top 50% right 8px;
+      background-size: 16px;
+
+      min-width: 100%;
+      padding: 4px 8px;
+      max-width: max-content;
+
+      box-sizing: border-box;
+      /* padding: 8px 8px; */
+      border: 1px solid #E5E7EB;
+      /* border-radius: 32px; */
+      padding-right: 25px;
+    }
+
+    .pqa-new-option select:focus{
+      border: none;
+      outline: none;
+      box-shadow: none;
+      border: 1px solid #E5E7EB;
+    }
+    .pqa-new-form button{
+      display: block;
+      width: 100%;
+      color: #ffffff;
+      text-align: center;
+
+      /* UI Controls/Control/Button/Regular */
+      font-family: var(--font-family-Control, "Archivo Expanded");
+      /* font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 20px); */
+      font-style: normal;
+      font-weight: 400;
+      /* line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 20px); /* 100% */ */
+      text-transform: uppercase;
+      border-radius: var(--rounded-none, 0px);
+      background: var(--Brand-Primary, #212B36);
+
+      box-sizing: border-box;
+      border: none;
+      padding: 12px 40px;
+    }
+    .ccc__swiper {
+      max-width: 100%;
+    }
+  }
+</style>
+
+{% if settings.cart_drawer_collection != blank %}
+  <div class="cart__related-product">
+    <p class="title">You may also like</p>
+    <div class="cart__collection-card">
+      <div class="swiper ccc__swiper">
+        <div class=" swiper-wrapper ccc__swiper-wrapper">
+          {% for product in settings.cart_drawer_related_collection.products limit: settings.ccc__pd_limit %}
+            <div class="swiper-slide ccc__swiper_slide">
+              <div
+                class="ccc__wrapper"
+                data-product-id="{{ product.id }}"
+                data-variants="{{ product.variants | json | escape }}"
+              >
+                <div class="img__wrap">
+                  {{ product.featured_image | image_url: width: '80x' | image_tag }}
+                </div>
+
+                <div class="ccc__pd-info">
+                  <a class="ccc_pd-title" href="{{ product.url }}">
+                    {{ product.title | downcase }}
+                  </a>
+                  <div class="ccc__price">{% render 'pinfo-price', product: product %}</div>
+                  <div class="pqa-new-variants">
+                    {% for option in product.options_with_values %}
+                      <div class="pqa-new-option">
+                        <label for="option-{{ product.id }}-{{ forloop.index0 }}" class="visually-hidden">
+                          {{ option.name }}
+                        </label>
+                        <select
+                          class="variant-select"
+                          data-option-index="{{ forloop.index0 }}"
+                          name="option{{ forloop.index }}"
+                          id="option-{{ product.id }}-{{ forloop.index0 }}"
+                          onchange="updateVariant(this, '{{ product.id }}')"
+                        >
+                          {% for value in option.values %}
+                            <option
+                              value="{{ value }}"
+                              {% if forloop.first %}
+                                selected
+                              {% endif %}
+                            >
+                              {{ value | downcase }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    {% endfor %}
+                  </div>
+
+                  <div class="ccc-new-form">
+                    {% form 'product', product, class: 'ccc-new-form' %}
+                      <input
+                        type="hidden"
+                        class="variant-id-input"
+                        name="id"
+                        value="{{ product.selected_or_first_available_variant.id }}"
+                      >
+                      <input type="hidden" name="quantity" value="1">
+
+                      <button
+                        type="submit"
+                        class="button ccc-add-to-cart-button"
+                        {% unless product.selected_or_first_available_variant.available %}
+                          disabled
+                        {% endunless %}
+                      >
+                        {% if product.selected_or_first_available_variant.available %}
+                          Add To Cart
+                        {% else %}
+                          Sold Out
+                        {% endif %}
+                      </button>
+                    {% endform %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<script>
+  // let cccSwiper; // Declare globally
+
+  // // Declare function globally
+  // window.cccSwiperInit = function () {
+  //   cccSwiper = new Swiper('.ccc__swiper', {
+  //     slidesPerView: 1.2,
+  //     spaceBetween: 12,
+  //     lazy: true,
+  //     autoHeight: true,
+  //     breakpoints: {
+  //       600: {
+  //         slidesPerView: 1.3,
+  //         spaceBetween: 12,
+  //       },
+  //     },
+  //     a11y: {
+  //       enabled: true,
+  //       prevSlideMessage: 'Previous slide',
+  //       nextSlideMessage: 'Next slide',
+  //     },
+  //   });
+  // };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initswiperincart(); // Call globally accessible function
+  });
+
+  window.addEventListener('resize', () => {
+    initswiperincart();
+  });
+
+  function updateVariant(selectElement, productId) {
+    const wrapper = selectElement.closest('.custom--cart--drawer .ccc__wrapper');
+    const variantData = JSON.parse(wrapper.dataset.variants);
+    const form = wrapper.querySelector('.custom--cart--drawer .ccc-new-form');
+    const button = form.querySelector('.custom--cart--drawer .ccc-add-to-cart-button');
+    const variantIdInput = form.querySelector('.custom--cart--drawer .variant-id-input');
+    const selectElements = wrapper.querySelectorAll('.custom--cart--drawer .variant-select');
+
+    // Remove selected attribute from all options in the current select
+    selectElements.forEach((select) => {
+      select.querySelectorAll('option').forEach((option) => {
+        option.removeAttribute('selected');
+      });
+    });
+
+    // Set selected attribute on the chosen option
+    selectElement.querySelector(`option[value="${selectElement.value}"]`).setAttribute('selected', '');
+
+    // Get selected options
+    const selectedOptions = Array.from(selectElements).map((select) => select.value);
+
+    // Find matching variant
+    const selectedVariant = variantData.find((variant) =>
+      variant.options.every((option, index) => option === selectedOptions[index])
+    );
+
+    if (selectedVariant) {
+      // Update form input
+      variantIdInput.value = selectedVariant.id;
+
+      // Update button
+      button.dataset.variantId = selectedVariant.id;
+      button.disabled = !selectedVariant.available;
+      button.textContent = selectedVariant.available ? 'Add To Cart' : 'Sold Out';
+    } else {
+      // Fallback: Disable button if no valid variant is found
+      button.disabled = true;
+      button.textContent = 'Sold Out';
+    }
+  }
+</script>

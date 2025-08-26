@@ -1,0 +1,147 @@
+{% for option in product.options_with_values %}
+  {% if option.name == 'Size' or option.name == 'size' %}
+    {% if product.selected_or_first_available_variant.metafields.custom.model_info != blank %}
+      {% assign size_value = '' %}
+      {% assign has_model_info = false %}
+      {% for inner_option in product.options_with_values %}
+        {% if inner_option.name == 'Size' or inner_option.name == 'size' %}
+          {% assign size_value = product.selected_or_first_available_variant.options[forloop.index0] %}
+        {% endif %}
+      {% endfor %}
+      {% if size_value != '' %}
+        {% assign has_model_info = true %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+<div class="product-faq-{{ id }}">
+  <div class="product-faq-wrapper">
+    {% comment %}
+      {% if product.description != blank %}
+        <div class="pr-faq-item">
+          <div class="pr-faq-header">
+            <h4>Description</h4>
+            <span>
+              {%- render 'faq-icon', name: 'plus' -%}
+              {%- render 'faq-icon', name: 'minus' -%}
+            </span>
+          </div>
+          <div class="pr-faq-content">
+            {{ product.description }}
+          </div>
+        </div>
+      {% endif %}
+    {% endcomment %}
+    {% comment %}{% endcomment %}
+    {% if product.metafields.custom.description_romance_copy == blank and product.description != blank %}
+      <div class="pr-faq-item">
+        <div class="pr-faq-header">
+          <h2>Description</h2>
+          <span>
+            {%- render 'faq-icon', name: 'plus' -%}
+            {%- render 'faq-icon', name: 'minus' -%}
+          </span>
+        </div>
+        <div class="pr-faq-content">
+          {{ product.description }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} {% if product.metafields.custom.description_romance_copy != blank or has_model_info %} {% endcomment %}
+    {% if product.metafields.custom.description_romance_copy != blank %}
+      <div class="pr-faq-item">
+        <div class="pr-faq-header">
+          <h2>Description</h2>
+          <span>
+            {%- render 'faq-icon', name: 'plus' -%}
+            {%- render 'faq-icon', name: 'minus' -%}
+          </span>
+        </div>
+        <div class="pr-faq-content">
+          <p>{{ product.metafields.custom.description_romance_copy }}</p>
+          {% render 'custom-attribute-icons' %}
+          {% comment %} {% render 'model-info', product: product %} {% endcomment %}
+        </div>
+      </div>
+    {% endif %}
+    {% if product.metafields.custom.bullet_points != blank %}
+      <div class="pr-faq-item">
+        <div class="pr-faq-header">
+          <h2>Details</h2>
+          <span>
+            {%- render 'faq-icon', name: 'plus' -%}
+            {%- render 'faq-icon', name: 'minus' -%}
+          </span>
+        </div>
+        <div class="pr-faq-content">
+          <ul class="--bullet-points">
+            {% for bullet in product.metafields.custom.bullet_points.value %}
+              <li>{{ bullet }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+    {% comment %}
+
+      {% for i in (1..4) %}
+        {% liquid
+          capture title
+            echo 'title_' | append: i
+          endcapture
+          capture content
+            echo 'content_' | append: i
+          endcapture
+        %}
+        {% if block.settings[title] != blank and block.settings[content] != blank %}
+          <div class="pr-faq-item">
+            <div class="pr-faq-header">
+              <h2>{{ block.settings[title] }}</h2>
+              <span>
+                {%- render 'faq-icon', name: 'plus' -%}
+                {%- render 'faq-icon', name: 'minus' -%}
+              </span>
+            </div>
+            <div class="pr-faq-content">
+              {{ block.settings[content] }}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endcomment %}
+    {% comment %}
+      {% if product.metafields.custom.unique_element != blank %}
+        <div class="pr-faq-item">
+          <div class="pr-faq-header">
+            <h2>Unique Elements</h2>
+            <span>
+              {%- render 'faq-icon', name: 'plus' -%}
+              {%- render 'faq-icon', name: 'minus' -%}
+            </span>
+          </div>
+          <div class="pr-faq-content">
+            {{ product.metafields.custom.unique_element }}
+          </div>
+        </div>
+      {% endif %}
+
+           {% if product.metafields.custom.product_attribute_list != blank %}
+          <div class="pr-faq-item">
+            <div class="pr-faq-header">
+              <h2>Product Attribute</h2>
+              <span>
+                {%- render 'faq-icon', name: 'plus' -%}
+                {%- render 'faq-icon', name: 'minus' -%}
+              </span>
+            </div>
+            <div class="pr-faq-content">
+              {{ product.metafields.custom.product_attribute_list }}
+            </div>
+          </div>
+        {% endif %}
+    {% endcomment %}
+  </div>
+</div>
+{% # render 'custom-attribute-icons' %}

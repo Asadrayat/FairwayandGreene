@@ -1,0 +1,26 @@
+<div class="pinfo-price-wrapper">
+  <div class="pinfo-price">
+    {% if product.selected_or_first_available_variant.price
+        < product.selected_or_first_available_variant.compare_at_price
+    %}
+      <p class="pinfo-regular-price">{{ product.selected_or_first_available_variant.price | money }}</p>
+      <p class="pinfo-compare-price">
+        <s>{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+      </p>
+    {% else %}
+      <p class="pinfo-regular-price">{{ product.selected_or_first_available_variant.price | money }}</p>
+    {% endif %}
+  </div>
+
+    {% if product.selected_or_first_available_variant.price
+        < product.selected_or_first_available_variant.compare_at_price
+    %}
+    <div class="saved__money">
+      {% assign cap = product.compare_at_price %}
+      {% assign saved_money = cap | minus: product.price %}
+      {% assign saved = saved_money | times: 100 %}
+      {% assign saved_percentage = saved | divided_by: cap %}
+      Save {{ saved_percentage | append: '%' }}
+    </div>
+  {% endif %}
+</div>

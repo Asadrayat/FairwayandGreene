@@ -1,0 +1,123 @@
+{% liquid
+  assign has_grand_child = false
+  for child in link.links
+    if child.links != blank
+      assign has_grand_child = true
+    endif
+  endfor
+%}
+<div class="mega__menu">
+  <div class="{% unless has_images %}nav__mega-menu {% endunless %}mega__menu-wrapper page-width">
+    {% if link.links != blank %}
+      <div class="mega__nav">
+        <div class="mega__child-container">
+          {% liquid
+            assign has_grandchild = false
+            for child in link.links
+              if child.links != blank
+                assign has_grandchild = true
+                break
+              endif
+            endfor
+          %}
+          <ul class="mega__child {% if has_grandchild == false %}no-grandchild{% endif %}">
+            {% for child in link.links %}
+              <li
+                class="{% if child.active %}link-active{% endif %}"
+                mega__child-li
+                data-child="{{ child.title | handleize }}"
+              >
+                <a href="{{ child.url }}" >{{ child.title }}</a>
+                {% if child.links != blank %}
+                  <ul class="mega__grand-child {% if forloop.first %}active{% endif %}">
+                    {% for grandchild in child.links %}
+                      <li>
+                        <a href="{{ grandchild.url }}" >{{ grandchild.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% comment %}
+          {% if has_grand_child %}
+            <div class="mega__grand-container">
+              {% for child in link.links %}
+                {% if child.links != blank %}
+                  <div
+                    data-child="{{ child.title | handleize }}"
+                    class="mega__grand-wrapper"
+                  >
+                    <div class="mega__grand">
+                      <ul class="mega__grand-child">
+                        {% for grandchild in child.links %}
+                          <li>
+                            <a href="{{ grandchild.url }}">{{ grandchild.title }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endcomment %}
+      </div>
+    {% endif %}
+    {% if has_images %}
+      <div class="mega__items">
+        <div class="mega__items-wrapper">
+          {% liquid
+            assign title_handle = link.title | handleize
+            assign has_mega_item = false
+          %}
+          {% for block in section.blocks %}
+            {% liquid
+              assign menu_title = block.settings.heading | handleize
+
+              if menu_title == blank or menu_title != title_handle
+                continue
+              endif
+              if menu_title == title_handle
+                assign has_mega_item = true
+              endif
+            %}
+            
+            {% if has_mega_item %}
+              {% for i in (1..5) %}
+                {% liquid
+                  capture collection
+                    echo 'collection_' | append: i
+                  endcapture
+                  capture image
+                    echo 'image_' | append: i
+                  endcapture
+                %}
+                {% if block.settings[collection] != blank %}
+                  <div class="mega__menu-item">
+                    <div class="mega__menu-item-image">
+                      {% if block.settings[image] %}
+                        {{ block.settings[image] | image_url: width: block.settings[image].width | image_tag }}
+                      {% elsif block.settings[collection].image %}
+                        {{
+                          block.settings[collection].image
+                          | image_url: width: block.settings[collection].width
+                          | image_tag
+                        }}
+                      {% endif %}
+                    </div>
+                    <p>{{ block.settings[collection].title }}</p>
+                    <a href="{{ block.settings[collection].url }}"></a>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>

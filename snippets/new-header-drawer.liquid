@@ -1,0 +1,70 @@
+<div class="header__drawer hide__lg">
+  <div class="header__drawer-wrapper">
+    {% comment %}
+      <div class="drawer__logo">
+    {% endcomment %}
+    {% comment %}
+      <a class="site__main-logo" site-logo href="/">
+        {% unless logo_sm and logo_lg %}
+          <h2>{{ shop.name }}</h2>
+        {% else %}
+          <picture>
+            <source media="(min-width: 744px)" srcset="{{ logo_lg | image_url: width: logo_lg_width }}">
+            {{ logo_sm | image_url: width: logo_sm_width | image_tag: loading: 'lazy' }}
+          </picture>
+        {% endunless %}
+      </a>
+    {% endcomment %}
+    {% comment %}
+      <button class="btn-reset" header-drawer-close>{% render 'all-icons', name: 'close' %}</button>
+    {% endcomment %}
+    {% comment %}
+      </div>
+    {% endcomment %}
+     <div class="drawer-menu-upper">
+      <div class="drawer__logo">
+      {% if sticky_logo_sm
+        or sticky_logo_lg
+      %}
+        <a class="drawer__logo-wrapper" site-logo href="/">
+          {% unless sticky_logo_sm and sticky_logo_lg %}
+            <h2>{{ shop.name }}</h2>
+          {% else %}
+            <picture>
+              <source media="(min-width: 744px)" srcset="{{ sticky_logo_lg | image_url: width: sticky_logo_lg_width }}">
+              {{
+                sticky_logo_sm
+                | image_url: width: sticky_logo_sm_width
+                | image_tag: class: 'drawer__logo-image', loading: 'lazy'
+              }}
+            </picture>
+          {% endunless %}
+        </a>
+      {% endif %}
+      </div>
+      {% if section.settings.greet_text != blank %}
+        <p>{{ section.settings.greet_text }}</p>
+      {% endif %}
+     </div>
+    <div class="drawer-menu">
+      {% render 'drawer-menu-v1' %}
+    </div>
+    {% comment %}
+    <div class="drawer__utensils">
+      {% comment %}
+          <div class="drawer__search">
+            {% render 'drawer-search' %}
+          </div>
+
+
+        <div class="drawer__account">
+          <a account-drawer href="/account">{% render 'all-icons', name: 'account' %}Account </a>
+        </div>
+      {% endcomment %}
+      <div class="drawer__currency">
+        {% render 'currency-switcher' %}
+      </div>
+    </div>
+    {% endcomment %}
+  </div>
+</div>

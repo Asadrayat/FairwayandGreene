@@ -1,0 +1,143 @@
+<div class="collection__toolbar">
+  <div class="collection__toolbar-wrapper page-width">
+    <div class="toolbar__sort-filter">
+      <div class="filter__opener">
+        <button filter-opener>
+          <span>Filter</span>
+          {% comment %}
+            <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg"><line y1="2.5" x2="14" y2="2.5" stroke="currentcolor"></line><circle cx="10" cy="2.5" r="2" fill="currentcolor"></circle><circle cx="4" cy="8.5" r="2" fill="currentcolor"></circle><line y1="8.5" x2="14" y2="8.5" stroke="currentcolor"></line></svg>
+          {% endcomment %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <g clip-path="url(#clip0_17200_5688)">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06045 1C9.36517 1 9.61222 1.24704 9.61222 1.55177V3.82068C9.61222 4.12541 9.36517 4.37245 9.06045 4.37245C8.75572 4.37245 8.50868 4.12541 8.50868 3.82068V3.20923H-0.448231C-0.752962 3.20923 -1 2.9622 -1 2.65746C-1 2.35273 -0.752962 2.10569 -0.448231 2.10569H8.50868V1.55177C8.50868 1.24704 8.75572 1 9.06045 1ZM14.7346 2.65212C14.7376 2.95683 14.4929 3.20625 14.1883 3.20921L11.2202 3.23799C10.9156 3.24095 10.6661 2.99632 10.6632 2.6916C10.6602 2.38688 10.9048 2.13746 11.2096 2.1345L14.1776 2.10572C14.4823 2.10277 14.7317 2.3474 14.7346 2.65212ZM4.64998 4.64294C4.95472 4.64294 5.20175 4.88998 5.20175 5.19471V6.29975V6.301V7.46362C5.20175 7.76834 4.95472 8.01539 4.64998 8.01539C4.34525 8.01539 4.09821 7.76834 4.09821 7.46362V6.85218H-0.448231C-0.752962 6.85218 -1 6.60514 -1 6.30042C-1 5.99569 -0.752962 5.74865 -0.448231 5.74865H4.09821V5.19471C4.09821 4.88998 4.34525 4.64294 4.64998 4.64294ZM6.27423 6.30042C6.27423 5.99569 6.52128 5.74865 6.826 5.74865H14.1829C14.4877 5.74865 14.7347 5.99569 14.7347 6.30042C14.7347 6.60514 14.4877 6.85218 14.1829 6.85218H6.826C6.52128 6.85218 6.27423 6.60514 6.27423 6.30042ZM7.57339 9.0305C7.87812 9.0305 8.12516 9.27754 8.12516 9.58227V11.8511C8.12516 12.1559 7.87812 12.4029 7.57339 12.4029C7.26867 12.4029 7.02162 12.1559 7.02162 11.8511V11.2397H-0.182969C-0.487708 11.2397 -0.734739 10.9927 -0.734739 10.6879C-0.734739 10.3832 -0.487708 10.1362 -0.182969 10.1362H7.02162V9.58227C7.02162 9.27754 7.26867 9.0305 7.57339 9.0305ZM15 10.6846C15.0018 10.9893 14.7563 11.2378 14.4516 11.2397L9.76171 11.2686C9.45699 11.2705 9.20847 11.025 9.20656 10.7202C9.20472 10.4155 9.45022 10.167 9.75494 10.1651L14.4448 10.1362C14.7496 10.1343 14.9981 10.3798 15 10.6846Z" fill="currentColor"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_17200_5688">
+                <rect width="14" height="14" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+      </div>
+      <div class="custom__sort">
+        <div class="custom__sort-wrapper">
+          <button sort-opener>
+            <span>Sort</span>
+            <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="3.5" y1="1" x2="3.5" y2="12" stroke="currentcolor"></line><path d="M3.5 0L6.09808 4.5H0.901924L3.5 0Z" fill="currentcolor"></path><path d="M12.5 13L15.0981 8.5H9.90192L12.5 13Z" fill="currentcolor"></path><line x1="12.5" y1="1" x2="12.5" y2="12" stroke="currentcolor"></line>
+            </svg>
+          </button>
+          <div sort-body class="custom__sort-options">
+            <div class="sort__options-wrapper">
+              <div class="sort__options-inner">
+                <facet-filters-form class="facets facets-vertical-sort page-width- small-hide-">
+                  <form class="facets-vertical-form" id="FacetSortForm">
+                    <div class="facet-filters sorting caption">
+                      <div class="facet-filters__field">
+                        <div class="radio-sort">
+                          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                          <div class="sort-options">
+                            {%- for option in collection.sort_options -%}
+                              <div class="sort-option">
+                                <input
+                                  type="radio"
+                                  name="sort_by"
+                                  id="sort-{{ option.value | handle }}"
+                                  value="{{ option.value | escape }}"
+                                  class="sort-radio"
+                                  {% if option.value == sort_by %}
+                                    checked
+                                  {% endif %}
+                                  aria-describedby="a11y-refresh-page-message"
+                                >
+                                <label for="sort-{{ option.value | handle }}" class="caption-large">
+                                  {{ option.name | escape }}
+                                </label>
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </facet-filters-form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toolbar__layout">
+      <div class="filter__layout">
+        <div class="column__switch-lg column__switcher">
+          <div class="column__switch-lg-wrapper">
+            <button class="lg-hide md-hide" data-column="1" lg__one="">
+              <!--
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="28" height="12" viewBox="0 0 8 12">
+                  <path fill="currentColor" d="M0,0v12h8V0H0ZM7,11H1V1h6v10Z"></path>
+                </svg>
+              -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="0.5" y="0.5" width="19" height="19" stroke="currentColor"/>
+              </svg>
+            </button>
+            <button class="lg-hide md-hide" data-column="2" lg__two="">
+              <!--
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="28" height="12" viewBox="0 0 18 12">
+                  <path fill="currentColor" d="M0,0v12h8V0H0ZM7,11H1V1h6v10Z"></path><path fill="currentColor" d="M10,0v12h8V0h-8ZM17,11h-6V1h6v10Z"></path>
+                </svg>
+              -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M20 0V20H0V0H20ZM1 19H9.5V1H1V19ZM10.5 19H19V1H10.5V19Z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="sm-hide md-hide" data-column="3" lg__three="">
+              <!--
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="28" height="12" viewBox="0 0 28 12">
+                  <path fill="currentColor" d="M0,0v12H8V0H0ZM7,11H1V1h6v10Z"></path><path fill="currentColor" d="M10,0v12h8V0h-8ZM17,11h-6V1h6v10Z"></path><path fill="currentColor" d="M20,0v12h8V0h-8ZM27,11h-6V1h6v10Z"></path>
+                </svg>
+              -->
+              <!--
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                  <path d="M19 20H0V0H19V20ZM1 19H9V1H1V19ZM10 19H18V10.5H10V19ZM10 9.5H18V1H10V9.5Z" fill="currentColor"/>
+                </svg>
+              -->
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_60_2)">
+                <path d="M19.5 20H0.5V0H19.5V20ZM2 18.5H9V1.5H2V18.5ZM11 18.5H18V11H11V18.5ZM11 9H18V1.5H11V9Z" fill="black"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_60_2">
+                <rect width="20" height="20" fill="white"/>
+                </clipPath>
+                </defs>
+              </svg>
+            </button>
+            <button class="sm-hide md-hide" data-column="4" lg__four="">
+              <!--
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="28" height="12" viewBox="0 0 28 12">
+                  <path fill="currentColor" d="M0,0v5h4V0H0ZM3,4H1V1h2v3Z"></path><path fill="currentColor" d="M6,0v5h4V0h-4ZM9,4h-2V1h2v3Z"></path><path fill="currentColor" d="M12,0v5h4V0h-4ZM15,4h-2V1h2v3Z"></path><path fill="currentColor" d="M18,0v5h4V0h-4ZM21,4h-2V1h2v3Z"></path><path fill="currentColor" d="M24,0v5h4V0h-4ZM27,4h-2V1h2v3Z"></path><path fill="currentColor" d="M0,7v5h4v-5H0ZM3,11H1v-3h2v3Z"></path><path fill="currentColor" d="M6,7v5h4v-5h-4ZM9,11h-2v-3h2v3Z"></path><path fill="currentColor" d="M12,7v5h4v-5h-4ZM15,11h-2v-3h2v3Z"></path><path fill="currentColor" d="M18,7v5h4v-5h-4ZM21,11h-2v-3h2v3Z"></path><path fill="currentColor" d="M24,7v5h4v-5h-4ZM27,11h-2v-3h2v3Z"></path>
+                </svg>
+              -->
+              <!--
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                  <path d="M19 20H0V0H19V20ZM1 19H9V10.5H1V19ZM10 19H18V10.5H10V19ZM1 9.5H9V1H1V9.5ZM10 9.5H18V1H10V9.5Z" fill="currentColor"/>
+                </svg>
+              -->
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_60_3)">
+                <path d="M19.5 20H0.5V0H19.5V20ZM2 18.5H9V11H2V18.5ZM11 18.5H18V11H11V18.5ZM2 9H9V1.5H2V9ZM11 9H18V1.5H11V9Z" fill="black"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_60_3">
+                <rect width="20" height="20" fill="white"/>
+                </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,202 @@
+.pinfo-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 7fr);
+
+  @media(max-width: 768px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.pinfo-thumb-pic {
+  display: flex;
+}
+.pinfo-thumb-pic img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+.pinfo-gallery-pic {
+  display: flex;
+}
+.pinfo-gallery-pic img {
+  height: 180px;
+  width: 100%;
+  object-fit: cover;
+}
+product-info-content {
+  display: flex;
+  padding: var(--Spacing-Container-md, 24px) var(--Spacing-Container-xl, 64px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--Spacing-Container-lg, 32px);
+}
+.pinfo-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--Spacing-Container-xxs, 8px);
+  align-self: stretch;
+}
+.pinfo-breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--Spacing-Container-xxs, 8px);
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+.pinfo-breadcrumbs :is(a, span) {
+  color: var(--Content-Base-base, #4b5563);
+  font-family: var(--font-family-Body, "Aktiv Grotesk");
+  font-size: var(--Font-Size-Paragraph-Tiny, 12px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-Paragraph-Tiny, 16px); /* 133.333% */
+}
+.pinfo-title {
+  color: #000;
+  font-family: var(--font-family-Title, Krylon);
+  font-size: var(--Font-Size-Heading-H2, 36px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-Heading-H2, 36px);
+  margin: 0;
+}
+.pinfo-price-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+.pinfo-price {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
+}
+.pinfo-regular-price {
+  color: var(--Primary, #322f74);
+  font-family: var(--font-family-Body, "Aktiv Grotesk");
+  font-size: var(--Font-Size-Paragraph-Large, 20px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-Paragraph-Large, 30px);
+  margin: 0;
+}
+.pinfo-compare-price {
+  color: #000;
+  font-family: var(--font-family-Body, "Aktiv Grotesk");
+  font-size: var(--Font-Size-Paragraph-Regular, 16px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */
+  margin: 0;
+}
+.pinfo-review {
+  margin: 0;
+}
+.pinfo-cf-items {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pinfo-color-product input{
+  display: none;
+}
+.pinfo-color-product label {
+  width: 60px;
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+}
+.pinfo-color-product label img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.pinfo-color-product input:checked + label{
+  border: 1px solid black;
+}
+.pinfo-size-variants {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pinfo-size-variant label{
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  box-sizing: border-box;
+  border-radius: var(--rounded-none, 0px);
+  border: 1px solid var(--Border-Base-subtle, #E5E7EB);
+  padding: 8px 8px;
+  display: block;
+  min-width: 92px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pinfo-size-variant input:checked  + label{
+  border-radius: var(--rounded-none, 0px);
+  background: #166534;
+  color: var(--Content-Inverted-main, #F3F4F6);
+}
+.pinfo-size-variant label.disabled {
+  opacity: .7;
+  cursor: no-drop;
+}
+
+color-variant .pinfo-filter-label{
+  text-transform: capitalize;
+}
+
+.info-media-stack-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+.info-media-stack-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.pinfo-stack-picture img{
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.info-media-image.first,
+.info-media-image.last{
+  grid-column: 1/-1;
+}
+product-info-content {
+  position: sticky;
+  top: 0;
+  height: max-content;
+}
+.pinfo-bundle-wrapper{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  grid-gap: 12px;
+}
+
+
+@media(max-width: 768px) {
+  product-info-media{
+    display: flex;
+    overflow: hidden;
+  }
+
+  .info-media-stack-wrapper {
+    display: -webkit-inline-box;
+    overflow: auto;
+    gap: 2px;
+  }
+  .pinfo-stack-picture img{
+    aspect-ratio: 3/4;
+  }
+  .pinfo-bundle-wrapper{
+    grid-gap: 8px;
+  }
+}
