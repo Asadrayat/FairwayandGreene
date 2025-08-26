@@ -7,7 +7,7 @@ Welcome to the official repository for **Fairwayandgreene**, a Summit Golf Brand
 - **Location:** USA
 - **Developer:** [Asadrayat](https://github.com/Asadrayat)
 
-Visit the live site: [fairway_redesign([https://bdraddy.com/?_ab=0&_fd=0&_sc=1&preview_theme_id=151444390138](https://fairwayandgreene.com/?_ab=0&_fd=0&_sc=1&preview_theme_id=135278428226))
+Visit the live site: [fairway_redesign([https://fairwayandgreene.com/?_ab=0&_fd=0&_sc=1&preview_theme_id=135278428226])]
 
 ---
 
